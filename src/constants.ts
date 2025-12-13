@@ -15,12 +15,33 @@ export const LANGUAGES = {
   ru: {
     code: 'ru',
     name: 'Харьковский диалект',
-    emoji: '1️⃣6️⃣5️⃣4️⃣',
+    emoji: '1654',
   },
   ua: {
     code: 'ua',
     name: 'Українська',
     emoji: '🇺🇦',
+  },
+} as const;
+
+/**
+ * Learning levels
+ */
+export const LEVELS = {
+  basic: {
+    name: 'Basic',
+    emoji: '🌱',
+    description: 'Simple sentences - no grammar explanation',
+  },
+  middle: {
+    name: 'Middle',
+    emoji: '🌿',
+    description: 'Sentences with grammar tags and explanations',
+  },
+  'middle-slavic': {
+    name: 'Middle Slavic',
+    emoji: '🔗',
+    description: 'Advanced: false friends, Slavic comparisons, cultural notes',
   },
 } as const;
 

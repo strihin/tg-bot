@@ -1,0 +1,134 @@
+[
+{
+"bg": "Кур.",
+"eng": "Dick.",
+"ru": "Хуй.",
+"ua": "Хуй.",
+"source": "insults",
+"tag": "vulgar",
+"ruleEng": "Basic swear for penis, used as insult or exclamation.",
+"ruleRu": "Базовый мат для пениса, используется как оскорбление или восклицание.",
+"ruleUA": "Базовий мат для пеніса, використовується як образа або вигук."
+},
+{
+"bg": "Путка.",
+"eng": "Cunt.",
+"ru": "Пизда.",
+"ua": "Піхва.",
+"source": "insults",
+"tag": "vulgar",
+"ruleEng": "Vulgar term for vagina, often as an insult to women.",
+"ruleRu": "Вульгарный термин для вагины, часто как оскорбление женщинам.",
+"ruleUA": "Вульгарний термін для вагіни, часто як образа жінкам."
+},
+{
+"bg": "Да еба майката ти.",
+"eng": "Fuck your mother.",
+"ru": "Еби твою мать.",
+"ua": "Їби твою мати.",
+"source": "insults",
+"tag": "vulgar",
+"ruleEng": "Common maternal insult with sexual violence implication.",
+"ruleRu": "Обычное оскорбление матери с намеком на сексуальное насилие.",
+"ruleUA": "Звичайна образа матері з натяком на сексуальне насильство."
+},
+{
+"bg": "Да ти еба путката маичина.",
+"eng": "Fuck your mother's pussy.",
+"ru": "Еби твою материнскую пизду.",
+"ua": "Їби твою материнську піхву.",
+"source": "insults",
+"tag": "vulgar",
+"ruleEng": "Intensified maternal insult focusing on genitalia.",
+"ruleRu": "Усиленное оскорбление матери, фокусируясь на гениталиях.",
+"ruleUA": "Посилена образа матері, фокусуючись на геніталіях."
+},
+{
+"bg": "Циганин да те ебе.",
+"eng": "Get fucked by a gypsy.",
+"ru": "Пусть цыган тебя ебет.",
+"ua": "Хай циган тебе їбе.",
+"source": "insults",
+"tag": "vulgar-ethnic",
+"ruleEng": "Racist insult wishing sexual assault by a gypsy.",
+"ruleRu": "Расистское оскорбление, желающее сексуального насилия от цыгана.",
+"ruleUA": "Расистська образа, бажаюча сексуального насильства від цигана."
+},
+{
+"bg": "Мангал.",
+"eng": "Gypsy (slur).",
+"ru": "Цыган (оскорбление).",
+"ua": "Циган (образа).",
+"source": "insults",
+"tag": "vulgar-ethnic",
+"ruleEng": "Offensive ethnic slur for Roma people, implying dirtiness.",
+"ruleRu": "Оскорбительный этнический слур для ромов, подразумевая грязь.",
+"ruleUA": "Образливий етнічний слур для ромів, маючи на увазі бруд."
+},
+{
+"bg": "Лижи циганска сперма говнарче.",
+"eng": "Lick gypsy sperm you shithead.",
+"ru": "Лижи цыганскую сперму, говноед.",
+"ua": "Лижи циганську сперму, лайноїд.",
+"source": "insults",
+"tag": "vulgar-ethnic",
+"ruleEng": "Extreme racist and vulgar insult combining ethnicity and degradation.",
+"ruleRu": "Экстремальное расистское и вульгарное оскорбление, сочетающее этнос и деградацию.",
+"ruleUA": "Екстремальна расистська та вульгарна образа, поєднуюча етнос і деградацію."
+},
+{
+"bg": "Да те еба в гъза.",
+"eng": "Fuck you in the ass.",
+"ru": "Еби тебя в жопу.",
+"ua": "Їби тебе в дупу.",
+"source": "insults",
+"tag": "vulgar",
+"ruleEng": "Anal sex threat as an insult.",
+"ruleRu": "Угроза анальным сексом как оскорбление.",
+"ruleUA": "Загроза анальним сексом як образа."
+},
+{
+"bg": "Да та еба в гъза, педераст.",
+"eng": "Fuck you in the ass, gay.",
+"ru": "Еби тебя в жопу, пидор.",
+"ua": " Їби тебе в дупу, педик.",
+"source": "insults",
+"tag": "vulgar",
+"ruleEng": "Homophobic insult with anal reference.",
+"ruleRu": "Гомофобное оскорбление с анальной ссылкой.",
+"ruleUA": "Гомофобна образа з анальним посиланням."
+},
+{
+"bg": "Педераст.",
+"eng": "Gay (slur).",
+"ru": "Пидораст.",
+"ua": "Педик.",
+"source": "insults",
+"tag": "vulgar",
+"ruleEng": "Derogatory term for homosexual man.",
+"ruleRu": "Презрительный термин для гомосексуала.",
+"ruleUA": "Зневажливий термін для гомосексуала."
+},
+{
+"bg": "Курва.",
+"eng": "Whore.",
+"ru": "Шлюха.",
+"ua": "Повія.",
+"source": "insults",
+"tag": "vulgar",
+"ruleEng": "Insult for a promiscuous woman.",
+"ruleRu": "Оскорбление для распутной женщины.",
+"ruleUA": "Образа для розпущеної жінки."
+},
+{
+"bg": "Пичка ти лелина.",
+"eng": "In your aunt's pussy.",
+"ru": "В пизде твоей тетки.",
+"ua": "В піхві твоєї тітки.",
+"source": "insults",
+"tag": "vulgar",
+"ruleEng": "Dismissive insult implying irrelevance or absurdity.",
+"ruleRu": "Отвергающее оскорбление, подразумевающее абсурдность.",
+"ruleUA": "Відкидаюча образа, маючи на увазі абсурдність."
+}
+]

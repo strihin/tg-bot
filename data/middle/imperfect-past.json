@@ -1,0 +1,134 @@
+[
+  {
+    "bg": "Аз чета книга.",
+    "eng": "I read a book.",
+    "ru": "Я читаю книгу.",
+    "ua": "Я читаю книгу.",
+    "source": "daily life",
+    "tag": "present",
+    "ruleEng": "Verb 'чета' conjugates as in Slavic languages, but no cases for nouns.",
+    "ruleRu": "Глагол 'чета' спрягается как в славянских, но без падежей для существительных.",
+    "ruleUA": "Дієслово 'чета' відмінюється як у слов'янських, але без відмінків для іменників."
+  },
+  {
+    "bg": "Ти пиеш кафе.",
+    "eng": "You drink coffee.",
+    "ru": "Ты пьёшь кофе.",
+    "ua": "Ти п'єш каву.",
+    "source": "daily life",
+    "tag": "present",
+    "ruleEng": "Similar verb root 'пия' to 'пить/пити', 2nd person singular ending -еш.",
+    "ruleRu": "Похожий корень 'пия' на 'пить', окончание 2 л. ед. -еш.",
+    "ruleUA": "Подібний корінь 'пия' на 'пити', закінчення 2 ос. одн. -еш."
+  },
+  {
+    "bg": "Той работи в офис.",
+    "eng": "He works in an office.",
+    "ru": "Он работает в офисе.",
+    "ua": "Він працює в офісі.",
+    "source": "work",
+    "tag": "present",
+    "ruleEng": "Verb 'работя' like 'работать/працювати', no definite article needed here.",
+    "ruleRu": "Глагол 'работя' как 'работать', артикль не обязателен.",
+    "ruleUA": "Дієслово 'работя' як 'працювати', артикль не обов'язковий."
+  },
+  {
+    "bg": "Ние говорим български.",
+    "eng": "We speak Bulgarian.",
+    "ru": "Мы говорим по-болгарски.",
+    "ua": "Ми говоримо болгарською.",
+    "source": "language",
+    "tag": "present",
+    "ruleEng": "Plural 1st person -им, similar to Russian -им, Ukrainian -имо.",
+    "ruleRu": "Мн.ч. 1 л. -им, как в русском -им.",
+    "ruleUA": "Мн.ч. 1 ос. -им, як в українській -имо."
+  },
+  {
+    "bg": "Вие ядете плодове.",
+    "eng": "You (plural) eat fruits.",
+    "ru": "Вы едите фрукты.",
+    "ua": "Ви їсте фрукти.",
+    "source": "food",
+    "tag": "present",
+    "ruleEng": "Verb 'ям' conjugates to 'ядете' for plural/formal, root like 'есть/їсти'.",
+    "ruleRu": "Глагол 'ям' -> 'ядете' для мн.ч., корень как 'есть'.",
+    "ruleUA": "Дієслово 'ям' -> 'ядете' для мн.ч., корінь як 'їсти'."
+  },
+  {
+    "bg": "Те играят футбол.",
+    "eng": "They play football.",
+    "ru": "Они играют в футбол.",
+    "ua": "Вони грають у футбол.",
+    "source": "sports",
+    "tag": "present",
+    "ruleEng": "3rd plural -ят, similar to Russian -ют, Ukrainian -ють.",
+    "ruleRu": "3 л. мн. -ят, как в русском -ют.",
+    "ruleUA": "3 ос. мн. -ят, як в українській -ють."
+  },
+  {
+    "bg": "Аз виждам къщата.",
+    "eng": "I see the house.",
+    "ru": "Я вижу дом.",
+    "ua": "Я бачу будинок.",
+    "source": "sight",
+    "tag": "present",
+    "ruleEng": "Definite article -та on 'къща', unlike Russian/Ukrainian no article.",
+    "ruleRu": "Определённый артикль -та на 'къща', в русском нет артикля.",
+    "ruleUA": "Визначений артикль -та на 'къща', в українській немає артикля."
+  },
+  {
+    "bg": "Ти искаш вода.",
+    "eng": "You want water.",
+    "ru": "Ты хочешь воду.",
+    "ua": "Ти хочеш воду.",
+    "source": "needs",
+    "tag": "present",
+    "ruleEng": "Verb 'искам' like 'хотеть/хотіти', ending -аш for 2nd singular.",
+    "ruleRu": "Глагол 'искам' как 'хотеть', окончание -аш.",
+    "ruleUA": "Дієслово 'искам' як 'хотіти', закінчення -аш."
+  },
+  {
+    "bg": "Тя учи език.",
+    "eng": "She studies a language.",
+    "ru": "Она изучает язык.",
+    "ua": "Вона вивчає мову.",
+    "source": "education",
+    "tag": "present",
+    "ruleEng": "Verb 'уча' conjugates to 'учи', root similar to 'учить/вчити'.",
+    "ruleRu": "Глагол 'уча' -> 'учи', корень как 'учить'.",
+    "ruleUA": "Дієслово 'уча' -> 'учи', корінь як 'вчити'."
+  },
+  {
+    "bg": "Ние живеем в град.",
+    "eng": "We live in a city.",
+    "ru": "Мы живём в городе.",
+    "ua": "Ми живемо в місті.",
+    "source": "living",
+    "tag": "present",
+    "ruleEng": "Verb 'живея' like 'жить/жити', 1st plural -ем.",
+    "ruleRu": "Глагол 'живея' как 'жить', 1 мн. -ем.",
+    "ruleUA": "Дієслово 'живея' як 'жити', 1 мн. -ем."
+  },
+  {
+    "bg": "Вие купувате храна.",
+    "eng": "You (plural) buy food.",
+    "ru": "Вы покупаете еду.",
+    "ua": "Ви купуєте їжу.",
+    "source": "shopping",
+    "tag": "present",
+    "ruleEng": "Verb 'купувам' conjugates to 'купувате', similar to 'купить/купити' but imperfective.",
+    "ruleRu": "Глагол 'купувам' -> 'купувате', как 'купить' но несовершенный вид.",
+    "ruleUA": "Дієслово 'купувам' -> 'купувате', як 'купити' але недоконаний вид."
+  },
+  {
+    "bg": "Те слушат музика.",
+    "eng": "They listen to music.",
+    "ru": "Они слушают музыку.",
+    "ua": "Вони слухають музику.",
+    "source": "entertainment",
+    "tag": "present",
+    "ruleEng": "Verb 'слушам' like 'слушать/слухати', 3rd plural -ат.",
+    "ruleRu": "Глагол 'слушам' как 'слушать', 3 мн. -ат.",
+    "ruleUA": "Дієслово 'слушам' як 'слухати', 3 мн. -ат."
+  }
+]

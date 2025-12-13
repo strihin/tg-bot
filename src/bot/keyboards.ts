@@ -16,6 +16,20 @@ export const lessonKeyboards = {
     ],
   },
 
+  lessonComplete: {
+    inline_keyboard: [
+      [{ text: '📚 Choose another category', callback_data: 'exit' }],
+    ],
+  },
+
+  levelSelect: {
+    inline_keyboard: [
+      [{ text: '🌱 Basic - Simple sentences', callback_data: 'level_basic' }],
+      [{ text: '🌿 Middle - With grammar tips', callback_data: 'level_middle' }],
+      [{ text: '🔗 Middle Slavic - False friends & culture', callback_data: 'level_middle-slavic' }],
+    ],
+  },
+
   startMenu: {
     inline_keyboard: [
       [{ text: '🚀 Start lesson', callback_data: 'start_lesson' }],
@@ -36,7 +50,7 @@ export const lessonKeyboards = {
       [
         { text: '🇬🇧', callback_data: 'lang_to_eng' },
         { text: '🇺🇦', callback_data: 'lang_to_ua' },
-        { text: "1️⃣6️⃣5️⃣4️⃣", callback_data: 'lang_to_ru' },
+        { text: '1654', callback_data: 'lang_to_ru' },
       ]
     ],
   },

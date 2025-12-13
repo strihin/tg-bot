@@ -1,5 +1,7 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { config } from '../config';
+import { getUserProgress, clearAllProgressExceptLast } from '../data/progress';
+import { getLanguageEmoji } from '../utils/translation';
 import {
   handleStartLessonButton,
   handleLessonStart,
@@ -9,21 +11,61 @@ import {
 } from './handlers/lesson';
 import { getCategoryKeyboard, handleSelectCategory } from './handlers/category';
 import { handleSelectTargetLanguage } from './handlers/language';
+import { handleSelectLevel } from './handlers/level';
 import { lessonKeyboards } from './keyboards';
 
 export function createBot(): TelegramBot {
   const bot = new TelegramBot(config.TELEGRAM_TOKEN, { polling: true });
 
-  // Command: /start - Show language selection (source → target)
+  // Command: /start - Show language selection or resume lesson
   bot.onText(/\/start/, async (msg: TelegramBot.Message) => {
     const chatId = msg.chat.id;
+    const userId = msg.from?.id;
     console.log(`📥 /start command received from chat ${chatId}`);
+
+    if (!userId) return;
+
+    const progress = getUserProgress(userId);
+
+    // Check if user has an active lesson
+    if (progress && progress.lessonActive) {
+      const langEmoji = getLanguageEmoji(progress.languageTo);
+      await bot.sendMessage(
+        chatId,
+        `🇧🇬 Welcome back! 👋\n\nYou have an active lesson in **${progress.category.toUpperCase()}** (🇧🇬 → ${langEmoji})\n\n_What would you like to do?_`,
+        {
+          parse_mode: 'Markdown',
+          reply_markup: {
+            inline_keyboard: [
+              [{ text: '📖 Resume lesson', callback_data: 'continue_lesson' }],
+              [{ text: '🚀 Start new lesson', callback_data: 'start_new' }],
+            ],
+          },
+        }
+      );
+    } else {
+      // First time or no active lesson - show language selection
+      await bot.sendMessage(
+        chatId,
+        '🇧🇬 **Welcome to Bulgarian Learning Bot!** 🎓\n\nBulgarian is your source language.\n\n_Select your target language:_',
+        {
+          parse_mode: 'Markdown',
+          reply_markup: lessonKeyboards.targetLanguageSelect,
+        }
+      );
+    }
+  });
+
+  // Command: /clear - Remove all progress files except the most recently modified one
+  bot.onText(/\/clear/, async (msg: TelegramBot.Message) => {
+    const chatId = msg.chat.id;
+    console.log(`🧹 /clear command received from chat ${chatId}`);
+
+    const deletedCount = clearAllProgressExceptLast();
     await bot.sendMessage(
       chatId,
-      '🇧🇬 Welcome to Bulgarian Learning Bot!\n\nBulgarian is your source language. Select target language:',
-      {
-        reply_markup: lessonKeyboards.targetLanguageSelect,
-      }
+      `🧹 **Progress cleanup complete!**\n\n✅ Deleted ${deletedCount} user progress file(s)\n📌 Kept the most recently used one`,
+      { parse_mode: 'Markdown' }
     );
   });
 
@@ -41,6 +83,9 @@ export function createBot(): TelegramBot {
       if (data?.startsWith('lang_to_')) {
         // Handle target language selection
         await handleSelectTargetLanguage(query, bot);
+      } else if (data?.startsWith('level_')) {
+        // Handle level selection
+        await handleSelectLevel(query, bot);
       } else if (data?.startsWith('select_category:')) {
         // Handle category selection
         await handleSelectCategory(query, bot);
@@ -55,8 +100,8 @@ export function createBot(): TelegramBot {
         }
         await handleStartLessonButton(query, bot, category);
       } else if (data === 'start_lesson' || data === 'continue_lesson') {
-        console.log('Starting lesson...');
-        // Delete the menu message first
+        console.log('Starting/continuing lesson...');
+        // Delete the menu message first if it exists
         try {
           await bot.deleteMessage(query.message!.chat.id, query.message!.message_id);
         } catch (e) {
@@ -64,6 +109,25 @@ export function createBot(): TelegramBot {
         }
         // Start lesson using the callback query
         await handleStartLessonButton(query, bot);
+      } else if (data === 'start_new') {
+        // Reset progress and start new - show language selection
+        const chatId = query.message?.chat.id;
+        const userId = query.from.id;
+        if (chatId && userId) {
+          try {
+            await bot.deleteMessage(chatId, query.message!.message_id);
+          } catch (e) {
+            // Ignore
+          }
+          await bot.sendMessage(
+            chatId,
+            '🇧🇬 **Let\'s start fresh!** 🎓\n\nSelect your target language:',
+            {
+              parse_mode: 'Markdown',
+              reply_markup: lessonKeyboards.targetLanguageSelect,
+            }
+          );
+        }
       } else if (data === 'show_translation') {
         await handleShowTranslation(query, bot);
       } else if (data === 'next') {
@@ -72,6 +136,7 @@ export function createBot(): TelegramBot {
         await handlePrevious(query, bot);
       } else if (data === 'exit') {
         // Exit lesson and return to menu
+        const userId = query.from.id;
         const chatId = query.message?.chat.id;
         if (chatId) {
           try {
@@ -79,10 +144,13 @@ export function createBot(): TelegramBot {
           } catch (e) {
             // Ignore
           }
+          // Get current user level for category selection
+          const progress = getUserProgress(userId);
+          const userLevel = progress?.level || 'basic';
           await bot.sendMessage(
             chatId,
             '👋 Lesson ended. Great job! 🌟 What next?',
-            getCategoryKeyboard()
+            getCategoryKeyboard(userLevel)
           );
         }
       }

@@ -3,10 +3,10 @@ import { getAvailableCategories } from '../../data/loader';
 import { CATEGORIES } from '../../constants';
 
 /**
- * Create inline keyboard with available categories
+ * Create inline keyboard with available categories for a specific level
  */
-export function getCategoryKeyboard() {
-  const categories = getAvailableCategories();
+export function getCategoryKeyboard(level: 'basic' | 'middle' | 'middle-slavic' = 'basic') {
+  const categories = getAvailableCategories(level);
   
   const buttons = categories.map((category) => [
     {

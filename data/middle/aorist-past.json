@@ -1,0 +1,134 @@
+[
+  {
+    "bg": "Къде е книгата?",
+    "eng": "Where is the book?",
+    "ru": "Где книга?",
+    "ua": "Де книга?",
+    "source": "directions",
+    "tag": "?present",
+    "ruleEng": "'Къде' like 'где/де', definite article -та.",
+    "ruleRu": "'Къде' как 'где', артикль -та.",
+    "ruleUA": "'Къде' як 'де', артикль -та."
+  },
+  {
+    "bg": "Пиеш ли кафе?",
+    "eng": "Do you drink coffee?",
+    "ru": "Ты пьёшь кофе?",
+    "ua": "Ти п'єш каву?",
+    "source": "daily life",
+    "tag": "?present",
+    "ruleEng": "Particle 'ли' after verb for yes/no questions.",
+    "ruleRu": "Частица 'ли' после глагола для да/нет вопросов.",
+    "ruleUA": "Частка 'ли' після дієслова для так/ні питань."
+  },
+  {
+    "bg": "Работи ли той?",
+    "eng": "Does he work?",
+    "ru": "Он работает?",
+    "ua": "Він працює?",
+    "source": "work",
+    "tag": "?present",
+    "ruleEng": "'Ли' for inversion in questions.",
+    "ruleRu": "'Ли' для инверсии в вопросах.",
+    "ruleUA": "'Ли' для інверсії в питаннях."
+  },
+  {
+    "bg": "Говорим ли български?",
+    "eng": "Do we speak Bulgarian?",
+    "ru": "Мы говорим по-болгарски?",
+    "ua": "Ми говоримо болгарською?",
+    "source": "language",
+    "tag": "?present",
+    "ruleEng": "'Ли' after plural verb.",
+    "ruleRu": "'Ли' после мн.ч. глагола.",
+    "ruleUA": "'Ли' після мн.ч. дієслова."
+  },
+  {
+    "bg": "Ядете ли плодове?",
+    "eng": "Do you eat fruits?",
+    "ru": "Вы едите фрукты?",
+    "ua": "Ви їсте фрукти?",
+    "source": "food",
+    "tag": "?present",
+    "ruleEng": "Yes/no with 'ли' in formal/plural.",
+    "ruleRu": "Да/нет с 'ли' в формальном/мн.",
+    "ruleUA": "Так/ні з 'ли' в формальному/мн."
+  },
+  {
+    "bg": "Играят ли футбол?",
+    "eng": "Do they play football?",
+    "ru": "Они играют в футбол?",
+    "ua": "Вони грають у футбол?",
+    "source": "sports",
+    "tag": "?present",
+    "ruleEng": "'Ли' for 3rd plural questions.",
+    "ruleRu": "'Ли' для 3 мн. вопросов.",
+    "ruleUA": "'Ли' для 3 мн. питань."
+  },
+  {
+    "bg": "Виждаш ли къщата?",
+    "eng": "Do you see the house?",
+    "ru": "Ты видишь дом?",
+    "ua": "Ти бачиш будинок?",
+    "source": "sight",
+    "tag": "?present",
+    "ruleEng": "'Ли' after verb, article in question.",
+    "ruleRu": "'Ли' после глагола, артикль в вопросе.",
+    "ruleUA": "'Ли' після дієслова, артикль в питанні."
+  },
+  {
+    "bg": "Иска ли вода?",
+    "eng": "Does he want water?",
+    "ru": "Он хочет воду?",
+    "ua": "Він хоче воду?",
+    "source": "needs",
+    "tag": "?present",
+    "ruleEng": "Short form with 'ли'.",
+    "ruleRu": "Короткая форма с 'ли'.",
+    "ruleUA": "Коротка форма з 'ли'."
+  },
+  {
+    "bg": "Учи ли език?",
+    "eng": "Does she study a language?",
+    "ru": "Она изучает язык?",
+    "ua": "Вона вивчає мову?",
+    "source": "education",
+    "tag": "?present",
+    "ruleEng": "'Ли' for simple questions.",
+    "ruleRu": "'Ли' для простых вопросов.",
+    "ruleUA": "'Ли' для простих питань."
+  },
+  {
+    "bg": "Живеем ли в град?",
+    "eng": "Do we live in a city?",
+    "ru": "Мы живём в городе?",
+    "ua": "Ми живемо в місті?",
+    "source": "living",
+    "tag": "?present",
+    "ruleEng": "'Ли' in present questions.",
+    "ruleRu": "'Ли' в настоящих вопросах.",
+    "ruleUA": "'Ли' в теперішніх питаннях."
+  },
+  {
+    "bg": "Купувате ли храна?",
+    "eng": "Do you buy food?",
+    "ru": "Вы покупаете еду?",
+    "ua": "Ви купуєте їжу?",
+    "source": "shopping",
+    "tag": "?present",
+    "ruleEng": "'Ли' for buying questions.",
+    "ruleRu": "'Ли' для вопросов о покупках.",
+    "ruleUA": "'Ли' для питань про покупки."
+  },
+  {
+    "bg": "Слушат ли музика?",
+    "eng": "Do they listen to music?",
+    "ru": "Они слушают музыку?",
+    "ua": "Вони слухають музику?",
+    "source": "entertainment",
+    "tag": "?present",
+    "ruleEng": "'Ли' after listen verb.",
+    "ruleRu": "'Ли' после глагола слушать.",
+    "ruleUA": "'Ли' після дієслова слухати."
+  }
+]

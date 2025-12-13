@@ -15,7 +15,6 @@ export async function handleSelectTargetLanguage(
     // Answer callback immediately to prevent duplicate delivery
     await bot.answerCallbackQuery(callbackQuery.id);
 
-    const userId = callbackQuery.from.id;
     const chatId = callbackQuery.message?.chat.id;
 
     if (!chatId) return;
@@ -24,18 +23,18 @@ export async function handleSelectTargetLanguage(
     const languageTo = data.replace('lang_to_', '') as 'eng' | 'ru' | 'ua';
 
     // Save target language preference
+    const userId = callbackQuery.from.id;
     changeTargetLanguage(userId, languageTo);
 
-    const langName = getLanguageName(languageTo);
     const langEmoji = getLanguageEmoji(languageTo);
 
-    // Send category selection after language choice
+    // Show level selection after language choice
     await bot.sendMessage(
       chatId,
-      `🇧🇬 → ${langEmoji}\n📚 Now select a lesson category:`,
+      `🇧🇬 → ${langEmoji}\n\n_Select your learning level:_`,
       {
         parse_mode: 'Markdown',
-        ...getCategoryKeyboard(),
+        reply_markup: lessonKeyboards.levelSelect,
       }
     );
   } catch (error) {
