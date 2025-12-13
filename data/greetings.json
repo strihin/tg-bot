@@ -1,0 +1,352 @@
+[
+  {
+    "bg": "Здравей",
+    "eng": "Hello (informal)",
+    "ru": "Привет",
+    "ua": "Привіт",
+    "source": "basics"
+  },
+  {
+    "bg": "Здравейте",
+    "eng": "Hello (formal/plural)",
+    "ru": "Здравствуйте",
+    "ua": "Здравствуйте",
+    "source": "basics"
+  },
+  {
+    "bg": "Добро утро",
+    "eng": "Good morning",
+    "ru": "Доброе утро",
+    "ua": "Доброго ранку",
+    "source": "basics"
+  },
+  {
+    "bg": "Добър ден",
+    "eng": "Good afternoon",
+    "ru": "Добрый день",
+    "ua": "Добрий день",
+    "source": "basics"
+  },
+  {
+    "bg": "Добър вечер",
+    "eng": "Good evening",
+    "ru": "Добрый вечер",
+    "ua": "Добрий вечір",
+    "source": "basics"
+  },
+  {
+    "bg": "Лека нощ",
+    "eng": "Good night",
+    "ru": "Спокойной ночи",
+    "ua": "Спокійної ночі",
+    "source": "basics"
+  },
+  {
+    "bg": "Довиждане",
+    "eng": "Goodbye",
+    "ru": "До свидания",
+    "ua": "До побачення",
+    "source": "basics"
+  },
+  {
+    "bg": "Чао",
+    "eng": "Bye (informal)",
+    "ru": "Пока",
+    "ua": "Пока",
+    "source": "basics"
+  },
+  {
+    "bg": "Довиждане утре",
+    "eng": "See you tomorrow",
+    "ru": "До завтра",
+    "ua": "До завтра",
+    "source": "basics"
+  },
+  {
+    "bg": "До скоро",
+    "eng": "See you soon",
+    "ru": "До скорого",
+    "ua": "До скорого",
+    "source": "basics"
+  },
+  {
+    "bg": "Как си?",
+    "eng": "How are you? (informal)",
+    "ru": "Как дела?",
+    "ua": "Як справи?",
+    "source": "basics"
+  },
+  {
+    "bg": "Как сте?",
+    "eng": "How are you? (formal)",
+    "ru": "Как дела?",
+    "ua": "Як справи?",
+    "source": "basics"
+  },
+  {
+    "bg": "Добре съм",
+    "eng": "I'm fine",
+    "ru": "Хорошо",
+    "ua": "Добре",
+    "source": "basics"
+  },
+  {
+    "bg": "Много добре",
+    "eng": "Very well",
+    "ru": "Очень хорошо",
+    "ua": "Дуже добре",
+    "source": "basics"
+  },
+  {
+    "bg": "Не много добре",
+    "eng": "Not very well",
+    "ru": "Не очень",
+    "ua": "Не дуже добре",
+    "source": "basics"
+  },
+  {
+    "bg": "Благодаря",
+    "eng": "Thank you",
+    "ru": "Спасибо",
+    "ua": "Дякую",
+    "source": "basics"
+  },
+  {
+    "bg": "Много благодаря",
+    "eng": "Thank you very much",
+    "ru": "Большое спасибо",
+    "ua": "Дякую дуже",
+    "source": "basics"
+  },
+  {
+    "bg": "Моля",
+    "eng": "Please / You're welcome",
+    "ru": "Пожалуйста",
+    "ua": "Будь ласка",
+    "source": "basics"
+  },
+  {
+    "bg": "Извинете",
+    "eng": "Excuse me / Sorry",
+    "ru": "Извините",
+    "ua": "Вибачте",
+    "source": "basics"
+  },
+  {
+    "bg": "Съжалявам",
+    "eng": "I'm sorry",
+    "ru": "Извините",
+    "ua": "Мне шкода",
+    "source": "basics"
+  },
+  {
+    "bg": "Няма проблем",
+    "eng": "No problem",
+    "ru": "Нет проблем",
+    "ua": "Немає проблем",
+    "source": "basics"
+  },
+  {
+    "bg": "Да",
+    "eng": "Yes",
+    "ru": "Да",
+    "ua": "Так",
+    "source": "basics"
+  },
+  {
+    "bg": "Не",
+    "eng": "No",
+    "ru": "Нет",
+    "ua": "Ні",
+    "source": "basics"
+  },
+  {
+    "bg": "Може би",
+    "eng": "Maybe",
+    "ru": "Может быть",
+    "ua": "Може бути",
+    "source": "basics"
+  },
+  {
+    "bg": "Разбира се",
+    "eng": "Of course",
+    "ru": "Конечно",
+    "ua": "Звісно",
+    "source": "basics"
+  },
+  {
+    "bg": "Говорите ли английски?",
+    "eng": "Do you speak English?",
+    "ru": "Вы говорите по-английски?",
+    "ua": "Ви говорите англійською?",
+    "source": "basics"
+  },
+  {
+    "bg": "Говорите ли руски?",
+    "eng": "Do you speak Russian?",
+    "ru": "Вы говорите по-русски?",
+    "ua": "Ви говорите російською?",
+    "source": "basics"
+  },
+  {
+    "bg": "Не разбирам",
+    "eng": "I don't understand",
+    "ru": "Я не понимаю",
+    "ua": "Я не розумію",
+    "source": "basics"
+  },
+  {
+    "bg": "Можете ли да повторите?",
+    "eng": "Can you repeat?",
+    "ru": "Можете повторить?",
+    "ua": "Можете повторити?",
+    "source": "basics"
+  },
+  {
+    "bg": "Как се казваш?",
+    "eng": "What's your name? (informal)",
+    "ru": "Как тебя зовут?",
+    "ua": "Як тебе звати?",
+    "source": "basics"
+  },
+  {
+    "bg": "Как се казвате?",
+    "eng": "What's your name? (formal)",
+    "ru": "Как вас зовут?",
+    "ua": "Як вас звати?",
+    "source": "basics"
+  },
+  {
+    "bg": "Казвам се...",
+    "eng": "My name is...",
+    "ru": "Меня зовут...",
+    "ua": "Мене звати...",
+    "source": "basics"
+  },
+  {
+    "bg": "Приятно ми е",
+    "eng": "Nice to meet you",
+    "ru": "Приятно познакомиться",
+    "ua": "Приємно познайомитися",
+    "source": "basics"
+  },
+  {
+    "bg": "Откъде си?",
+    "eng": "Where are you from? (informal)",
+    "ru": "Откуда ты?",
+    "ua": "Звідки ти?",
+    "source": "basics"
+  },
+  {
+    "bg": "Аз съм от...",
+    "eng": "I'm from...",
+    "ru": "Я из...",
+    "ua": "Я з...",
+    "source": "basics"
+  },
+  {
+    "bg": "Наздраве!",
+    "eng": "Cheers!",
+    "ru": "За здоровье!",
+    "ua": "За здоров'я!",
+    "source": "basics"
+  },
+  {
+    "bg": "Успех!",
+    "eng": "Good luck!",
+    "ru": "Удачи!",
+    "ua": "Удачі!",
+    "source": "basics"
+  },
+  {
+    "bg": "Честит рожден ден!",
+    "eng": "Happy birthday!",
+    "ru": "С днём рождения!",
+    "ua": "З днем народження!",
+    "source": "basics"
+  },
+  {
+    "bg": "Честита Нова година!",
+    "eng": "Happy New Year!",
+    "ru": "С Новым годом!",
+    "ua": "З Новим роком!",
+    "source": "basics"
+  },
+  {
+    "bg": "Весела Коледа!",
+    "eng": "Merry Christmas!",
+    "ru": "С Рождеством!",
+    "ua": "З Різдвом!",
+    "source": "basics"
+  },
+  {
+    "bg": "Всичко хубаво!",
+    "eng": "All the best!",
+    "ru": "Всего хорошего!",
+    "ua": "Всього найкращого!",
+    "source": "basics"
+  },
+  {
+    "bg": "Да, точно така",
+    "eng": "Yes, exactly",
+    "ru": "Да, именно так",
+    "ua": "Так, саме так",
+    "source": "basics"
+  },
+  {
+    "bg": "Не знам",
+    "eng": "I don't know",
+    "ru": "Не знаю",
+    "ua": "Я не знаю",
+    "source": "basics"
+  },
+  {
+    "bg": "Добре",
+    "eng": "Okay / Good",
+    "ru": "Хорошо",
+    "ua": "Гаразд",
+    "source": "basics"
+  },
+  {
+    "bg": "Чудесно!",
+    "eng": "Great!",
+    "ru": "Отлично!",
+    "ua": "Чудово!",
+    "source": "basics"
+  },
+  {
+    "bg": "Браво!",
+    "eng": "Well done!",
+    "ru": "Браво!",
+    "ua": "Браво!",
+    "source": "basics"
+  },
+  {
+    "bg": "Много хубаво",
+    "eng": "Very nice",
+    "ru": "Очень красиво",
+    "ua": "Дуже гарно",
+    "source": "basics"
+  },
+  {
+    "bg": "Желая ти хубав ден",
+    "eng": "Have a nice day",
+    "ru": "Хорошего дня",
+    "ua": "Хорошого дня",
+    "source": "basics"
+  },
+  {
+    "bg": "Приятен път",
+    "eng": "Have a good trip",
+    "ru": "Счастливого пути",
+    "ua": "Щасливої дороги",
+    "source": "basics"
+  },
+  {
+    "bg": "Добре дошли",
+    "eng": "Welcome",
+    "ru": "Добро пожаловать",
+    "ua": "Ласкаво просимо",
+    "source": "basics"
+  }
+]

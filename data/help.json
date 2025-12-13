@@ -1,0 +1,352 @@
+[
+  {
+    "bg": "Помощ!",
+    "eng": "Help!",
+    "ru": "Помогите!",
+    "ua": "Допоможіть!",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Трябва ми лекар",
+    "eng": "I need a doctor",
+    "ru": "Мне нужен врач",
+    "ua": "Мені потрібен лікар",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Боли ме...",
+    "eng": "It hurts...",
+    "ru": "У меня болит...",
+    "ua": "У мене болить...",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Главобол",
+    "eng": "Headache",
+    "ru": "Голова",
+    "ua": "Головний біль",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Стомах",
+    "eng": "Stomach",
+    "ru": "Желудок",
+    "ua": "Шлунок",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Полиция",
+    "eng": "Police",
+    "ru": "Полиция",
+    "ua": "Поліція",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Обади се на линейка",
+    "eng": "Call an ambulance",
+    "ru": "Вызовите скорую",
+    "ua": "Викличте швидку",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Къде е болницата?",
+    "eng": "Where is the hospital?",
+    "ru": "Где больница?",
+    "ua": "Де лікарня?",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Къде е аптеката?",
+    "eng": "Where is the pharmacy?",
+    "ru": "Где аптека?",
+    "ua": "Де аптека?",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Загубих паспорта си",
+    "eng": "I lost my passport",
+    "ru": "Я потерял паспорт",
+    "ua": "Я втратив паспорт",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Обадете се на полицията",
+    "eng": "Call the police",
+    "ru": "Вызовите полицию",
+    "ua": "Викличте поліцію",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Кражба",
+    "eng": "Theft",
+    "ru": "Кража",
+    "ua": "Крадіжка",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Не се чувствам добре",
+    "eng": "I don't feel well",
+    "ru": "Я плохо себя чувствую",
+    "ua": "Я погано себе почуваю",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Имам температура",
+    "eng": "I have a fever",
+    "ru": "У меня температура",
+    "ua": "У мене температура",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Трябва ми преводач",
+    "eng": "I need an interpreter",
+    "ru": "Мне нужен переводчик",
+    "ua": "Мені потрібен перекладач",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Спешно!",
+    "eng": "Emergency!",
+    "ru": "Срочно!",
+    "ua": "Терміново!",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Пожар!",
+    "eng": "Fire!",
+    "ru": "Пожар!",
+    "ua": "Пожежа!",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Какво време е?",
+    "eng": "What time is it?",
+    "ru": "Который час?",
+    "ua": "Який час?",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Колко е часът?",
+    "eng": "What time is it?",
+    "ru": "Сколько времени?",
+    "ua": "Скільки часу?",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Днес",
+    "eng": "Today",
+    "ru": "Сегодня",
+    "ua": "Сьогодні",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Утре",
+    "eng": "Tomorrow",
+    "ru": "Завтра",
+    "ua": "Завтра",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Вчера",
+    "eng": "Yesterday",
+    "ru": "Вчера",
+    "ua": "Вчора",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Сега",
+    "eng": "Now",
+    "ru": "Сейчас",
+    "ua": "Зараз",
+    "source": "emergencies"
+  },
+  {
+    "bg": "По-късно",
+    "eng": "Later",
+    "ru": "Позже",
+    "ua": "Пізніше",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Скоро",
+    "eng": "Soon",
+    "ru": "Скоро",
+    "ua": "Скоро",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Веднага",
+    "eng": "Immediately",
+    "ru": "Сразу",
+    "ua": "Одразу",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Внимание!",
+    "eng": "Careful!",
+    "ru": "Осторожно!",
+    "ua": "Обережно!",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Стой!",
+    "eng": "Stop!",
+    "ru": "Стой!",
+    "ua": "Стій!",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Не пипай!",
+    "eng": "Don't touch!",
+    "ru": "Не трогай!",
+    "ua": "Не чіпай!",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Опасно!",
+    "eng": "Dangerous!",
+    "ru": "Опасно!",
+    "ua": "Небезпечно!",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Забранено",
+    "eng": "Forbidden",
+    "ru": "Запрещено",
+    "ua": "Заборонено",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Мога ли да помогна?",
+    "eng": "Can I help?",
+    "ru": "Могу ли помочь?",
+    "ua": "Я можу допомогти?",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Имам нужда от помощ",
+    "eng": "I need help",
+    "ru": "Мне нужна помощь",
+    "ua": "Мені потрібна допомога",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Обади се на...",
+    "eng": "Call...",
+    "ru": "Позвони...",
+    "ua": "Подзвони...",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Не работи",
+    "eng": "It's not working",
+    "ru": "Не работает",
+    "ua": "Не працює",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Счупено е",
+    "eng": "It's broken",
+    "ru": "Сломано",
+    "ua": "Зламано",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Трябва ми интернет",
+    "eng": "I need internet",
+    "ru": "Мне нужен интернет",
+    "ua": "Мені потрібен інтернет",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Wi-Fi парола",
+    "eng": "Wi-Fi password",
+    "ru": "Пароль Wi-Fi",
+    "ua": "Пароль Wi-Fi",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Зарядно",
+    "eng": "Charger",
+    "ru": "Зарядка",
+    "ua": "Зарядка",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Батерията ми е слаба",
+    "eng": "My battery is low",
+    "ru": "У меня садится батарея",
+    "ua": "Мій акумулятор розряджається",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Мобилен телефон",
+    "eng": "Mobile phone",
+    "ru": "Мобильный телефон",
+    "ua": "Мобільний телефон",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Мога ли да се обадя?",
+    "eng": "Can I make a call?",
+    "ru": "Можно позвонить?",
+    "ua": "Можна мені позвонити?",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Добре дошли",
+    "eng": "Welcome",
+    "ru": "Добро пожаловать",
+    "ua": "Ласкаво просимо",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Моля, затворете вратата",
+    "eng": "Please close the door",
+    "ru": "Закройте дверь, пожалуйста",
+    "ua": "Будь ласка, закрийте двері",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Тихо, моля",
+    "eng": "Quiet, please",
+    "ru": "Тише, пожалуйста",
+    "ua": "Тихо, будь ласка",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Не пуши",
+    "eng": "No smoking",
+    "ru": "Не курить",
+    "ua": "Не паліть",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Чакай",
+    "eng": "Wait",
+    "ru": "Подожди",
+    "ua": "Чекай",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Бързам",
+    "eng": "I'm in a hurry",
+    "ru": "Я спешу",
+    "ua": "Я поспішаю",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Не бързам",
+    "eng": "I'm not in a hurry",
+    "ru": "Не спешу",
+    "ua": "Я не поспішаю",
+    "source": "emergencies"
+  },
+  {
+    "bg": "Готов съм",
+    "eng": "I'm ready",
+    "ru": "Я готов",
+    "ua": "Я готовий",
+    "source": "emergencies"
+  }
+]
