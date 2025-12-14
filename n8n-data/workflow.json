@@ -1,0 +1,67 @@
+{
+  "name": "Daily Lesson Reminder",
+  "nodes": [
+    {
+      "name": "Trigger at 9 AM",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {
+        "cronExpression": "0 9 * * *"
+      }
+    },
+    {
+      "name": "Get Active Users",
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1,
+      "position": [450, 300],
+      "parameters": {
+        "operation": "find",
+        "collection": "user_progress",
+        "query": "{ \"lessonActive\": true }"
+      },
+      "credentials": {
+        "mongoDb": "MongoDB Credentials"
+      }
+    },
+    {
+      "name": "Send Reminder to Each User",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [650, 300],
+      "parameters": {
+        "operation": "sendMessage",
+        "chatId": "{{ $json.chatId }}",
+        "text": "📚 Don't forget your daily Bulgarian lesson! 🎯\n\n_Your streak continues if you practice today!_",
+        "parseMode": "Markdown"
+      },
+      "credentials": {
+        "telegramApi": "Telegram Credentials"
+      }
+    }
+  ],
+  "connections": {
+    "Trigger at 9 AM": {
+      "main": [
+        [
+          {
+            "node": "Get Active Users",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Active Users": {
+      "main": [
+        [
+          {
+            "node": "Send Reminder to Each User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
