@@ -1,15 +1,31 @@
 import { createBot } from './bot';
+import { setupWebhookServer, startServer } from './server';
 
-function main(): void {
+async function main(): Promise<void> {
   try {
-    // Create and start bot
+    // Create bot instance
     const bot = createBot();
-    console.log('🤖 Bot polling started');
+    console.log('🤖 Bot instance created');
+
+    // Setup Express server with webhook endpoints
+    const app = await setupWebhookServer(bot);
+    console.log('✅ Webhook server configured');
+
+    // Start the server
+    await startServer(app);
+    console.log('✅ Webhook server started');
 
     // Graceful shutdown
     process.on('SIGINT', async () => {
-      console.log('Shutting down...');
-      process.exit(0);
+      console.log('\n🛑 Shutting down...');
+      try {
+        // Optionally remove webhook on shutdown
+        // await bot.deleteWebHook();
+        process.exit(0);
+      } catch (error) {
+        console.error('Error during shutdown:', error);
+        process.exit(1);
+      }
     });
   } catch (error) {
     console.error('❌ Startup error:', error);

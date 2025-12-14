@@ -1,6 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { config } from '../config';
-import { getUserProgress, clearAllProgressExceptLast } from '../data/progress';
+import { getUserProgress, clearAllProgressExceptLast } from '../db/mongo';
 import { getLanguageEmoji } from '../utils/translation';
 import {
   handleStartLessonButton,
@@ -15,7 +15,8 @@ import { handleSelectLevel } from './handlers/level';
 import { lessonKeyboards } from './keyboards';
 
 export function createBot(): TelegramBot {
-  const bot = new TelegramBot(config.TELEGRAM_TOKEN, { polling: true });
+  // Webhook mode: no polling
+  const bot = new TelegramBot(config.TELEGRAM_TOKEN);
 
   // Command: /start - Show language selection or resume lesson
   bot.onText(/\/start/, async (msg: TelegramBot.Message) => {
@@ -25,7 +26,7 @@ export function createBot(): TelegramBot {
 
     if (!userId) return;
 
-    const progress = getUserProgress(userId);
+    const progress = await getUserProgress(userId);
 
     // Check if user has an active lesson
     if (progress && progress.lessonActive) {
@@ -61,7 +62,7 @@ export function createBot(): TelegramBot {
     const chatId = msg.chat.id;
     console.log(`🧹 /clear command received from chat ${chatId}`);
 
-    const deletedCount = clearAllProgressExceptLast();
+    const deletedCount = await clearAllProgressExceptLast();
     await bot.sendMessage(
       chatId,
       `🧹 **Progress cleanup complete!**\n\n✅ Deleted ${deletedCount} user progress file(s)\n📌 Kept the most recently used one`,
@@ -177,7 +178,7 @@ export function createBot(): TelegramBot {
             // Ignore
           }
           // Get current user folder for category selection
-          const progress = getUserProgress(userId);
+          const progress = await getUserProgress(userId);
           const userFolder = progress?.folder || 'basic';
           await bot.sendMessage(
             chatId,

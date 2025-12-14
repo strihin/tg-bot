@@ -1,6 +1,7 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { getSentenceByIndex, getTotalSentences } from '../../data/loader';
-import { getUserProgress, saveUserProgress, initializeUserProgress } from '../../data/progress';
+import { getUserProgress, saveUserProgress } from '../../db/mongo';
+import { initializeUserProgress } from '../../data/progress';
 import { getTranslation, getLanguageName, getLanguageEmoji } from '../../utils/translation';
 import { lessonKeyboards } from '../keyboards';
 
@@ -23,7 +24,7 @@ export async function handleStartLessonButton(
     }
 
     // Load user progress or initialize with selected category
-    let progress = getUserProgress(userId);
+    let progress = await getUserProgress(userId);
     if (!progress) {
       // New user: need to have folder already selected, otherwise default to basic
       // But ideally this shouldn't happen - user should select folder first
@@ -100,7 +101,7 @@ export async function handleLessonStart(
   const chatId = msg.chat.id;
 
   // Load user progress or initialize
-  let progress = getUserProgress(userId);
+  let progress = await getUserProgress(userId);
   if (!progress) {
     const category = 'greetings';
     progress = initializeUserProgress(userId, category);
@@ -130,7 +131,7 @@ export async function handleShowTranslation(
 
   if (!chatId || !messageId) return;
 
-  const progress = getUserProgress(userId);
+  const progress = await getUserProgress(userId);
   if (!progress) return;
 
   const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
@@ -199,7 +200,7 @@ export async function handleNext(
 
   if (!chatId || !messageId) return;
 
-  const progress = getUserProgress(userId);
+  const progress = await getUserProgress(userId);
   if (!progress) return;
 
   const totalSentences = getTotalSentences(progress.category, progress.folder);
@@ -253,7 +254,7 @@ export async function handlePrevious(
 
   if (!chatId || !messageId) return;
 
-  const progress = getUserProgress(userId);
+  const progress = await getUserProgress(userId);
   if (!progress) return;
 
   const totalSentences = getTotalSentences(progress.category, progress.folder);

@@ -1,5 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { changeTargetLanguage } from '../../data/progress';
+import { getUserProgress, saveUserProgress } from '../../db/mongo';
+import { initializeUserProgress } from '../../data/progress';
 import { getLanguageName, getLanguageEmoji } from '../../utils/translation';
 import { getCategoryKeyboard } from './category';
 import { lessonKeyboards } from '../keyboards';
@@ -25,7 +26,13 @@ export async function handleSelectTargetLanguage(
 
     // Save target language preference
     const userId = callbackQuery.from.id;
-    changeTargetLanguage(userId, languageTo);
+    let progress = await getUserProgress(userId);
+    if (!progress) {
+      progress = initializeUserProgress(userId, 'greetings', languageTo, 'basic');
+    } else {
+      progress.languageTo = languageTo;
+    }
+    await saveUserProgress(progress);
 
     const langEmoji = getLanguageEmoji(languageTo);
 

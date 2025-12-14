@@ -1,5 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { getUserProgress, saveUserProgress, initializeUserProgress } from '../../data/progress';
+import { getUserProgress, saveUserProgress } from '../../db/mongo';
+import { initializeUserProgress } from '../../data/progress';
 import { LEVELS } from '../../constants';
 import { FolderType } from '../../types';
 import { getCategoryKeyboard } from './category';
@@ -24,14 +25,14 @@ export async function handleSelectLevel(
     const folder = data.replace('folder_', '') as FolderType;
 
     // Update or create user progress with selected folder
-    let progress = getUserProgress(userId);
+    let progress = await getUserProgress(userId);
     if (progress) {
       progress.folder = folder;
     } else {
       // Initialize progress if new user selects folder
       progress = initializeUserProgress(userId, 'greetings', 'eng', folder);
     }
-    saveUserProgress(progress);
+    await saveUserProgress(progress);
 
     const folderInfo = LEVELS[folder];
 
