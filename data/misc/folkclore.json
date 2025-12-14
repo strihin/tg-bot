@@ -1,0 +1,138 @@
+{
+  "title": "Фольклорные и традиционные выражения",
+  "description": "Выражения из нестинарства, хоро, свадеб, кукери и других болгарских традиций.",
+  "items": [
+    {
+      "bg": "На хоро се играе.",
+      "eng": "We're dancing the horo.",
+      "ru": "Играем хоро.",
+      "ua": "Граємо хоро.",
+      "source": "folklore",
+      "tag": "dance",
+      "ruleEng": "Horo – traditional circle dance, verb 'играя' used for dancing folk dances.",
+      "ruleRu": "Хоро – традиционный круговой танец, глагол 'играя' для народных танцев.",
+      "ruleUA": "Хоро – традиційний круговий танець, дієслово 'играя' для народних танців."
+    },
+    {
+      "bg": "Нестинарите ходят по жарава.",
+      "eng": "The nestinari walk on embers.",
+      "ru": "Нестинары ходят по углям.",
+      "ua": "Нестінари ходять по жару.",
+      "source": "folklore",
+      "tag": "tradition",
+      "ruleEng": "Ancient Thracian fire-walking ritual still practiced in Strandzha.",
+      "ruleRu": "Древний фракийский ритуал хождения по огню, сохранившийся в Страндже.",
+      "ruleUA": "Давній фракійський ритуал ходіння по вогню, що зберігся в Странджі."
+    },
+    {
+      "bg": "Кукерите гонят злите духове.",
+      "eng": "The kukeri chase away evil spirits.",
+      "ru": "Кукеры отгоняют злых духов.",
+      "ua": "Кукері відганяють злих духів.",
+      "source": "folklore",
+      "tag": "tradition",
+      "ruleEng": "Masked men with bells in Surva festival for fertility and protection.",
+      "ruleRu": "Маскированные мужчины с колокольцами на Сурва для плодородия и защиты.",
+      "ruleUA": "Масковані чоловіки з дзвіночками на Сурва для родючості та захисту."
+    },
+    {
+      "bg": "Младоженците са под венчило.",
+      "eng": "The newlyweds are under the wedding crown.",
+      "ru": "Молодожёны под венцом.",
+      "ua": "Молодята під вінцем.",
+      "source": "wedding",
+      "tag": "folklore",
+      "ruleEng": "Orthodox wedding ritual with crowns held over heads.",
+      "ruleRu": "Православный свадебный обряд с венцами над головами.",
+      "ruleUA": "Православний весільний обряд з вінцями над головами."
+    },
+    {
+      "bg": "Булката хвърля букета.",
+      "eng": "The bride throws the bouquet.",
+      "ru": "Невеста бросает букет.",
+      "ua": "Наречена кидає букет.",
+      "source": "wedding",
+      "tag": "modern-folklore",
+      "ruleEng": "Modern tradition mixed with Western influence.",
+      "ruleRu": "Современная традиция с западным влиянием.",
+      "ruleUA": "Сучасна традиція із західним впливом."
+    },
+    {
+      "bg": "Кумът откупува булката.",
+      "eng": "The best man 'buys' the bride.",
+      "ru": "Кум выкупает невесту.",
+      "ua": "Кум викуповує наречену.",
+      "source": "wedding",
+      "tag": "folklore",
+      "ruleEng": "Traditional ransom game at Bulgarian weddings.",
+      "ruleRu": "Традиционная игра с выкупом невесты на болгарских свадьбах.",
+      "ruleUA": "Традиційна гра з викупом нареченої на болгарських весіллях."
+    },
+    {
+      "bg": "На Лазаровден лазарки пеят.",
+      "eng": "On Lazarovden the lazar girls sing.",
+      "ru": "На Лазаров день лазарки поют.",
+      "ua": "На Лазарів день лазарки співають.",
+      "source": "folklore",
+      "tag": "spring",
+      "ruleEng": "Girls in traditional costumes sing for health and marriage.",
+      "ruleRu": "Девушки в традиционных костюмах поют о здоровье и замужестве.",
+      "ruleUA": "Дівчата в традиційних костюмах співають про здоров'я та шлюб."
+    },
+    {
+      "bg": "Мартеницата се връзва на китка.",
+      "eng": "The martenitsa is tied on the wrist.",
+      "ru": "Мартеницу повязывают на запястье.",
+      "ua": "Мартеницю зав'язують на зап'ясті.",
+      "source": "tradition",
+      "tag": "baba-marta",
+      "ruleEng": "Red-white amulet worn until seeing stork or blooming tree.",
+      "ruleRu": "Красно-белый амулет носят до появления аиста или цветущего дерева.",
+      "ruleUA": "Червонобілий амулет носять до появи лелеки чи квітучого дерева."
+    },
+    {
+      "bg": "На Баба Марта носим мартеница.",
+      "eng": "On Baba Marta we wear martenitsa.",
+      "ru": "На Баба Марту носим мартеницу.",
+      "ua": "На Баба Марту носимо мартеницю.",
+      "source": "tradition",
+      "tag": "spring",
+      "ruleEng": "Symbol of health and spring arrival on March 1.",
+      "ruleRu": "Символ здоровья и прихода весны 1 марта.",
+      "ruleUA": "Символ здоров'я та приходу весни 1 березня."
+    },
+    {
+      "bg": "Сурвакарите чукат за здраве.",
+      "eng": "The survakari tap for health.",
+      "ru": "Сурвакари постукивают за здоровье.",
+      "ua": "Сурвакарі постукують за здоров'я.",
+      "source": "new-year",
+      "tag": "folklore",
+      "ruleEng": "Children with decorated cornel sticks wish health on New Year.",
+      "ruleRu": "Дети с украшенными кизиловыми палочками желают здоровья на Новый год.",
+      "ruleUA": "Діти з прикрашеними кизиловими паличками бажають здоров'я на Новий рік."
+    },
+    {
+      "bg": "Честита Баба Марта!",
+      "eng": "Happy Baba Marta!",
+      "ru": "С праздником Баба Марта!",
+      "ua": "З святом Баба Марта!",
+      "source": "greeting",
+      "tag": "spring",
+      "ruleEng": "Greeting on March 1 when giving martenitsa.",
+      "ruleRu": "Приветствие 1 марта при дарении мартеницы.",
+      "ruleUA": "Привітання 1 березня при даруванні мартениці."
+    },
+    {
+      "bg": "На Тодоровден се язди коне.",
+      "eng": "On Todorovden horses are raced.",
+      "ru": "На Тодоров день скачки на лошадях.",
+      "ua": "На Тодорів день перегони на конях.",
+      "source": "folklore",
+      "tag": "horses",
+      "ruleEng": "Traditional horse races (kushta) in spring.",
+      "ruleRu": "Традиционные конные скачки (кушта) весной.",
+      "ruleUA": "Традиційні кінні перегони (кушта) навесні."
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "title": "Политический и социальный сленг",
+  "description": "Выражения из 90-х, перехода и современной болгарской реальности.",
+  "items": [
+    {
+      "bg": "Мутри.",
+      "eng": "Thugs / mafia-like businessmen (90s).",
+      "ru": "Мутры / бандиты в костюмах (90-е).",
+      "ua": "Мутри / бандити в костюмах (90-ті).",
+      "source": "90s",
+      "tag": "social",
+      "ruleEng": "Term for violent entrepreneurs of the chaotic 90s transition period.",
+      "ruleRu": "Термин для насильственных предпринимателей хаотичного переходного периода 90-х.",
+      "ruleUA": "Термін для насильницьких підприємців хаотичного перехідного періоду 90-х."
+    },
+    {
+      "bg": "Преходът.",
+      "eng": "The Transition (post-communist period).",
+      "ru": "Переход (посткоммунистический период).",
+      "ua": "Перехід (посткомуністичний період).",
+      "source": "history",
+      "tag": "social",
+      "ruleEng": "Always with definite article – refers to specific historical era.",
+      "ruleRu": "Всегда с артиклем – конкретная историческая эпоха.",
+      "ruleUA": "Завжди з артиклем – конкретна історична епоха."
+    },
+    {
+      "bg": "Както винаги.",
+      "eng": "As always (sarcastically about unchanging problems).",
+      "ru": "Как всегда (саркастически о неизменных проблемах).",
+      "ua": "Як завжди (саркастично про незмінні проблеми).",
+      "source": "modern",
+      "tag": "sarcasm",
+      "ruleEng": "National catchphrase for recurring failures or corruption.",
+      "ruleRu": "Национальная крылатая фраза о повторяющихся неудачах или коррупции.",
+      "ruleUA": "Національна крилата фраза про повторювані невдачі чи корупцію."
+    },
+    {
+      "bg": "В България може.",
+      "eng": "In Bulgaria it's possible (anything bad).",
+      "ru": "В Болгарии возможно (любое безобразие).",
+      "ua": "В Болгарії можливо (будь-яке безчинство).",
+      "source": "modern",
+      "tag": "sarcasm",
+      "ruleEng": "Ironic comment on absurdity or corruption.",
+      "ruleRu": "Ироничный комментарий об абсурде или коррупции.",
+      "ruleUA": "Іронічний коментар про абсурд чи корупцію."
+    },
+    {
+      "bg": "Олигарх.",
+      "eng": "Oligarch.",
+      "ru": "Олигарх.",
+      "ua": "Олігарх.",
+      "source": "politics",
+      "tag": "social",
+      "ruleEng": "Used similarly to Russian context for powerful businessmen.",
+      "ruleRu": "Используется аналогично русскому контексту для влиятельных бизнесменов.",
+      "ruleUA": "Використовується аналогічно українському контексту для впливових бізнесменів."
+    },
+    {
+      "bg": "Каналджия.",
+      "eng": "People smuggler.",
+      "ru": "Каналджия / перевозчик мигрантов.",
+      "ua": "Каналджія / перевізник мігрантів.",
+      "source": "modern",
+      "tag": "social",
+      "ruleEng": "Term from migrant crisis for human traffickers.",
+      "ruleRu": "Термин из миграционного кризиса для перевозчиков людей.",
+      "ruleUA": "Термін з міграційної кризи для перевізників людей."
+    },
+    {
+      "bg": "Системата.",
+      "eng": "The System (corrupt establishment).",
+      "ru": "Система (коррумпированный истеблишмент).",
+      "ua": "Система (корумпований істеблішмент).",
+      "source": "politics",
+      "tag": "social",
+      "ruleEng": "Personified corrupt power structure.",
+      "ruleRu": "Персонифицированная коррумпированная структура власти.",
+      "ruleUA": "Персоніфікована корумпована структура влади."
+    },
+    {
+      "bg": "Протестър.",
+      "eng": "Protester (often derogatory).",
+      "ru": "Протестующий (часто с негативным оттенком).",
+      "ua": "Протестувальник (часто з негативним відтінком).",
+      "source": "politics",
+      "tag": "social",
+      "ruleEng": "Term gained popularity during frequent protests.",
+      "ruleRu": "Термин стал популярен во время частых протестов.",
+      "ruleUA": "Термін став популярним під час частих протестів."
+    },
+    {
+      "bg": "Фототапет.",
+      "eng": "Wallpaper (inactive politician).",
+      "ru": "Фотообои (бездействующий политик).",
+      "ua": "Фотообої (бездіяльний політик).",
+      "source": "politics",
+      "tag": "sarcasm",
+      "ruleEng": "Someone who just sits there looking pretty but does nothing.",
+      "ruleRu": "Кто-то, кто просто сидит и красиво выглядит, ничего не делая.",
+      "ruleUA": "Хтось, хто просто сидить і гарно виглядає, нічого не роблячи."
+    },
+    {
+      "bg": "Държавата я няма.",
+      "eng": "The state is absent / doesn't exist.",
+      "ru": "Государства как бы нет.",
+      "ua": "Держави наче немає.",
+      "source": "social",
+      "tag": "sarcasm",
+      "ruleEng": "Common complaint about lack of governance or help.",
+      "ruleRu": "Частая жалоба на отсутствие государства или помощи.",
+      "ruleUA": "Часта скарга на відсутність держави чи допомоги."
+    },
+    {
+      "bg": "Всичко е под контрол.",
+      "eng": "Everything is under control (sarcastically).",
+      "ru": "Всё под контролем (саркастически).",
+      "ua": "Все під контролем (саркастично).",
+      "source": "politics",
+      "tag": "sarcasm",
+      "ruleEng": "Ironic phrase when everything is clearly not under control.",
+      "ruleRu": "Ироничная фраза, когда явно ничего не под контролем.",
+      "ruleUA": "Іронічна фраза, коли явно нічого не під контролем."
+    },
+    {
+      "bg": "Това е България.",
+      "eng": "This is Bulgaria (resigned explanation).",
+      "ru": "Это Болгария (смиренное объяснение).",
+      "ua": "Це Болгарія (примирене пояснення).",
+      "source": "social",
+      "tag": "resignation",
+      "ruleEng": "Used when something absurd or unfair happens.",
+      "ruleRu": "Говорится, когда происходит что-то абсурдное или несправедливое.",
+      "ruleUA": "Говориться, коли трапляється щось абсурдне чи несправедливе."
+    }
+  ]
+}

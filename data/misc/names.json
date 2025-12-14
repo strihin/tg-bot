@@ -1,0 +1,138 @@
+{
+  "title": "Уменьшительные и ласковые формы имён",
+  "description": "Как болгары ласково называют близких. Показывает богатство суффиксов.",
+  "items": [
+    {
+      "bg": "Иван → Иво, Ванчо, Ванката",
+      "eng": "Ivan → Ivo, Vancho, Vankata",
+      "ru": "Иван → Иво, Ванчо, Ванката",
+      "ua": "Іван → Іво, Ванчо, Ванката",
+      "source": "names",
+      "tag": "diminutive",
+      "ruleEng": "Multiple diminutives possible, -ката adds definite affection.",
+      "ruleRu": "Возможно несколько уменьшительных, -ката добавляет определённость и ласку.",
+      "ruleUA": "Можливо кілька зменшувальних, -ката додає визначеність і ласку."
+    },
+    {
+      "bg": "Мария → Маца, Мими, Марийка",
+      "eng": "Maria → Matsa, Mimi, Mariyka",
+      "ru": "Мария → Маца, Мими, Марийка",
+      "ua": "Марія → Маца, Мімі, Марійка",
+      "source": "names",
+      "tag": "diminutive",
+      "ruleEng": "Маца very typical Bulgarian diminutive.",
+      "ruleRu": "Маца – очень типичное болгарское уменьшительное.",
+      "ruleUA": "Маца – дуже типове болгарське зменшувальне."
+    },
+    {
+      "bg": "Петър → Пепи, Петя, Петьо",
+      "eng": "Peter → Pepi, Petya, Petyo",
+      "ru": "Пётр → Пепи, Петя, Петьо",
+      "ua": "Петро → Пепі, Петя, Петьо",
+      "source": "names",
+      "tag": "diminutive",
+      "ruleEng": "Пепи especially popular for boys.",
+      "ruleRu": "Пепи особенно популярно для мальчиков.",
+      "ruleUA": "Пепі особливо популярне для хлопчиків."
+    },
+    {
+      "bg": "Елена → Лени, Ели, Ленчето",
+      "eng": "Elena → Leni, Eli, Lencheto",
+      "ru": "Елена → Лени, Эли, Ленчето",
+      "ua": "Олена → Лені, Елі, Ленчето",
+      "source": "names",
+      "tag": "diminutive",
+      "ruleEng": "-чето very tender diminutive suffix.",
+      "ruleRu": "-чето очень нежный уменьшительный суффикс.",
+      "ruleUA": "-чето дуже ніжний зменшувальний суфікс."
+    },
+    {
+      "bg": "Георги → Гошо, Жоро, Гого",
+      "eng": "Georgi → Gosho, Zhoro, Gogo",
+      "ru": "Георгий → Гошо, Жоро, Гого",
+      "ua": "Георгій → Гошо, Жоро, Гого",
+      "source": "names",
+      "tag": "diminutive",
+      "ruleEng": "Гошо extremely common informal form.",
+      "ruleRu": "Гошо – чрезвычайно распространённая неформальная форма.",
+      "ruleUA": "Гошо – надзвичайно поширена неформальна форма."
+    },
+    {
+      "bg": "Димитър → Митьо, Митко, Дидо",
+      "eng": "Dimitar → Mityo, Mitko, Dido",
+      "ru": "Дмитрий → Митьо, Митко, Дидо",
+      "ua": "Дмитро → Мітьо, Мітко, Дідо",
+      "source": "names",
+      "tag": "diminutive",
+      "ruleEng": "Митко most common everyday form.",
+      "ruleRu": "Митко – самая распространённая повседневная форма.",
+      "ruleUA": "Мітко – найпоширеніша повсякденна форма."
+    },
+    {
+      "bg": "Анастасия → Таси, Нанси, Стаси",
+      "eng": "Anastasia → Tasi, Nansi, Stasi",
+      "ru": "Анастасия → Таси, Нанси, Стаси",
+      "ua": "Анастасія → Тасі, Нансі, Стасі",
+      "source": "names",
+      "tag": "diminutive",
+      "ruleEng": "Modern Nansi from English influence.",
+      "ruleRu": "Современное Нанси под влиянием английского.",
+      "ruleUA": "Сучасне Нансі під впливом англійської."
+    },
+    {
+      "bg": "Никола → Ники, Кольо, Нико",
+      "eng": "Nikola → Niki, Kolyo, Niko",
+      "ru": "Николай → Ники, Кольо, Нико",
+      "ua": "Микола → Ніки, Кольо, Ніко",
+      "source": "names",
+      "tag": "diminutive",
+      "ruleEng": "Кольо traditional, Ники modern.",
+      "ruleRu": "Кольо традиционное, Ники современное.",
+      "ruleUA": "Кольо традиційне, Ніки сучасне."
+    },
+    {
+      "bg": "София → Софи, Фифи, Софка",
+      "eng": "Sofia → Sofi, Fifi, Sofka",
+      "ru": "София → Софи, Фифи, Софка",
+      "ua": "Софія → Софі, Фіфі, Софка",
+      "source": "names",
+      "tag": "diminutive",
+      "ruleEng": "Фифи very playful and affectionate.",
+      "ruleRu": "Фифи очень игривое и ласковое.",
+      "ruleUA": "Фіфі дуже грайливе й ласкаве."
+    },
+    {
+      "bg": "Александър → Сашо, Алек, Сандо",
+      "eng": "Alexander → Sasho, Alek, Sando",
+      "ru": "Александр → Сашо, Алек, Сандо",
+      "ua": "Олександр → Сашо, Алек, Сандо",
+      "source": "names",
+      "tag": "diminutive",
+      "ruleEng": "Сашо most typical Bulgarian form.",
+      "ruleRu": "Сашо – самая типичная болгарская форма.",
+      "ruleUA": "Сашо – найтиповіша болгарська форма."
+    },
+    {
+      "bg": "Кристина → Криси, Тина, Кики",
+      "eng": "Kristina → Krisi, Tina, Kiki",
+      "ru": "Кристина → Криси, Тина, Кики",
+      "ua": "Христина → Крисі, Тіна, Кікі",
+      "source": "names",
+      "tag": "diminutive",
+      "ruleEng": "Multiple modern diminutives common.",
+      "ruleRu": "Много современных уменьшительных в ходу.",
+      "ruleUA": "Багато сучасних зменшувальних у вжитку."
+    },
+    {
+      "bg": "Стефан → Стефи, Фани, Цеко",
+      "eng": "Stefan → Stefi, Fani, Tseko",
+      "ru": "Стефан → Стефи, Фани, Цеко",
+      "ua": "Стефан → Стефі, Фані, Цеко",
+      "source": "names",
+      "tag": "diminutive",
+      "ruleEng": "Цеко traditional rural form.",
+      "ruleRu": "Цеко – традиционная сельская форма.",
+      "ruleUA": "Цеко – традиційна сільська форма."
+    }
+  ]
+}

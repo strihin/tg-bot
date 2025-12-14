@@ -1,0 +1,138 @@
+{
+  "title": "Любовные и флиртовые выражения",
+  "description": "От милых комплиментов до прямых подкатов. Показывает использование уменьшительных форм и артиклей в романтическом контексте.",
+  "items": [
+    {
+      "bg": "Обичам те.",
+      "eng": "I love you.",
+      "ru": "Я люблю тебя.",
+      "ua": "Я люблю тебе.",
+      "source": "love",
+      "tag": "romantic",
+      "ruleEng": "Direct 'Обичам те' – exactly like Russian/Ukrainian, no extra words needed.",
+      "ruleRu": "Прямо 'Обичам те' – идентично русскому и украинскому.",
+      "ruleUA": "Прямо 'Обичам те' – ідентично українському."
+    },
+    {
+      "bg": "Ти си красива.",
+      "eng": "You are beautiful. (to a woman)",
+      "ru": "Ты красивая.",
+      "ua": "Ти красива.",
+      "source": "compliment",
+      "tag": "romantic",
+      "ruleEng": "Verb 'си' (2nd person of 'съм'), definite article not used with predicate adjectives.",
+      "ruleRu": "Глагол 'си' (2 л. от 'съм'), артикль не ставится при сказуемом-прилагательном.",
+      "ruleUA": "Дієслово 'си' (2 ос. від 'съм'), артикль не ставиться при присудку-прикметнику."
+    },
+    {
+      "bg": "Много си сладка.",
+      "eng": "You are very sweet. (to a woman)",
+      "ru": "Ты очень милая.",
+      "ua": "Ти дуже мила.",
+      "source": "compliment",
+      "tag": "romantic",
+      "ruleEng": "'Сладка' literally 'sweet', commonly used for personality.",
+      "ruleRu": "'Сладка' буквально 'сладкая', часто о характере.",
+      "ruleUA": "'Сладка' буквально 'солодка', часто про характер."
+    },
+    {
+      "bg": "Искам те.",
+      "eng": "I want you.",
+      "ru": "Я хочу тебя.",
+      "ua": "Я хочу тебе.",
+      "source": "desire",
+      "tag": "flirt-spicy",
+      "ruleEng": "Direct expression of physical desire, same structure as Russian/Ukrainian.",
+      "ruleRu": "Прямое выражение физического желания, структура как в русском.",
+      "ruleUA": "Прямий вираз фізичного бажання, структура як в українській."
+    },
+    {
+      "bg": "Ти си моята.",
+      "eng": "You are mine. (to a woman)",
+      "ru": "Ты моя.",
+      "ua": "Ти моя.",
+      "source": "possession",
+      "tag": "romantic",
+      "ruleEng": "Possessive with definite article -та on possessive pronoun.",
+      "ruleRu": "Притяжательное с артиклем -та на притяжательном местоимении.",
+      "ruleUA": "Присвійне з артиклем -та на присвійному займеннику."
+    },
+    {
+      "bg": "Липсваш ми.",
+      "eng": "I miss you.",
+      "ru": "Ты мне не хватишь / Я скучаю по тебе.",
+      "ua": "Ти мені бракуєш / Я сумую за тобою.",
+      "source": "longing",
+      "tag": "romantic",
+      "ruleEng": "Dative 'ми' like Russian 'мне', verb 'липсвам' = 'to be missing to someone'.",
+      "ruleRu": "Дательный 'ми' как русское 'мне', глагол 'липсвам' = 'недоставать кому-то'.",
+      "ruleUA": "Давальний 'ми' як українське 'мені', дієслово 'липсвам' = 'бракувати комусь'."
+    },
+    {
+      "bg": "Целуни ме.",
+      "eng": "Kiss me.",
+      "ru": "Поцелуй меня.",
+      "ua": "Поцілуй мене.",
+      "source": "flirt",
+      "tag": "romantic",
+      "ruleEng": "Imperative form very close to Russian/Ukrainian.",
+      "ruleRu": "Повелительная форма почти идентична русскому и украинскому.",
+      "ruleUA": "Наказовий спосіб майже ідентичний українському."
+    },
+    {
+      "bg": "Ти си секси.",
+      "eng": "You are sexy.",
+      "ru": "Ты секси.",
+      "ua": "Ти сексі.",
+      "source": "compliment",
+      "tag": "flirt-spicy",
+      "ruleEng": "Direct borrowing 'секси', used unchanged.",
+      "ruleRu": "Прямое заимствование 'секси', используется без изменений.",
+      "ruleUA": "Пряме запозичення 'секси', використовується без змін."
+    },
+    {
+      "bg": "Харесваш ми много.",
+      "eng": "I like you a lot.",
+      "ru": "Ты мне очень нравишься.",
+      "ua": "Ти мені дуже подобаєшся.",
+      "source": "flirt",
+      "tag": "romantic",
+      "ruleEng": "Dative construction 'харесваш ми' = 'you please me'.",
+      "ruleRu": "Дательный оборот 'харесваш ми' = 'ты мне нравишься'.",
+      "ruleUA": "Давальний зворот 'харесваш ми' = 'ти мені подобаєшся'."
+    },
+    {
+      "bg": "Искаш ли да излезем?",
+      "eng": "Do you want to go out?",
+      "ru": "Хочешь сходить куда-нибудь?",
+      "ua": "Хочеш кудись піти?",
+      "source": "date",
+      "tag": "flirt",
+      "ruleEng": "Classic invitation to a date with question particle 'ли'.",
+      "ruleRu": "Классическое приглашение на свидание с частицей 'ли'.",
+      "ruleUA": "Класичне запрошення на побачення з часткою 'ли'."
+    },
+    {
+      "bg": "Ти ме караш да се усмихвам.",
+      "eng": "You make me smile.",
+      "ru": "Ты заставляешь меня улыбаться.",
+      "ua": "Ти змушуєш мене посміхатися.",
+      "source": "love",
+      "tag": "romantic",
+      "ruleEng": "Causative construction 'карам да' = 'make to'.",
+      "ruleRu": "Причинная конструкция 'карам да' = 'заставлять'.",
+      "ruleUA": "Причинна конструкція 'карам да' = 'змушувати'."
+    },
+    {
+      "bg": "Сърцето ми бие за теб.",
+      "eng": "My heart beats for you.",
+      "ru": "Моё сердце бьётся для тебя.",
+      "ua": "Моє серце б'ється для тебе.",
+      "source": "love",
+      "tag": "romantic",
+      "ruleEng": "Almost identical to Russian/Ukrainian romantic cliché.",
+      "ruleRu": "Почти идентично русской/украинской романтической клише.",
+      "ruleUA": "Майже ідентично українській романтичній кліше."
+    }
+  ]
+}

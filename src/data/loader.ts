@@ -1,57 +1,49 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { Sentence } from '../types';
+import { Sentence, FolderType } from '../types';
 
 // Cache for loaded sentences
 const sentenceCache: Record<string, Sentence[]> = {};
 
 /**
- * Load sentences from JSON file by category and level
- * Fallback chain: level-specific → middle → basic → root
+ * Load sentences from JSON file by category and folder
+ * Each folder is independent: basic, middle, middle-slavic, misc, language-comparison, expressions
+ * Path: /data/{folder}/{category}.json
  */
-export function loadSentences(category: string, level: 'basic' | 'middle' | 'middle-slavic' = 'basic'): Sentence[] {
-  const cacheKey = `${level}:${category}`;
+export function loadSentences(category: string, folder: FolderType = 'basic'): Sentence[] {
+  const cacheKey = `${folder}:${category}`;
   
   if (sentenceCache[cacheKey]) {
     return sentenceCache[cacheKey];
   }
 
-  let filePath: string | null = null;
+  const filePath = path.join(__dirname, `../../data/${folder}`, `${category}.json`);
 
-  // Try level-specific directory first
-  const tryPaths = [
-    path.join(__dirname, '../../data', level, `${category}.json`),
-  ];
-
-  // For middle-slavic, try fallback to middle, then basic
-  if (level === 'middle-slavic') {
-    tryPaths.push(path.join(__dirname, '../../data/middle', `${category}.json`));
-    tryPaths.push(path.join(__dirname, '../../data/basic', `${category}.json`));
-  }
-
-  // For middle, try fallback to basic
-  if (level === 'middle') {
-    tryPaths.push(path.join(__dirname, '../../data/basic', `${category}.json`));
-  }
-
-  // Always try root for backward compatibility
-  tryPaths.push(path.join(__dirname, '../../data', `${category}.json`));
-
-  // Find first existing file
-  for (const tryPath of tryPaths) {
-    if (fs.existsSync(tryPath)) {
-      filePath = tryPath;
-      break;
-    }
-  }
-
-  if (!filePath) {
-    console.warn(`⚠️  Sentences file not found for ${category} at level ${level}`);
+  if (!fs.existsSync(filePath)) {
+    console.warn(`⚠️  File not found: ${filePath}`);
     return [];
   }
 
   const content = fs.readFileSync(filePath, 'utf-8');
-  const sentences = JSON.parse(content) as Sentence[];
+  let sentences: Sentence[];
+  
+  try {
+    const parsed = JSON.parse(content);
+    
+    // Handle both array format (core) and object with items format (misc, language-comparison, expressions)
+    if (Array.isArray(parsed)) {
+      sentences = parsed;
+    } else if (parsed.items && Array.isArray(parsed.items)) {
+      sentences = parsed.items;
+    } else {
+      console.warn(`⚠️  Unexpected JSON structure in ${filePath}`);
+      return [];
+    }
+  } catch (error) {
+    console.warn(`⚠️  Error parsing JSON in ${filePath}:`, error);
+    return [];
+  }
+  
   sentenceCache[cacheKey] = sentences;
 
   return sentences;
@@ -60,8 +52,8 @@ export function loadSentences(category: string, level: 'basic' | 'middle' | 'mid
 /**
  * Get sentence by index from category
  */
-export function getSentenceByIndex(category: string, index: number, level: 'basic' | 'middle' | 'middle-slavic' = 'basic'): Sentence | null {
-  const sentences = loadSentences(category, level);
+export function getSentenceByIndex(category: string, index: number, folder: FolderType = 'basic'): Sentence | null {
+  const sentences = loadSentences(category, folder);
   if (index >= 0 && index < sentences.length) {
     return sentences[index];
   }
@@ -71,31 +63,24 @@ export function getSentenceByIndex(category: string, index: number, level: 'basi
 /**
  * Get total sentence count for category
  */
-export function getTotalSentences(category: string, level: 'basic' | 'middle' | 'middle-slavic' = 'basic'): number {
-  const sentences = loadSentences(category, level);
+export function getTotalSentences(category: string, folder: FolderType = 'basic'): number {
+  const sentences = loadSentences(category, folder);
   return sentences.length;
 }
 
 /**
- * Get available categories for a specific level (strictly, no fallbacks)
+ * Get available categories for a specific folder
+ * Each folder is independent: /data/{folder}/
  */
-export function getAvailableCategories(level: 'basic' | 'middle' | 'middle-slavic' = 'basic'): string[] {
-  let levelDir: string;
-  
-  if (level === 'middle-slavic') {
-    levelDir = path.join(__dirname, '../../data/middle-slavic');
-  } else if (level === 'middle') {
-    levelDir = path.join(__dirname, '../../data/middle');
-  } else {
-    levelDir = path.join(__dirname, '../../data/basic');
-  }
+export function getAvailableCategories(folder: FolderType = 'basic'): string[] {
+  const folderPath = path.join(__dirname, `../../data/${folder}`);
 
-  if (!fs.existsSync(levelDir)) {
-    console.warn(`⚠️  Directory not found: ${levelDir}`);
+  if (!fs.existsSync(folderPath)) {
+    console.warn(`⚠️  Folder not found: ${folderPath}`);
     return [];
   }
 
-  const files = fs.readdirSync(levelDir);
+  const files = fs.readdirSync(folderPath);
   return files
     .filter((file) => file.endsWith('.json') && file !== '.DS_Store')
     .map((file) => file.replace('.json', ''))

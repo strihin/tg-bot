@@ -1,0 +1,138 @@
+{
+  "title": "Болгарская кухня и застольные выражения",
+  "description": "Типичные блюда, продукты и фразы за столом. Отлично показывает артикли и отсутствие падежей.",
+  "items": [
+    {
+      "bg": "Шопската салата е най-вкусната.",
+      "eng": "Shopska salad is the tastiest.",
+      "ru": "Шопский салат самый вкусный.",
+      "ua": "Шопський салат найсмачніший.",
+      "source": "food",
+      "tag": "dish",
+      "ruleEng": "Definite article on adjective in superlative.",
+      "ruleRu": "Артикль на прилагательном в превосходной степени.",
+      "ruleUA": "Артикль на прикметнику в найвищому ступені."
+    },
+    {
+      "bg": "Сиренето е българско.",
+      "eng": "The sirene (feta-like cheese) is Bulgarian.",
+      "ru": "Сирене болгарское.",
+      "ua": "Сирене болгарське.",
+      "source": "food",
+      "tag": "product",
+      "ruleEng": "Definite article -то even when speaking generally about the type.",
+      "ruleRu": "Артикль -то даже при общем упоминании вида продукта.",
+      "ruleUA": "Артикль -то навіть при загальній згадці виду продукту."
+    },
+    {
+      "bg": "Баницата е топла.",
+      "eng": "The banitsa is warm.",
+      "ru": "Баница тёплая.",
+      "ua": "Баниця тепла.",
+      "source": "food",
+      "tag": "dish",
+      "ruleEng": "Definite article standard when referring to specific food on table.",
+      "ruleRu": "Артикль обязателен при упоминании конкретной еды на столе.",
+      "ruleUA": "Артикль обов'язковий при згадці конкретної їжі на столі."
+    },
+    {
+      "bg": "Яж бавно, че е горещо.",
+      "eng": "Eat slowly, it's hot.",
+      "ru": "Ешь медленно, горячее.",
+      "ua": "Їж повільно, гаряче.",
+      "source": "table",
+      "tag": "advice",
+      "ruleEng": "Imperative 'яж' from 'ям' (to eat).",
+      "ruleRu": "Повелительное 'яж' от 'ям' (есть).",
+      "ruleUA": "Наказовий 'яж' від 'ям' (їсти)."
+    },
+    {
+      "bg": "Да ти е сладко!",
+      "eng": "May it be sweet to you! (bon appétit)",
+      "ru": "Приятного аппетита! (букв. пусть сладко будет)",
+      "ua": "Смачного! (букв. хай солодко буде)",
+      "source": "table",
+      "tag": "wish",
+      "ruleEng": "Traditional Bulgarian equivalent of 'bon appétit'.",
+      "ruleRu": "Традиционный болгарский аналог 'приятного аппетита'.",
+      "ruleUA": "Традиційний болгарський аналог 'смачного'."
+    },
+    {
+      "bg": "Киселото мляко е полезно.",
+      "eng": "Yogurt is healthy.",
+      "ru": "Кислое молоко полезное.",
+      "ua": "Кисле молоко корисне.",
+      "source": "food",
+      "tag": "product",
+      "ruleEng": "Bulgarians claim they invented yogurt ('кисело мляко').",
+      "ruleRu": "Болгары утверждают, что именно они изобрели йогурт ('кисело мляко').",
+      "ruleUA": "Болгари стверджують, що саме вони винайшли йогурт ('кисело мляко')."
+    },
+    {
+      "bg": "Лютеницата е домашна.",
+      "eng": "The lyutenitsa is homemade.",
+      "ru": "Лютеница домашняя.",
+      "ua": "Лютениця домашня.",
+      "source": "food",
+      "tag": "dish",
+      "ruleEng": "Homemade lyutenitsa (pepper-tomato spread) is a point of national pride.",
+      "ruleRu": "Домашняя лютеница – предмет национальной гордости.",
+      "ruleUA": "Домашня лютениця – предмет національної гордості."
+    },
+    {
+      "bg": "Хлябът е пресен.",
+      "eng": "The bread is fresh.",
+      "ru": "Хлеб свежий.",
+      "ua": "Хліб свіжий.",
+      "source": "food",
+      "tag": "product",
+      "ruleEng": "Definite article -ът standard for bread in Bulgarian culture.",
+      "ruleRu": "Артикль -ът обязателен для хлеба в болгарской культуре.",
+      "ruleUA": "Артикль -ът обов'язковий для хліба в болгарській культурі."
+    },
+    {
+      "bg": "Месото е крехко.",
+      "eng": "The meat is tender.",
+      "ru": "Мясо нежное.",
+      "ua": "М'ясо ніжне.",
+      "source": "food",
+      "tag": "dish",
+      "ruleEng": "No case needed despite Russian/Ukrainian accusative.",
+      "ruleRu": "Падеж не нужен, в отличие от русского/украинского винительного.",
+      "ruleUA": "Відмінок не потрібен, на відміну від українського знахідного."
+    },
+    {
+      "bg": "Виното е червено.",
+      "eng": "The wine is red.",
+      "ru": "Вино красное.",
+      "ua": "Вино червоне.",
+      "source": "food",
+      "tag": "drink",
+      "ruleEng": "Definite article even for general type when on table.",
+      "ruleRu": "Артикль даже для общего вида, если вино стоит на столе.",
+      "ruleUA": "Артикль навіть для загального виду, якщо вино стоїть на столі."
+    },
+    {
+      "bg": "Заповядай, сервирай си.",
+      "eng": "Help yourself.",
+      "ru": "Угощайся / накладывай себе.",
+      "ua": "Пригощайся / накладай собі.",
+      "source": "table",
+      "tag": "hospitality",
+      "ruleEng": "'Заповядай' – key word of Bulgarian hospitality.",
+      "ruleRu": "'Заповядай' – ключевое слово болгарского гостеприимства.",
+      "ruleUA": "'Заповядай' – ключове слово болгарської гостинності."
+    },
+    {
+      "bg": "Вкусът е невероятен.",
+      "eng": "The taste is incredible.",
+      "ru": "Вкус невероятный.",
+      "ua": "Смак неймовірний.",
+      "source": "compliment",
+      "tag": "food",
+      "ruleEng": "Definite article on abstract noun 'вкусът'.",
+      "ruleRu": "Артикль на абстрактном существительном 'вкусът'.",
+      "ruleUA": "Артикль на абстрактному іменнику 'вкусът'."
+    }
+  ]
+}

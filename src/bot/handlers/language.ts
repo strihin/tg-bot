@@ -3,6 +3,7 @@ import { changeTargetLanguage } from '../../data/progress';
 import { getLanguageName, getLanguageEmoji } from '../../utils/translation';
 import { getCategoryKeyboard } from './category';
 import { lessonKeyboards } from '../keyboards';
+import { TargetLanguage } from '../../types';
 
 /**
  * Handle target language selection (after source language is fixed to BG)
@@ -20,7 +21,7 @@ export async function handleSelectTargetLanguage(
     if (!chatId) return;
 
     const data = callbackQuery.data || '';
-    const languageTo = data.replace('lang_to_', '') as 'eng' | 'ru' | 'ua';
+    const languageTo = data.replace('lang_to_', '') as TargetLanguage;
 
     // Save target language preference
     const userId = callbackQuery.from.id;

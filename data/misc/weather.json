@@ -1,0 +1,138 @@
+{
+  "title": "Выражения про погоду и природу",
+  "description": "Болгары любят сравнивать погоду с жизнью и людьми.",
+  "items": [
+    {
+      "bg": "Вали като из ведро.",
+      "eng": "It's pouring buckets.",
+      "ru": "Льёт как из ведра.",
+      "ua": "Ллє як із відра.",
+      "source": "weather",
+      "tag": "rain",
+      "ruleEng": "Exact equivalent to Russian/Ukrainian heavy rain expression.",
+      "ruleRu": "Точный эквивалент русской/украинской идиомы о сильном дожде.",
+      "ruleUA": "Точний еквівалент української ідіоми про сильний дощ."
+    },
+    {
+      "bg": "Грее слънчице.",
+      "eng": "The sun is shining warmly.",
+      "ru": "Солнышко греет.",
+      "ua": "Сонечко гріє.",
+      "source": "weather",
+      "tag": "sun",
+      "ruleEng": "Diminutive 'слънчице' very common in pleasant weather talk.",
+      "ruleRu": "Уменьшительное 'слънчице' очень распространено при приятной погоде.",
+      "ruleUA": "Зменшувальне 'слънчице' дуже поширене при приємній погоді."
+    },
+    {
+      "bg": "Времето е кучешко.",
+      "eng": "The weather is dog-like (terrible).",
+      "ru": "Погода собачья.",
+      "ua": "Погода собача.",
+      "source": "weather",
+      "tag": "bad",
+      "ruleEng": "Strong expression for very bad weather.",
+      "ruleRu": "Сильное выражение для очень плохой погоды.",
+      "ruleUA": "Сильний вираз для дуже поганої погоди."
+    },
+    {
+      "bg": "Пролетта дойде.",
+      "eng": "Spring has come.",
+      "ru": "Весна пришла.",
+      "ua": "Весна прийшла.",
+      "source": "season",
+      "tag": "nature",
+      "ruleEng": "Definite article skipped when speaking generally about seasons.",
+      "ruleRu": "Артикль опускается при общем упоминании времён года.",
+      "ruleUA": "Артикль опускається при загальній згадці пір року."
+    },
+    {
+      "bg": "Розите цъфтят.",
+      "eng": "The roses are blooming.",
+      "ru": "Розы цветут.",
+      "ua": "Троянди цвітуть.",
+      "source": "nature",
+      "tag": "flowers",
+      "ruleEng": "Bulgaria is famous for roses – national symbol.",
+      "ruleRu": "Болгария славится розами – национальный символ.",
+      "ruleUA": "Болгарія славиться трояндами – національний символ."
+    },
+    {
+      "bg": "Морето е спокойно.",
+      "eng": "The sea is calm.",
+      "ru": "Море спокойное.",
+      "ua": "Море спокійне.",
+      "source": "nature",
+      "tag": "sea",
+      "ruleEng": "Definite article common when referring to the Black Sea coast.",
+      "ruleRu": "Артикль обычен при упоминании черноморского побережья.",
+      "ruleUA": "Артикль звичайний при згадці чорноморського узбережжя."
+    },
+    {
+      "bg": "Планината е красива.",
+      "eng": "The mountain is beautiful.",
+      "ru": "Гора красивая.",
+      "ua": "Гора красива.",
+      "source": "nature",
+      "tag": "mountain",
+      "ruleEng": "Bulgarians often personify mountains (Rila, Pirin, etc.).",
+      "ruleRu": "Болгары часто персонифицируют горы (Рила, Пирин и т.д.).",
+      "ruleUA": "Болгари часто персоніфікують гори (Рила, Пирин тощо)."
+    },
+    {
+      "bg": "Вятърът духа силно.",
+      "eng": "The wind is blowing strongly.",
+      "ru": "Ветер дует сильно.",
+      "ua": "Вітер дме сильно.",
+      "source": "weather",
+      "tag": "wind",
+      "ruleEng": "No definite article needed for general weather elements.",
+      "ruleRu": "Артикль не нужен для общих погодных элементов.",
+      "ruleUA": "Артикль не потрібен для загальних погодних елементів."
+    },
+    {
+      "bg": "Сняг вали.",
+      "eng": "Snow is falling.",
+      "ru": "Снег идёт.",
+      "ua": "Сніг іде.",
+      "source": "weather",
+      "tag": "snow",
+      "ruleEng": "Verb 'вали' used for both rain and snow in heavy amounts.",
+      "ruleRu": "Глагол 'вали' используется и для дождя, и для снега в большом количестве.",
+      "ruleUA": "Дієслово 'вали' використовується і для дощу, і для снігу у великій кількості."
+    },
+    {
+      "bg": "Небо е синьо.",
+      "eng": "The sky is blue.",
+      "ru": "Небо синее.",
+      "ua": "Небо синє.",
+      "source": "weather",
+      "tag": "sky",
+      "ruleEng": "Simple description, article skipped for general sky.",
+      "ruleRu": "Простое описание, артикль опускается для общего неба.",
+      "ruleUA": "Просте описання, артикль опускається для загального неба."
+    },
+    {
+      "bg": "Дъждът спря.",
+      "eng": "The rain stopped.",
+      "ru": "Дождь прекратился.",
+      "ua": "Дощ припинився.",
+      "source": "weather",
+      "tag": "rain",
+      "ruleEng": "Definite article when referring to current specific rain.",
+      "ruleRu": "Артикль при упоминании текущего конкретного дождя.",
+      "ruleUA": "Артикль при згадці поточного конкретного дощу."
+    },
+    {
+      "bg": "Гората шуми.",
+      "eng": "The forest is rustling.",
+      "ru": "Лес шумит.",
+      "ua": "Ліс шумить.",
+      "source": "nature",
+      "tag": "forest",
+      "ruleEng": "Personification common in descriptions of nature.",
+      "ruleRu": "Персонификация обычна в описаниях природы.",
+      "ruleUA": "Персоніфікація звичайна в описах природи."
+    }
+  ]
+}

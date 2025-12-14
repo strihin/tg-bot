@@ -25,11 +25,13 @@ export async function handleStartLessonButton(
     // Load user progress or initialize with selected category
     let progress = getUserProgress(userId);
     if (!progress) {
+      // New user: need to have folder already selected, otherwise default to basic
+      // But ideally this shouldn't happen - user should select folder first
       const selectedCategory = category || 'greetings';
-      progress = initializeUserProgress(userId, selectedCategory, 'eng');
-      console.log(`✅ Initialized progress for user ${userId} with category: ${selectedCategory}`);
+      progress = initializeUserProgress(userId, selectedCategory, 'eng', 'basic');
+      console.log(`✅ Initialized progress for user ${userId} with category: ${selectedCategory}, folder: basic`);
     } else if (category && progress.category !== category) {
-      // Switch to new category
+      // Switch to new category (keep same folder)
       progress.category = category;
       progress.currentIndex = 0;
       console.log(`✅ Switched to category: ${category}`);
@@ -38,7 +40,7 @@ export async function handleStartLessonButton(
     }
 
     // Fetch and display sentence
-    const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.level);
+    const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
     if (!sentence) {
       console.error('No sentence found');
       await bot.sendMessage(chatId, '❌ No sentences available.');
@@ -48,7 +50,7 @@ export async function handleStartLessonButton(
 
     console.log(`📖 Fetched sentence at index ${progress.currentIndex}`);
 
-    const totalSentences = getTotalSentences(progress.category, progress.level);
+    const totalSentences = getTotalSentences(progress.category, progress.folder);
     const langEmoji = getLanguageEmoji(progress.languageTo);
     
     const text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n✨ _Click button to reveal translation_`;
@@ -131,23 +133,23 @@ export async function handleShowTranslation(
   const progress = getUserProgress(userId);
   if (!progress) return;
 
-  const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.level);
+  const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
   if (!sentence) return;
 
-  const totalSentences = getTotalSentences(progress.category, progress.level);
+  const totalSentences = getTotalSentences(progress.category, progress.folder);
   const translation = getTranslation(sentence, progress.languageTo);
   const langEmoji = getLanguageEmoji(progress.languageTo);
   
   let text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n🎯 **${translation}**`;
   
   // Add grammar explanation if available (middle level)
-  if (progress.level === 'middle' && sentence.grammar && sentence.explanation) {
+  if (progress.folder === 'middle' && sentence.grammar && sentence.explanation) {
     const grammarTags = sentence.grammar.map(tag => `#${tag}`).join(' ');
     text += `\n\n📝 **Grammar:** ${grammarTags}\n💡 _${sentence.explanation}_`;
   }
 
   // Add Slavic-specific explanations (middle-slavic level)
-  if (progress.level === 'middle-slavic') {
+  if (progress.folder === 'middle-slavic') {
     if (sentence.tag === 'false-friend' && sentence.falseFriend) {
       text += `\n\n⚠️ **FALSE FRIEND!**\n🔴 _${sentence.falseFriend}_`;
     }
@@ -155,8 +157,18 @@ export async function handleShowTranslation(
     if (sentence.comparison) {
       text += `\n\n🔗 **Slavic Bridge:** _${sentence.comparison}_`;
     }
+  }
 
-    // Add language-specific rules
+  // Add language-specific rules for language-comparison and other advanced folders
+  if (['language-comparison', 'misc', 'expressions'].includes(progress.folder)) {
+    const ruleKey = progress.languageTo === 'ru' ? 'ruleRu' : progress.languageTo === 'ua' ? 'ruleUA' : 'ruleEng';
+    if (sentence[ruleKey as keyof typeof sentence]) {
+      text += `\n\n📖 _${sentence[ruleKey as keyof typeof sentence]}_`;
+    }
+  }
+
+  // Also add rules for middle-slavic if present
+  if (progress.folder === 'middle-slavic') {
     const ruleKey = progress.languageTo === 'ru' ? 'ruleRu' : progress.languageTo === 'ua' ? 'ruleUA' : 'ruleEng';
     if (sentence[ruleKey as keyof typeof sentence]) {
       text += `\n\n📖 _${sentence[ruleKey as keyof typeof sentence]}_`;
@@ -190,11 +202,11 @@ export async function handleNext(
   const progress = getUserProgress(userId);
   if (!progress) return;
 
-  const totalSentences = getTotalSentences(progress.category, progress.level);
+  const totalSentences = getTotalSentences(progress.category, progress.folder);
 
   if (progress.currentIndex < totalSentences - 1) {
     progress.currentIndex += 1;
-    const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.level);
+    const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
     if (sentence) {
       const langEmoji = getLanguageEmoji(progress.languageTo);
       const text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n✨ _Click button to reveal translation_`;
@@ -244,11 +256,11 @@ export async function handlePrevious(
   const progress = getUserProgress(userId);
   if (!progress) return;
 
-  const totalSentences = getTotalSentences(progress.category, progress.level);
+  const totalSentences = getTotalSentences(progress.category, progress.folder);
 
   if (progress.currentIndex > 0) {
     progress.currentIndex -= 1;
-    const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.level);
+    const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
     if (sentence) {
       const langEmoji = getLanguageEmoji(progress.languageTo);
       const text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n✨ _Click button to reveal translation_`;
@@ -268,7 +280,7 @@ export async function handlePrevious(
     }
   } else {
     // Already at beginning
-    const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.level);
+    const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
     if (sentence) {
       const langEmoji = getLanguageEmoji(progress.languageTo);
       const text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n✨ _You're at the beginning!_`;

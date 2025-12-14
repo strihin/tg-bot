@@ -1,10 +1,11 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { getUserProgress, saveUserProgress } from '../../data/progress';
+import { getUserProgress, saveUserProgress, initializeUserProgress } from '../../data/progress';
 import { LEVELS } from '../../constants';
+import { FolderType } from '../../types';
 import { getCategoryKeyboard } from './category';
 
 /**
- * Handle level selection (basic, middle, or middle-slavic)
+ * Handle folder selection (6 independent learning levels)
  */
 export async function handleSelectLevel(
   callbackQuery: TelegramBot.CallbackQuery,
@@ -20,24 +21,27 @@ export async function handleSelectLevel(
     if (!chatId) return;
 
     const data = callbackQuery.data || '';
-    const level = data.replace('level_', '') as 'basic' | 'middle' | 'middle-slavic';
+    const folder = data.replace('folder_', '') as FolderType;
 
-    // Update user progress with selected level
+    // Update or create user progress with selected folder
     let progress = getUserProgress(userId);
     if (progress) {
-      progress.level = level;
-      saveUserProgress(progress);
+      progress.folder = folder;
+    } else {
+      // Initialize progress if new user selects folder
+      progress = initializeUserProgress(userId, 'greetings', 'eng', folder);
     }
+    saveUserProgress(progress);
 
-    const levelInfo = LEVELS[level];
+    const folderInfo = LEVELS[folder];
 
-    // Show category selection after level choice
+    // Show category selection after folder choice
     await bot.sendMessage(
       chatId,
-      `${levelInfo.emoji} **${levelInfo.name}** mode selected\n\n_${levelInfo.description}_\n\n📚 Now select a lesson category:`,
+      `${folderInfo.emoji} **${folderInfo.name}** mode selected\n\n_${folderInfo.description}_\n\n📚 Now select a lesson category:`,
       {
         parse_mode: 'Markdown',
-        ...getCategoryKeyboard(level),
+        ...getCategoryKeyboard(folder),
       }
     );
   } catch (error) {

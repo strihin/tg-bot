@@ -1,0 +1,138 @@
+{
+  "title": "Сходства болгарского языка в синтаксисе",
+  "description": "Топ синтаксических сходств болгарского с балканскими, турецким, румынским и западно-славянскими языками.",
+  "items": [
+    {
+      "bg": "SVO порядок слов",
+      "eng": "SVO word order",
+      "ru": "SVO порядок слов",
+      "ua": "SVO порядок слів",
+      "source": "Universal/Balkan",
+      "tag": "syntax",
+      "ruleEng": "Subject-Verb-Object, shared with Romanian, Greek, Albanian, West Slavic; Turkish SOV.",
+      "ruleRu": "Подлежащее-Глагол-Дополнение, общее с румынским, греческим, албанским, западнославянскими; турецкий SOV.",
+      "ruleUA": "Підмет-Присудок-Додаток, спільне з румунською, грецькою, албанською, західнослов'янськими; турецька SOV."
+    },
+    {
+      "bg": "Постпозитивные прилагательные",
+      "eng": "Postpositive adjectives in some cases",
+      "ru": "Постпозитивные прилагательные в некоторых случаях",
+      "ua": "Постпозитивні прикметники в деяких випадках",
+      "source": "Balkan",
+      "tag": "syntax",
+      "ruleEng": "Adjectives after nouns in definite forms, shared with Romanian, Albanian; not typical in Slavic or Turkish.",
+      "ruleRu": "Прилагательные после существительных в определённых формах, общее с румынским, албанским; не типично для славянских или турецкого.",
+      "ruleUA": "Прикметники після іменників у визначених формах, спільне з румунською, албанською; не типове для слов'янських чи турецької."
+    },
+    {
+      "bg": "Конструкции с 'да'",
+      "eng": "Constructions with 'da'",
+      "ru": "Конструкции с 'да'",
+      "ua": "Конструкції з 'да'",
+      "source": "Balkan",
+      "tag": "syntax",
+      "ruleEng": "Subjunctive-like with 'da', shared with Greek 'να', Albanian 'të', Romanian 'să'; Serbian 'da'; not in West Slavic, Turkish.",
+      "ruleRu": "Сослагательное с 'da', общее с греческим 'να', албанским 'të', румынским 'să'; сербским 'da'; нет в западнославянских, турецком.",
+      "ruleUA": "Умовне з 'da', спільне з грецьким 'να', албанським 'të', румунським 'să'; сербською 'da'; немає в західнослов'янських, турецькій."
+    },
+    {
+      "bg": "Вопросы с 'ли'",
+      "eng": "Questions with 'li'",
+      "ru": "Вопросы с 'ли'",
+      "ua": "Питання з 'ли'",
+      "source": "Slavic",
+      "tag": "syntax",
+      "ruleEng": "Enclitic 'li' for yes/no questions, shared with all Slavic (Polish 'li', Czech 'li'); not in non-Slavic.",
+      "ruleRu": "Энклитическое 'li' для да/нет вопросов, общее со всеми славянскими (польское 'li', чешское 'li'); нет в неславянских.",
+      "ruleUA": "Енклітичне 'li' для так/ні питань, спільне з усіма слов'янськими (польське 'li', чеське 'li'); немає в неслов'янських."
+    },
+    {
+      "bg": "Относительные предложения",
+      "eng": "Relative clauses",
+      "ru": "Относительные предложения",
+      "ua": "Відносні речення",
+      "source": "Balkan",
+      "tag": "syntax",
+      "ruleEng": "With 'който' resumptive pronouns, shared with Greek, Romanian; Slavic vary.",
+      "ruleRu": "С 'който' возобновляемыми местоимениями, общее с греческим, румынским; славянские варьируют.",
+      "ruleUA": "З 'който' відновлювальними займенниками, спільне з грецькою, румунською; слов'янські варіюють."
+    },
+    {
+      "bg": "Пропуск подлежащего",
+      "eng": "Subject omission",
+      "ru": "Пропуск подлежащего",
+      "ua": "Пропуск підмета",
+      "source": "Pro-drop",
+      "tag": "syntax",
+      "ruleEng": "Pro-drop language, shared with Greek, Albanian, Romanian, Turkish; all Slavic are pro-drop.",
+      "ruleRu": "Pro-drop язык, общее с греческим, албанским, румынским, турецким; все славянские pro-drop.",
+      "ruleUA": "Pro-drop мова, спільне з грецькою, албанською, румунською, турецькою; всі слов'янські pro-drop."
+    },
+    {
+      "bg": "Порядок в предложении",
+      "eng": "Sentence order flexibility",
+      "ru": "Гибкость порядка в предложении",
+      "ua": "Гнучкість порядку в реченні",
+      "source": "Slavic/Balkan",
+      "tag": "syntax",
+      "ruleEng": "Free word order due to inflections (in Slavic), shared with West Slavic, Serbian; less free in Turkish (SOV).",
+      "ruleRu": "Свободный порядок слов из-за флексий (в славянских), общее с западнославянскими, сербским; менее свободный в турецком (SOV).",
+      "ruleUA": "Вільний порядок слів через флексії (у слов'янських), спільне з західнослов'янськими, сербською; менш вільний в турецькій (SOV)."
+    },
+    {
+      "bg": "Притяжательные конструкции",
+      "eng": "Possessive constructions",
+      "ru": "Притяжательные конструкции",
+      "ua": "Присвійні конструкції",
+      "source": "Balkan",
+      "tag": "syntax",
+      "ruleEng": "Using 'на' for possession, shared with Romanian 'al/a'; Greek 'του'; not typical in West Slavic.",
+      "ruleRu": "Использование 'на' для обладания, общее с румынским 'al/a'; греческим 'του'; не типично для западнославянских.",
+      "ruleUA": "Використання 'на' для володіння, спільне з румунським 'al/a'; грецьким 'του'; не типове для західнослов'янських."
+    },
+    {
+      "bg": "Компоративы с 'от'",
+      "eng": "Comparatives with 'ot'",
+      "ru": "Компоративы с 'от'",
+      "ua": "Компаративи з 'от'",
+      "source": "Balkan",
+      "tag": "syntax",
+      "ruleEng": "Like Romanian 'decât', Greek 'από'; Turkish 'den'; West Slavic use 'niż/нежели'.",
+      "ruleRu": "Как румынское 'decât', греческое 'από'; турецкое 'den'; западнославянские используют 'niż/нежели'.",
+      "ruleUA": "Як румунське 'decât', грецьке 'από'; турецьке 'den'; західнослов'янські використовують 'niż/ніж'."
+    },
+    {
+      "bg": "Вопросительные частицы",
+      "eng": "Interrogative particles",
+      "ru": "Вопросительные частицы",
+      "ua": "Питальні частки",
+      "source": "Slavic",
+      "tag": "syntax",
+      "ruleEng": "'Ли' postverbal, shared with Slavic; Turkish uses 'mi'; Greek intonation.",
+      "ruleRu": "'Ли' послеглагольное, общее со славянскими; турецкий 'mi'; греческий интонацией.",
+      "ruleUA": "'Ли' післядієслівне, спільне зі слов'янськими; турецька 'mi'; грецька інтонацією."
+    },
+    {
+      "bg": "Сложные предложения",
+      "eng": "Complex sentences",
+      "ru": "Сложные предложения",
+      "ua": "Складні речення",
+      "source": "Universal",
+      "tag": "syntax",
+      "ruleEng": "Subordination similar in Balkan languages; Slavic have participial constructions.",
+      "ruleRu": "Подчинение похоже в балканских языках; славянские имеют причастные конструкции.",
+      "ruleUA": "Підрядність подібна в балканських мовах; слов'янські мають причетні конструкції."
+    },
+    {
+      "bg": "Эллипсис в предложениях",
+      "eng": "Ellipsis in sentences",
+      "ru": "Эллипсис в предложениях",
+      "ua": "Еліпсис в реченнях",
+      "source": "Balkan/Turkic",
+      "tag": "syntax",
+      "ruleEng": "Omission of copula, shared with Turkish, Greek; common in Slavic.",
+      "ruleRu": "Пропуск связки, общее с турецким, греческим; распространено в славянских.",
+      "ruleUA": "Пропуск зв'язки, спільне з турецькою, грецькою; поширене в слов'янських."
+    }
+  ]
+}

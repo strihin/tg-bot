@@ -1,0 +1,138 @@
+{
+  "title": "Сходства болгарского языка в лексике",
+  "description": "Топ лексических сходств болгарского с балканскими, турецким, румынским и западно-славянскими языками.",
+  "items": [
+    {
+      "bg": "Турецкие заимствования",
+      "eng": "Turkish loanwords",
+      "ru": "Турецкие заимствования",
+      "ua": "Турецькі запозичення",
+      "source": "Ottoman influence",
+      "tag": "vocabulary",
+      "ruleEng": "Many words like 'джоб' (pocket = cep), 'бакър' (copper = bakır), shared with other Balkan languages due to Ottoman rule.",
+      "ruleRu": "Много слов типа 'джоб' (карман = cep), 'бакър' (медь = bakır), общее с другими балканскими из-за османского правления.",
+      "ruleUA": "Багато слів типу 'джоб' (кишеня = cep), 'бакър' (мідь = bakır), спільне з іншими балканськими через османське панування."
+    },
+    {
+      "bg": "Общие славянские корни",
+      "eng": "Common Slavic roots",
+      "ru": "Общие славянские корни",
+      "ua": "Спільні слов'янські корені",
+      "source": "Slavic family",
+      "tag": "vocabulary",
+      "ruleEng": "Words like 'вода' (water), 'брат' (brother), shared with West Slavic (woda, brat), Serbian, Macedonian.",
+      "ruleRu": "Слова типа 'вода' (вода), 'брат' (брат), общее с западнославянскими (woda, brat), сербским, македонским.",
+      "ruleUA": "Слова типу 'вода' (вода), 'брат' (брат), спільне з західнослов'янськими (woda, brat), сербською, македонською."
+    },
+    {
+      "bg": "Балканские заимствования",
+      "eng": "Balkan loanwords",
+      "ru": "Балканские заимствования",
+      "ua": "Балканські запозичення",
+      "source": "Balkan sprachbund",
+      "tag": "vocabulary",
+      "ruleEng": "Words like 'мъж' (man, cf. Romanian 'mujdei' derived), shared lexicon in Albanian, Greek, Romanian (e.g., family terms).",
+      "ruleRu": "Слова типа 'мъж' (мужчина, ср. румынское 'mujdei'), общий лексикон в албанском, греческом, румынском (напр., термины семьи).",
+      "ruleUA": "Слова типу 'мъж' (чоловік, пор. румунське 'mujdei'), спільний лексикон в албанській, грецькій, румунській (напр., терміни родини)."
+    },
+    {
+      "bg": "Славянские заимствования в румынском",
+      "eng": "Slavic loanwords in Romanian",
+      "ru": "Славянские заимствования в румынском",
+      "ua": "Слов'янські запозичення в румунській",
+      "source": "Historical contact",
+      "tag": "vocabulary",
+      "ruleEng": "Romanian has ~10% Slavic words from Bulgarian (da = yes, dragoste = love), vice versa minor.",
+      "ruleRu": "Румынский имеет ~10% славянских слов из болгарского (da = да, dragoste = любовь), наоборот минимально.",
+      "ruleUA": "Румунська має ~10% слов'янських слів з болгарської (da = так, dragoste = любов), навпаки мінімально."
+    },
+    {
+      "bg": "Общие слова с македонским/сербским",
+      "eng": "Common words with Macedonian/Serbian",
+      "ru": "Общие слова с македонским/сербским",
+      "ua": "Спільні слова з македонською/сербською",
+      "source": "South Slavic",
+      "tag": "vocabulary",
+      "ruleEng": "High lexical similarity (85% with Macedonian, 60-70% with Serbian: kuća/къща = house).",
+      "ruleRu": "Высокая лексическая схожесть (85% с македонским, 60-70% с сербским: kuća/къща = дом).",
+      "ruleUA": "Висока лексична подібність (85% з македонською, 60-70% з сербською: kuća/къща = будинок)."
+    },
+    {
+      "bg": "Греческие заимствования",
+      "eng": "Greek loanwords",
+      "ru": "Греческие заимствования",
+      "ua": "Грецькі запозичення",
+      "source": "Byzantine influence",
+      "tag": "vocabulary",
+      "ruleEng": "Words like 'икона' (icon), 'хартия' (paper/charter), shared across Balkans.",
+      "ruleRu": "Слова типа 'икона' (икона), 'хартия' (бумага/хартия), общее по Балканам.",
+      "ruleUA": "Слова типу 'икона' (ікона), 'хартия' (папір/хартія), спільне по Балканах."
+    },
+    {
+      "bg": "Албанские параллели",
+      "eng": "Albanian parallels",
+      "ru": "Албанские параллели",
+      "ua": "Албанські паралелі",
+      "source": "Balkan",
+      "tag": "vocabulary",
+      "ruleEng": "Some shared words via substrate (e.g., place names, flora: mali/планина = mountain).",
+      "ruleRu": "Некоторые общие слова через субстрат (напр., топонимы, флора: mali/планина = гора).",
+      "ruleUA": "Деякі спільні слова через субстрат (напр., топоніми, флора: mali/планина = гора)."
+    },
+    {
+      "bg": "Общие с западнославянскими",
+      "eng": "Common with West Slavic",
+      "ru": "Общие с западнославянскими",
+      "ua": "Спільні з західнослов'янськими",
+      "source": "Proto-Slavic",
+      "tag": "vocabulary",
+      "ruleEng": "Basic vocabulary: ruka/ръка (hand), oko/око (eye), similar to Polish ręka, oko.",
+      "ruleRu": "Базовая лексика: ruka/ръка (рука), oko/око (глаз), похоже на польское ręka, oko.",
+      "ruleUA": "Базова лексика: ruka/ръка (рука), oko/око (око), подібне до польського ręka, oko."
+    },
+    {
+      "bg": "Турецкие слова в быту",
+      "eng": "Turkish everyday words",
+      "ru": "Турецкие слова в быту",
+      "ua": "Турецькі слова в побуті",
+      "source": "Ottoman",
+      "tag": "vocabulary",
+      "ruleEng": "Чорап (sock = çorap), ястие (dish = yemek), shared with Serbian, Romanian via Turkish.",
+      "ruleRu": "Чорап (носок = çorap), ястие (блюдо = yemek), общее с сербским, румынским через турецкий.",
+      "ruleUA": "Чорап (шкарпетка = çorap), ястие (страва = yemek), спільне з сербською, румунською через турецьку."
+    },
+    {
+      "bg": "Славянские слова в турецком",
+      "eng": "Slavic words in Turkish",
+      "ru": "Славянские слова в турецком",
+      "ua": "Слов'янські слова в турецькій",
+      "source": "Contact",
+      "tag": "vocabulary",
+      "ruleEng": "Minor, like 'vodka' or food terms, but mostly one-way from Turkish to Bulgarian.",
+      "ruleRu": "Минимально, как 'vodka' или термины еды, но в основном односторонне от турецкого к болгарскому.",
+      "ruleUA": "Мінімально, як 'vodka' чи терміни їжі, але переважно односторонньо від турецької до болгарської."
+    },
+    {
+      "bg": "Общие с румынским",
+      "eng": "Common with Romanian",
+      "ru": "Общие с румынским",
+      "ua": "Спільні з румунською",
+      "source": "Balkan",
+      "tag": "vocabulary",
+      "ruleEng": "Words like 'da' (yes), 'drag' (dear), from Slavic influence on Romanian.",
+      "ruleRu": "Слова типа 'da' (да), 'drag' (дорогой), из славянского влияния на румынский.",
+      "ruleUA": "Слова типу 'da' (так), 'drag' (дорогий), з слов'янського впливу на румунську."
+    },
+    {
+      "bg": "Южнославянская лексика",
+      "eng": "South Slavic vocabulary",
+      "ru": "Южнославянская лексика",
+      "ua": "Південнослов'янська лексика",
+      "source": "South Slavic",
+      "tag": "vocabulary",
+      "ruleEng": "High similarity with Macedonian (almost identical), Serbian (e.g., voda/вода = water).",
+      "ruleRu": "Высокая схожесть с македонским (почти идентична), сербским (напр., voda/вода = вода).",
+      "ruleUA": "Висока подібність з македонською (майже ідентична), сербською (напр., voda/вода = вода)."
+    }
+  ]
+}

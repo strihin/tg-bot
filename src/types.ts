@@ -1,3 +1,13 @@
+/**
+ * Learning folder type - unified definition used throughout the project
+ */
+export type FolderType = 'basic' | 'middle' | 'middle-slavic' | 'misc' | 'language-comparison' | 'expressions';
+
+/**
+ * Target language type - unified definition used throughout the project
+ */
+export type TargetLanguage = 'eng' | 'ru' | 'ua';
+
 export interface Sentence {
   bg: string;
   eng: string;
@@ -18,9 +28,9 @@ export interface UserProgress {
   userId: number;
   currentIndex: number;
   category: string;
-  level: 'basic' | 'middle' | 'middle-slavic';  // Learning level
+  folder: FolderType;  // Selected folder
   languageFrom: 'bg';
-  languageTo: 'eng' | 'ru' | 'ua';
+  languageTo: TargetLanguage;
   lessonMessageId?: number; // Message ID of current lesson for editing
   lessonActive?: boolean;   // Track if user is in active lesson
 }

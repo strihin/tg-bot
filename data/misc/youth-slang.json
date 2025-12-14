@@ -1,0 +1,138 @@
+{
+  "title": "Современный болгарский молодёжный сленг",
+  "description": "Слова и выражения из TikTok, Instagram, чатов. Много англицизмов и сокращений.",
+  "items": [
+    {
+      "bg": "Геч е.",
+      "eng": "It's lit / awesome.",
+      "ru": "Круто / зачётно.",
+      "ua": "Круто / вогонь.",
+      "source": "slang",
+      "tag": "youth",
+      "ruleEng": "Short for 'геч си е' from Turkish 'geç' (pass/go), now means 'cool'.",
+      "ruleRu": "Сокращение от 'геч си е', из турецкого, сейчас значит 'круто'.",
+      "ruleUA": "Скорочення від 'геч си е', з турецької, зараз означає 'круто'."
+    },
+    {
+      "bg": "Брутално.",
+      "eng": "Brutally (awesome or bad).",
+      "ru": "Жёстко / брутально.",
+      "ua": "Жорстко / брутально.",
+      "source": "slang",
+      "tag": "youth",
+      "ruleEng": "Used both positively ('brutally good') and negatively.",
+      "ruleRu": "Используется и позитивно ('брутально хорошо'), и негативно.",
+      "ruleUA": "Використовується і позитивно ('брутально добре'), і негативно."
+    },
+    {
+      "bg": "Кеф ми е.",
+      "eng": "I'm in the mood / feeling good.",
+      "ru": "Мне в кайф.",
+      "ua": "Мені в кайф.",
+      "source": "slang",
+      "tag": "youth",
+      "ruleEng": "From Turkish 'keyif', very common among youth.",
+      "ruleRu": "Из турецкого 'keyif', очень распространено среди молодёжи.",
+      "ruleUA": "З турецької 'keyif', дуже поширене серед молоді."
+    },
+    {
+      "bg": "Лудница.",
+      "eng": "Crazy / madness (positive).",
+      "ru": "Отрыв / угар.",
+      "ua": "Відрив / угар.",
+      "source": "slang",
+      "tag": "youth",
+      "ruleEng": "Describes wild party or crazy situation positively.",
+      "ruleRu": "Описывает дикий вечер или сумасшедшую ситуацию позитивно.",
+      "ruleUA": "Описує дикий вечір або божевільну ситуацію позитивно."
+    },
+    {
+      "bg": "Флексвам.",
+      "eng": "I'm flexing / showing off.",
+      "ru": "Я флекшу / понтуюсь.",
+      "ua": "Я флекшу / понтуюся.",
+      "source": "slang",
+      "tag": "youth",
+      "ruleEng": "Direct English borrowing 'flex', conjugated as Bulgarian verb.",
+      "ruleRu": "Прямое заимствование 'flex', спрягается как болгарский глагол.",
+      "ruleUA": "Пряме запозичення 'flex', відмінюється як болгарське дієслово."
+    },
+    {
+      "bg": "Чил.",
+      "eng": "Chill / relax.",
+      "ru": "Чилл / расслабон.",
+      "ua": "Чіл / релакс.",
+      "source": "slang",
+      "tag": "youth",
+      "ruleEng": "English 'chill', used as both noun and verb.",
+      "ruleRu": "Английское 'chill', используется и как существительное, и как глагол.",
+      "ruleUA": "Англійське 'chill', використовується і як іменник, і як дієслово."
+    },
+    {
+      "bg": "Крипнат.",
+      "eng": "Creepy / weird.",
+      "ru": "Криповий / стрёмный.",
+      "ua": "Кріпово / стрємно.",
+      "source": "slang",
+      "tag": "youth",
+      "ruleEng": "From English 'creep', adapted with -нат ending.",
+      "ruleRu": "От английского 'creep', адаптировано с окончанием -нат.",
+      "ruleUA": "Від англійського 'creep', адаптовано з закінченням -нат."
+    },
+    {
+      "bg": "Баш.",
+      "eng": "Exactly / totally.",
+      "ru": "Именно / в точку.",
+      "ua": "Саме / в яблучко.",
+      "source": "slang",
+      "tag": "youth",
+      "ruleEng": "From Turkish 'baş' (head), means 'right on target'.",
+      "ruleRu": "Из турецкого 'baş' (голова), значит 'точно в цель'.",
+      "ruleUA": "З турецької 'baş' (голова), означає 'точно в ціль'."
+    },
+    {
+      "bg": "Скриншотни го.",
+      "eng": "Screenshot it.",
+      "ru": "Заскринь это.",
+      "ua": "Зскринь це.",
+      "source": "slang",
+      "tag": "youth",
+      "ruleEng": "Direct borrowing, verbified with Bulgarian ending.",
+      "ruleRu": "Прямое заимствование, превращено в глагол с болгарским окончанием.",
+      "ruleUA": "Пряме запозичення, перетворено на дієслово з болгарським закінченням."
+    },
+    {
+      "bg": "Топ.",
+      "eng": "Top / best.",
+      "ru": "Топ / лучший.",
+      "ua": "Топ / найкращий.",
+      "source": "slang",
+      "tag": "youth",
+      "ruleEng": "Short and universal youth approval word.",
+      "ruleRu": "Короткое и универсальное слово одобрения среди молодёжи.",
+      "ruleUA": "Коротке й універсальне слово схвалення серед молоді."
+    },
+    {
+      "bg": "Дропвам.",
+      "eng": "I'm dropping (releasing/posting).",
+      "ru": "Я дропаю (выкладываю).",
+      "ua": "Я дропаю (викладаю).",
+      "source": "slang",
+      "tag": "youth",
+      "ruleEng": "From English 'drop' (release music/content).",
+      "ruleRu": "От английского 'drop' (выпускать музыку/контент).",
+      "ruleUA": "Від англійського 'drop' (випускати музику/контент)."
+    },
+    {
+      "bg": "Вайбът е супер.",
+      "eng": "The vibe is great.",
+      "ru": "Вайб супер.",
+      "ua": "Вайб супер.",
+      "source": "slang",
+      "tag": "youth",
+      "ruleEng": "English 'vibe' fully integrated into Bulgarian youth speech.",
+      "ruleRu": "Английское 'vibe' полностью интегрировано в молодёжную речь.",
+      "ruleUA": "Англійське 'vibe' повністю інтегровано в молодіжну мову."
+    }
+  ]
+}

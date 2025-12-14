@@ -83,8 +83,8 @@ export function createBot(): TelegramBot {
       if (data?.startsWith('lang_to_')) {
         // Handle target language selection
         await handleSelectTargetLanguage(query, bot);
-      } else if (data?.startsWith('level_')) {
-        // Handle level selection
+      } else if (data?.startsWith('folder_')) {
+        // Handle folder selection (6 independent learning levels)
         await handleSelectLevel(query, bot);
       } else if (data?.startsWith('select_category:')) {
         // Handle category selection
@@ -134,6 +134,38 @@ export function createBot(): TelegramBot {
         await handleNext(query, bot);
       } else if (data === 'prev') {
         await handlePrevious(query, bot);
+      } else if (data === 'change_folder') {
+        // Return to folder selection
+        const userId = query.from.id;
+        const chatId = query.message?.chat.id;
+        if (chatId) {
+          try {
+            await bot.deleteMessage(chatId, query.message!.message_id);
+          } catch (e) {
+            // Ignore
+          }
+          await bot.sendMessage(
+            chatId,
+            '📚 Select a learning level:',
+            { reply_markup: lessonKeyboards.levelSelect }
+          );
+        }
+      } else if (data === 'back_to_menu') {
+        // Return to language selection
+        const userId = query.from.id;
+        const chatId = query.message?.chat.id;
+        if (chatId) {
+          try {
+            await bot.deleteMessage(chatId, query.message!.message_id);
+          } catch (e) {
+            // Ignore
+          }
+          await bot.sendMessage(
+            chatId,
+            '🌐 Select target language:',
+            { reply_markup: lessonKeyboards.targetLanguageSelect }
+          );
+        }
       } else if (data === 'exit') {
         // Exit lesson and return to menu
         const userId = query.from.id;
@@ -144,13 +176,13 @@ export function createBot(): TelegramBot {
           } catch (e) {
             // Ignore
           }
-          // Get current user level for category selection
+          // Get current user folder for category selection
           const progress = getUserProgress(userId);
-          const userLevel = progress?.level || 'basic';
+          const userFolder = progress?.folder || 'basic';
           await bot.sendMessage(
             chatId,
             '👋 Lesson ended. Great job! 🌟 What next?',
-            getCategoryKeyboard(userLevel)
+            getCategoryKeyboard(userFolder)
           );
         }
       }

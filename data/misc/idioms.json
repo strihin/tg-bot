@@ -1,0 +1,138 @@
+{
+  "title": "Болгарские идиомы и пословицы",
+  "description": "Популярные выражения, показывающие балканский юмор и мудрость. Многие имеют аналоги в русском/украинском, но с местным колоритом.",
+  "items": [
+    {
+      "bg": "Вълкът козината си мени, но нрава не.",
+      "eng": "The wolf changes its fur, but not its nature.",
+      "ru": "Волк меняет шерсть, а не нрав.",
+      "ua": "Вовк міняє шерсть, а не вдачу.",
+      "source": "proverb",
+      "tag": "idiom",
+      "ruleEng": "Exact equivalent to Russian/Ukrainian proverb about unchanging character.",
+      "ruleRu": "Точный эквивалент русской/украинской пословицы о неизменности характера.",
+      "ruleUA": "Точний еквівалент української приказки про незмінність характеру."
+    },
+    {
+      "bg": "Който копае гроб другиму, сам пада в него.",
+      "eng": "He who digs a grave for others falls into it himself.",
+      "ru": "Кто роет яму другому, сам в неё попадёт.",
+      "ua": "Хто копає яму іншому, сам у неї впаде.",
+      "source": "proverb",
+      "tag": "idiom",
+      "ruleEng": "Classic warning against scheming, identical structure.",
+      "ruleRu": "Классическое предупреждение против интриг, идентичная структура.",
+      "ruleUA": "Класичне попередження проти інтриг, ідентична структура."
+    },
+    {
+      "bg": "На чужд гърб и сто тояги са малко.",
+      "eng": "On someone else's back even a hundred lashes are few.",
+      "ru": "На чужой спине и сто палок мало.",
+      "ua": "На чужій спині й сто батогів мало.",
+      "source": "proverb",
+      "tag": "idiom",
+      "ruleEng": "Means it's easy to be generous with others' resources.",
+      "ruleRu": "Легко быть щедрым за чужой счёт.",
+      "ruleUA": "Легко бути щедрим за чужий рахунок."
+    },
+    {
+      "bg": "Гладна кокошка просо сънува.",
+      "eng": "A hungry hen dreams of millet.",
+      "ru": "Голодная курица во сне просо видит.",
+      "ua": "Голодна курка уві сні просо бачить.",
+      "source": "proverb",
+      "tag": "idiom",
+      "ruleEng": "People dream about what they lack most.",
+      "ruleRu": "Человек мечтает о том, чего ему больше всего не хватает.",
+      "ruleUA": "Людина мріє про те, чого їй найбільше бракує."
+    },
+    {
+      "bg": "Капка по капка – вир става.",
+      "eng": "Drop by drop – a whirlpool forms.",
+      "ru": "Капля по капле – озеро образуется.",
+      "ua": "Крапля по краплі – озеро утворюється.",
+      "source": "proverb",
+      "tag": "idiom",
+      "ruleEng": "Small things accumulate into big results (positive or negative).",
+      "ruleRu": "Малые вещи накапливаются в большие результаты.",
+      "ruleUA": "Малі речі накопичуються у великі результати."
+    },
+    {
+      "bg": "На хубаво око и слепец вижда.",
+      "eng": "Even a blind man sees with a kind eye.",
+      "ru": "На красивый глаз и слепой видит.",
+      "ua": "На гарне око й сліпий бачить.",
+      "source": "proverb",
+      "tag": "idiom",
+      "ruleEng": "Beauty is visible to everyone, even metaphorically.",
+      "ruleRu": "Красота видна всем, даже метафорически.",
+      "ruleUA": "Краса видна всім, навіть метафорично."
+    },
+    {
+      "bg": "Кучето лае – керванът си върви.",
+      "eng": "The dog barks – the caravan moves on.",
+      "ru": "Собака лает – караван идёт.",
+      "ua": "Собака гавкає – караван іде.",
+      "source": "proverb",
+      "tag": "idiom",
+      "ruleEng": "Criticism doesn't stop progress.",
+      "ruleRu": "Критика не останавливает прогресс.",
+      "ruleUA": "Критика не зупиняє прогрес."
+    },
+    {
+      "bg": "Сит на гладен не вярва.",
+      "eng": "The full doesn't believe the hungry.",
+      "ru": "Сытый голодному не верит.",
+      "ua": "Ситий голодному не вірить.",
+      "source": "proverb",
+      "tag": "idiom",
+      "ruleEng": "Those who have never lacked can't understand those who have.",
+      "ruleRu": "Кто никогда не нуждался, не понимает нуждающихся.",
+      "ruleUA": "Хто ніколи не бідував, не розуміє бідних."
+    },
+    {
+      "bg": "Една лястовица пролет не прави.",
+      "eng": "One swallow doesn't make a spring.",
+      "ru": "Одна ласточка весны не делает.",
+      "ua": "Одна ластівка весни не робить.",
+      "source": "proverb",
+      "tag": "idiom",
+      "ruleEng": "One positive sign doesn't mean overall change.",
+      "ruleRu": "Один положительный признак не означает общую перемену.",
+      "ruleUA": "Один позитивний знак не означає загальну зміну."
+    },
+    {
+      "bg": "Крушата не пада далеч от дървото.",
+      "eng": "The pear doesn't fall far from the tree.",
+      "ru": "Яблоко от яблони недалеко падает.",
+      "ua": "Яблуко від яблуні недалеко падає.",
+      "source": "proverb",
+      "tag": "idiom",
+      "ruleEng": "Children resemble their parents (in traits or behavior).",
+      "ruleRu": "Дети похожи на родителей (в чертах или поведении).",
+      "ruleUA": "Діти схожі на батьків (у рисах чи поведінці)."
+    },
+    {
+      "bg": "Работа луда не обича.",
+      "eng": "Work doesn't like a fool.",
+      "ru": "Работа дурака не любит.",
+      "ua": "Робота дурня не любить.",
+      "source": "proverb",
+      "tag": "idiom",
+      "ruleEng": "Laziness or stupidity ruins work.",
+      "ruleRu": "Лень или глупость портит дело.",
+      "ruleUA": "Лінь або дурість псує справу."
+    },
+    {
+      "bg": "Който сее вятър, ще жъне буря.",
+      "eng": "He who sows the wind shall reap the whirlwind.",
+      "ru": "Кто сеет ветер, пожнёт бурю.",
+      "ua": "Хто сіє вітер, пожне бурю.",
+      "source": "proverb",
+      "tag": "idiom",
+      "ruleEng": "Actions have escalated consequences.",
+      "ruleRu": "Действия имеют эскалированные последствия.",
+      "ruleUA": "Дії мають ескаловані наслідки."
+    }
+  ]
+}

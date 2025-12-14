@@ -1,4 +1,4 @@
-import { Sentence } from '../types';
+import { Sentence, TargetLanguage } from '../types';
 import { LANGUAGES } from '../constants';
 
 /**
@@ -6,9 +6,9 @@ import { LANGUAGES } from '../constants';
  */
 export function getTranslation(
   sentence: Sentence,
-  languageTo: 'eng' | 'ru' | 'ua'
+  languageTo: TargetLanguage
 ): string {
-  const translations: Record<'eng' | 'ru' | 'ua', string> = {
+  const translations: Record<TargetLanguage, string> = {
     eng: sentence.eng || '',
     ru: sentence.ru || '',
     ua: sentence.ua || '',

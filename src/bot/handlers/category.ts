@@ -1,17 +1,26 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { getAvailableCategories } from '../../data/loader';
 import { CATEGORIES } from '../../constants';
+import { FolderType } from '../../types';
 
 /**
- * Create inline keyboard with available categories for a specific level
+ * Create inline keyboard with available categories for a specific folder
  */
-export function getCategoryKeyboard(level: 'basic' | 'middle' | 'middle-slavic' = 'basic') {
-  const categories = getAvailableCategories(level);
+export function getCategoryKeyboard(folder: FolderType = 'basic') {
+  const categories = getAvailableCategories(folder);
   
   const buttons = categories.map((category) => [
     {
       text: `${CATEGORIES[category as keyof typeof CATEGORIES]?.emoji || '📚'} ${category.charAt(0).toUpperCase() + category.slice(1)}`,
       callback_data: `select_category:${category}`,
+    },
+  ]);
+
+  // Add back button to return to folder selection
+  buttons.push([
+    {
+      text: '🔙 Back to folders',
+      callback_data: 'change_folder',
     },
   ]);
 

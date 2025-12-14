@@ -1,0 +1,138 @@
+{
+  "title": "Мягкие оскорбления и эвфемизмы",
+  "description": "Болгары умеют ругаться 'культурно'. Смешные и обидные одновременно выражения без прямого мата.",
+  "items": [
+    {
+      "bg": "Тъпанар.",
+      "eng": "Idiot (lit. drum-head).",
+      "ru": "Болван / тупица.",
+      "ua": "Дурень / тупиця.",
+      "source": "insult",
+      "tag": "soft",
+      "ruleEng": "Very common mild insult, literally 'one with a drum instead of brain'.",
+      "ruleRu": "Очень распространённое мягкое оскорбление, буквально 'с барабаном вместо мозга'.",
+      "ruleUA": "Дуже поширене м'яке образливе слово, буквально 'з барабаном замість мозку'."
+    },
+    {
+      "bg": "Глупак.",
+      "eng": "Fool.",
+      "ru": "Дурак.",
+      "ua": "Дурень.",
+      "source": "insult",
+      "tag": "soft",
+      "ruleEng": "Direct equivalent, but sounds more formal in Bulgarian.",
+      "ruleRu": "Прямой эквивалент, но в болгарском звучит более официально.",
+      "ruleUA": "Прямий еквівалент, але в болгарській звучить більш офіційно."
+    },
+    {
+      "bg": "Магаре.",
+      "eng": "Donkey (stubborn idiot).",
+      "ru": "Осёл.",
+      "ua": "Осел.",
+      "source": "insult",
+      "tag": "soft",
+      "ruleEng": "Classic animal comparison for stupidity/stubbornness.",
+      "ruleRu": "Классическое сравнение с животным за глупость/упрямство.",
+      "ruleUA": "Класичне порівняння з твариною за дурість/упертість."
+    },
+    {
+      "bg": "Будала.",
+      "eng": "Fool (from Turkish).",
+      "ru": "Дурак / болван.",
+      "ua": "Дурень / бовдур.",
+      "source": "insult",
+      "tag": "soft",
+      "ruleEng": "Turkish borrowing, very common in Balkans.",
+      "ruleRu": "Заимствование из турецкого, очень распространено на Балканах.",
+      "ruleUA": "Запозичення з турецької, дуже поширене на Балканах."
+    },
+    {
+      "bg": "Не си с всичкия си.",
+      "eng": "You're not all there / missing a few screws.",
+      "ru": "У тебя не все дома.",
+      "ua": "У тебе не всі вдома.",
+      "source": "insult",
+      "tag": "soft",
+      "ruleEng": "Polite way to say someone is crazy or stupid.",
+      "ruleRu": "Вежливый способ сказать, что человек сумасшедший или глупый.",
+      "ruleUA": "Ввічливий спосіб сказати, що людина божевільна чи дурна."
+    },
+    {
+      "bg": "Празна глава.",
+      "eng": "Empty head.",
+      "ru": "Пустая голова.",
+      "ua": "Порожня голова.",
+      "source": "insult",
+      "tag": "soft",
+      "ruleEng": "Direct and descriptive mild insult.",
+      "ruleRu": "Прямое и описательное мягкое оскорбление.",
+      "ruleUA": "Пряме й описове м'яке образливе слово."
+    },
+    {
+      "bg": "Говедо.",
+      "eng": "Cattle (stupid person).",
+      "ru": "Скотина (в смысле глупый человек).",
+      "ua": "Худоба (в сенсі дурна людина).",
+      "source": "insult",
+      "tag": "soft",
+      "ruleEng": "Stronger than 'магаре', but still not vulgar.",
+      "ruleRu": "Сильнее 'магаре', но всё ещё не мат.",
+      "ruleUA": "Сильніше 'магаре', але все ще не мат."
+    },
+    {
+      "bg": "Шибаняк.",
+      "eng": "Damn fool (mild swear).",
+      "ru": "Чёртов дурак.",
+      "ua": "Чортів дурень.",
+      "source": "insult",
+      "tag": "soft",
+      "ruleEng": "From 'шибам' (hit), implies someone deserving a beating for stupidity.",
+      "ruleRu": "От 'шибам' (бить), подразумевает человека, которого за глупость надо побить.",
+      "ruleUA": "Від 'шибам' (бити), має на увазі людину, яку за дурість треба побити."
+    },
+    {
+      "bg": "Луд ли си?",
+      "eng": "Are you crazy?",
+      "ru": "Ты с ума сошёл?",
+      "ua": "Ти з глузду з'їхав?",
+      "source": "insult",
+      "tag": "soft",
+      "ruleEng": "Common rhetorical question when someone does something stupid.",
+      "ruleRu": "Обычный риторический вопрос при глупом поступке.",
+      "ruleUA": "Звичайне риторичне питання при дурному вчинку."
+    },
+    {
+      "bg": "Не се прави на луд.",
+      "eng": "Don't play crazy / don't act stupid.",
+      "ru": "Не прикидывайся дураком.",
+      "ua": "Не прикидайся дурнем.",
+      "source": "insult",
+      "tag": "soft",
+      "ruleEng": "Reflexive construction 'права се на' = 'pretend to be'.",
+      "ruleRu": "Возвратная конструкция 'права се на' = 'прикидываться'.",
+      "ruleUA": "Зворотна конструкція 'права се на' = 'прикидатися'."
+    },
+    {
+      "bg": "Такъв си е.",
+      "eng": "That's just how he is (hopeless case).",
+      "ru": "Он такой (безнадёжный).",
+      "ua": "Він такий (безнадійний).",
+      "source": "resignation",
+      "tag": "soft",
+      "ruleEng": "Used when giving up on someone's stupidity.",
+      "ruleRu": "Используется, когда махнули рукой на чью-то глупость.",
+      "ruleUA": "Використовується, коли махнули рукою на чиюсь дурість."
+    },
+    {
+      "bg": "Главата ти е празна като тиква.",
+      "eng": "Your head is empty like a pumpkin.",
+      "ru": "Голова пустая как тыква.",
+      "ua": "Голова порожня як гарбуз.",
+      "source": "insult",
+      "tag": "soft",
+      "ruleEng": "Colorful comparison typical for Balkan insults.",
+      "ruleRu": "Яркое сравнение, типичное для балканских оскорблений.",
+      "ruleUA": "Яскраве порівняння, типове для балканських образ."
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "title": "Сходства болгарского языка в фонетике",
+  "description": "Топ фонетических сходств болгарского с балканскими, турецким, румынским и западно-славянскими языками.",
+  "items": [
+    {
+      "bg": "Звук 'ъ' (schwa)",
+      "eng": "Schwa sound 'ъ'",
+      "ru": "Звук 'ъ' (шва)",
+      "ua": "Звук 'ъ' (шва)",
+      "source": "Phonetics",
+      "tag": "phonetics",
+      "ruleEng": "Similar to Turkish 'ı', Albanian 'ë'; not in Greek, Romanian; West Slavic have similar reduced vowels.",
+      "ruleRu": "Похож на турецкий 'ı', албанский 'ë'; нет в греческом, румынском; западнославянские имеют похожие редуцированные гласные.",
+      "ruleUA": "Подібний до турецького 'ı', албанського 'ë'; немає в грецькій, румунській; західнослов'янські мають подібні редуковані голосні."
+    },
+    {
+      "bg": "Редуцированные гласные",
+      "eng": "Reduced vowels",
+      "ru": "Редуцированные гласные",
+      "ua": "Редуковані голосні",
+      "source": "Balkan",
+      "tag": "phonetics",
+      "ruleEng": "Vowel reduction in unstressed positions, shared with Macedonian, Serbian; similar in Albanian; West Slavic also reduce.",
+      "ruleRu": "Редукция гласных в безударных позициях, общее с македонским, сербским; похоже в албанском; западнославянские тоже редуцируют.",
+      "ruleUA": "Редукція голосних у ненаголошених позиціях, спільне з македонською, сербською; подібне в албанській; західнослов'янські теж редукують."
+    },
+    {
+      "bg": "Отсутствие йотированных звуков в некоторых",
+      "eng": "Lack of yotated sounds in some",
+      "ru": "Отсутствие йотированных звуков в некоторых",
+      "ua": "Відсутність йотованих звуків у деяких",
+      "source": "South Slavic",
+      "tag": "phonetics",
+      "ruleEng": "Macedonian uses 'ј' for yotated, Bulgarian 'й'; Serbian similar; West Slavic have more palatalization.",
+      "ruleRu": "Македонский использует 'ј' для йотированных, болгарский 'й'; сербский похож; западнославянские имеют больше палатализации.",
+      "ruleUA": "Македонська використовує 'ј' для йотованих, болгарська 'й'; сербська подібна; західнослов'янські мають більше палаталізації."
+    },
+    {
+      "bg": "Согласные кластеры",
+      "eng": "Consonant clusters",
+      "ru": "Согласные кластеры",
+      "ua": "Приголосні кластери",
+      "source": "Slavic",
+      "tag": "phonetics",
+      "ruleEng": "Similar clusters like 'str' in all Slavic (West, Serbian, Macedonian); Turkish has different phonotactics.",
+      "ruleRu": "Похожие кластеры типа 'str' во всех славянских (западных, сербском, македонском); турецкий имеет другую фонотактику.",
+      "ruleUA": "Подібні кластери типу 'str' у всіх слов'янських (західних, сербській, македонській); турецька має іншу фонотактику."
+    },
+    {
+      "bg": "Акцент на предпоследнем слоге",
+      "eng": "Stress on penultimate syllable",
+      "ru": "Ударение на предпоследнем слоге",
+      "ua": "Наголос на передостанньому складі",
+      "source": "Balkan",
+      "tag": "phonetics",
+      "ruleEng": "Common in Macedonian, Albanian; variable in Bulgarian; West Slavic free stress; Turkish last syllable.",
+      "ruleRu": "Общее в македонском, албанском; переменное в болгарском; западнославянские свободное ударение; турецкий на последнем слоге.",
+      "ruleUA": "Спільне в македонській, албанській; змінне в болгарській; західнослов'янські вільний наголос; турецька на останньому складі."
+    },
+    {
+      "bg": "Палатальные звуки",
+      "eng": "Palatal sounds",
+      "ru": "Палатальные звуки",
+      "ua": "Палатальні звуки",
+      "source": "Slavic",
+      "tag": "phonetics",
+      "ruleEng": "Soft consonants shared with West Slavic (ć, ś), Serbian (ć, đ); less in Turkish, Greek.",
+      "ruleRu": "Мягкие согласные общее с западнославянскими (ć, ś), сербским (ć, đ); меньше в турецком, греческом.",
+      "ruleUA": "М'які приголосні спільне з західнослов'янськими (ć, ś), сербською (ć, đ); менше в турецькій, грецькій."
+    },
+    {
+      "bg": "Гласный 'я' и 'ю'",
+      "eng": "Vowels 'я' and 'ю'",
+      "ru": "Гласные 'я' и 'ю'",
+      "ua": "Голосні 'я' і 'ю'",
+      "source": "South Slavic",
+      "tag": "phonetics",
+      "ruleEng": "Yotated vowels like in Serbian 'ja', Macedonian 'ја'; West Slavic similar 'ja'; not in non-Slavic.",
+      "ruleRu": "Йотированные гласные как в сербском 'ja', македонском 'ја'; западнославянские похожие 'ja'; нет в неславянских.",
+      "ruleUA": "Йотовані голосні як в сербській 'ja', македонській 'ја'; західнослов'янські подібні 'ja'; немає в неслов'янських."
+    },
+    {
+      "bg": "Редукция 'о' и 'е'",
+      "eng": "Reduction of 'o' and 'e'",
+      "ru": "Редукция 'о' и 'е'",
+      "ua": "Редукція 'о' і 'е'",
+      "source": "Balkan/Slavic",
+      "tag": "phonetics",
+      "ruleEng": "Unstressed reduction, shared with Greek (some), Albanian; common in Slavic including West.",
+      "ruleRu": "Безударная редукция, общее с греческим (частично), албанским; распространено в славянских включая западные.",
+      "ruleUA": "Ненаголошена редукція, спільне з грецькою (частково), албанською; поширене в слов'янських включаючи західні."
+    },
+    {
+      "bg": "Звук 'ж' и 'ш'",
+      "eng": "Sounds 'ж' and 'ш'",
+      "ru": "Звуки 'ж' и 'ш'",
+      "ua": "Звуки 'ж' і 'ш'",
+      "source": "Slavic",
+      "tag": "phonetics",
+      "ruleEng": "Postalveolar fricatives shared across all Slavic; Turkish has 'ş'; Greek 'σ'; Romanian 'ș'.",
+      "ruleRu": "Постальвеолярные фрикативные общее по всем славянским; турецкий 'ş'; греческий 'σ'; румынский 'ș'.",
+      "ruleUA": "Постальвеолярні фрикативні спільне по всіх слов'янських; турецька 'ş'; грецька 'σ'; румунська 'ș'."
+    },
+    {
+      "bg": "Тональный акцент в некоторых диалектах",
+      "eng": "Tonal accent in some dialects",
+      "ru": "Тональный акцент в некоторых диалектах",
+      "ua": "Тональний наголос в деяких діалектах",
+      "source": "South Slavic",
+      "tag": "phonetics",
+      "ruleEng": "Similar to Serbian pitch accent; Macedonian dynamic; not in West Slavic, Turkish.",
+      "ruleRu": "Похоже на сербский тональный акцент; македонский динамический; нет в западнославянских, турецком.",
+      "ruleUA": "Подібне до сербського тонального наголосу; македонська динамічна; немає в західнослов'янських, турецькій."
+    },
+    {
+      "bg": "Гласный 'у' и 'и'",
+      "eng": "Vowels 'у' and 'и'",
+      "ru": "Гласные 'у' и 'и'",
+      "ua": "Голосні 'у' і 'и'",
+      "source": "Universal",
+      "tag": "phonetics",
+      "ruleEng": "Close vowels shared universally, but pronunciation similar in Slavic and Balkan languages.",
+      "ruleRu": "Закрытые гласные общее универсально, но произношение похоже в славянских и балканских языках.",
+      "ruleUA": "Закриті голосні спільне універсально, але вимова подібна в слов'янських і балканських мовах."
+    },
+    {
+      "bg": "Согласный 'х'",
+      "eng": "Consonant 'х'",
+      "ru": "Согласный 'х'",
+      "ua": "Приголосний 'х'",
+      "source": "Slavic/Balkan",
+      "tag": "phonetics",
+      "ruleEng": "Velar fricative like in Greek 'χ', Serbian 'h'; West Slavic 'ch'; Turkish 'h'.",
+      "ruleRu": "Велярный фрикативный как в греческом 'χ', сербском 'h'; западнославянский 'ch'; турецкий 'h'.",
+      "ruleUA": "Велярний фрикативний як в грецькій 'χ', сербській 'h'; західнослов'янський 'ch'; турецька 'h'."
+    }
+  ]
+}

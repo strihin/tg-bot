@@ -1,0 +1,138 @@
+{
+  "title": "Выражения с ракией и алкоголем",
+  "description": "Застольные фразы, тосты и идиомы про пьянство – важная часть болгарской культуры.",
+  "items": [
+    {
+      "bg": "Наздраве!",
+      "eng": "Cheers!",
+      "ru": "На здоровье! / Будем!",
+      "ua": "На здоров'я!",
+      "source": "toast",
+      "tag": "drinking",
+      "ruleEng": "Universal Bulgarian toast, literally 'to health'.",
+      "ruleRu": "Универсальный болгарский тост, буквально 'за здоровье'.",
+      "ruleUA": "Універсальний болгарський тост, буквально 'за здоров'я'."
+    },
+    {
+      "bg": "Една ракийка за загрявка.",
+      "eng": "One small rakia to warm up.",
+      "ru": "Одна рюмочка для аппетита/разогрева.",
+      "ua": "Одна чарочка для апетиту/розігріву.",
+      "source": "drinking",
+      "tag": "rakia",
+      "ruleEng": "Diminutive 'ракийка' – affectionate name for a shot of rakia.",
+      "ruleRu": "Уменьшительное 'ракийка' – ласковое название рюмки ракии.",
+      "ruleUA": "Зменшувальне 'ракийка' – пестливе назва чарки ракію."
+    },
+    {
+      "bg": "Пиян като мотика.",
+      "eng": "Drunk as a hoe (very drunk).",
+      "ru": "Пьян в стельку / как сапожник.",
+      "ua": "П'яний як чіп.",
+      "source": "drunk",
+      "tag": "idiom",
+      "ruleEng": "Popular idiom comparing extreme drunkenness to a garden tool.",
+      "ruleRu": "Популярная идиома, сравнивающая сильное опьянение с мотыгой.",
+      "ruleUA": "Популярна ідіома, порівнюючи сильне сп'яніння з мотикою."
+    },
+    {
+      "bg": "Да ти е сладко винцето.",
+      "eng": "May your wine be sweet (sarcastically about hangover).",
+      "ru": "Пусть тебе вино сладким будет (сарказм про похмелье).",
+      "ua": "Хай тобі винце солодким буде (сарказм про похмелля).",
+      "source": "hangover",
+      "tag": "sarcasm",
+      "ruleEng": "Said mockingly the morning after heavy drinking.",
+      "ruleRu": "Говорится с насмешкой утром после обильных возлияний.",
+      "ruleUA": "Говориться з насмішкою вранці після рясних узливань."
+    },
+    {
+      "bg": "Ракията е лекарство.",
+      "eng": "Rakia is medicine.",
+      "ru": "Ракия – лекарство.",
+      "ua": "Ракія – ліки.",
+      "source": "excuse",
+      "tag": "rakia",
+      "ruleEng": "Common justification for drinking rakia at any time.",
+      "ruleRu": "Обычное оправдание для питья ракии в любое время.",
+      "ruleUA": "Звичайне виправдання для пиття ракію в будь-який час."
+    },
+    {
+      "bg": "Пием за здраве, не за пиене.",
+      "eng": "We drink to health, not to get drunk.",
+      "ru": "Пьём за здоровье, а не для пьянки.",
+      "ua": "П'ємо за здоров'я, а не для сп'яніння.",
+      "source": "toast",
+      "tag": "drinking",
+      "ruleEng": "Polite toast emphasizing moderation (often ironic).",
+      "ruleRu": "Вежливый тост, подчёркивающий умеренность (часто иронично).",
+      "ruleUA": "Ввічливий тост, підкреслюючий помірність (часто іронічно)."
+    },
+    {
+      "bg": "Сухо ми е гърлото.",
+      "eng": "My throat is dry (need a drink).",
+      "ru": "Горло пересохло.",
+      "ua": "Горло пересохло.",
+      "source": "excuse",
+      "tag": "drinking",
+      "ruleEng": "Classic excuse to pour another round.",
+      "ruleRu": "Классическое оправдание налить ещё одну.",
+      "ruleUA": "Класичне виправдання налити ще одну."
+    },
+    {
+      "bg": "Домашна ракия – най-добрата.",
+      "eng": "Homemade rakia is the best.",
+      "ru": "Домашняя ракия – самая лучшая.",
+      "ua": "Домашня ракія – найкраща.",
+      "source": "rakia",
+      "tag": "culture",
+      "ruleEng": "Definite superlative with -та on adjective.",
+      "ruleRu": "Определённый превосходный степень с -та на прилагательном.",
+      "ruleUA": "Визначений вищий ступінь з -та на прикметнику."
+    },
+    {
+      "bg": "Една за път.",
+      "eng": "One for the road.",
+      "ru": "Одна на посошок.",
+      "ua": "Одна на дорожку.",
+      "source": "toast",
+      "tag": "drinking",
+      "ruleEng": "Last drink before leaving – universal tradition.",
+      "ruleRu": "Последняя рюмка перед уходом – универсальная традиция.",
+      "ruleUA": "Остання чарка перед відходом – універсальна традиція."
+    },
+    {
+      "bg": "Махмурлукът е тежък.",
+      "eng": "The hangover is heavy.",
+      "ru": "Похмелье тяжёлое.",
+      "ua": "Похмілля важке.",
+      "source": "hangover",
+      "tag": "idiom",
+      "ruleEng": "Word 'махмурлук' from Turkish, very common in Bulgarian.",
+      "ruleRu": "Слово 'махмурлук' из турецкого, очень распространено в болгарском.",
+      "ruleUA": "Слово 'махмурлук' з турецької, дуже поширене в болгарській."
+    },
+    {
+      "bg": "Да пием до дъно!",
+      "eng": "Let's drink to the bottom!",
+      "ru": "Пьём до дна!",
+      "ua": "П'ємо до дна!",
+      "source": "toast",
+      "tag": "drinking",
+      "ruleEng": "Call to finish the glass completely.",
+      "ruleRu": "Призыв допить стакан до дна.",
+      "ruleUA": "Заклик допити склянку до дна."
+    },
+    {
+      "bg": "Ракия без салата е като любов без целувка.",
+      "eng": "Rakia without salad is like love without a kiss.",
+      "ru": "Ракия без салата – как любовь без поцелуя.",
+      "ua": "Ракія без салати – як кохання без поцілунку.",
+      "source": "idiom",
+      "tag": "rakia",
+      "ruleEng": "Traditional saying emphasizing proper meze (appetizers).",
+      "ruleRu": "Традиционная поговорка, подчёркивающая важность мезе.",
+      "ruleUA": "Традиційне прислів'я, що підкреслює важливість мезе."
+    }
+  ]
+}

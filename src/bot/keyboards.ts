@@ -1,8 +1,30 @@
+import { LEVELS } from '../constants';
+
+/**
+ * Generate level/folder selection keyboard dynamically from LEVELS constant
+ */
+const generateLevelSelectKeyboard = () => {
+  return {
+    inline_keyboard: Object.entries(LEVELS).map(([key, level]) => (
+      [
+        {
+          text: `${level.emoji} ${level.name} - ${level.description}`,
+          callback_data: `folder_${key}`,
+        },
+      ]
+    )),
+  };
+};
+
 export const lessonKeyboards = {
   showTranslation: {
     inline_keyboard: [
       [{ text: '📖 Show translation', callback_data: 'show_translation' }],
       [{ text: '⏭️ Skip to next', callback_data: 'next' }],
+      [
+        { text: '📚 Change folder', callback_data: 'change_folder' },
+        { text: '🏠 Main menu', callback_data: 'back_to_menu' },
+      ],
     ],
   },
 
@@ -11,6 +33,10 @@ export const lessonKeyboards = {
       [
         { text: '⬅️ Previous', callback_data: 'prev' },
         { text: 'Next ➡️', callback_data: 'next' },
+      ],
+      [
+        { text: '📚 Change folder', callback_data: 'change_folder' },
+        { text: '🏠 Main menu', callback_data: 'back_to_menu' },
       ],
       [{ text: '❌ Exit lesson', callback_data: 'exit' }],
     ],
@@ -22,13 +48,7 @@ export const lessonKeyboards = {
     ],
   },
 
-  levelSelect: {
-    inline_keyboard: [
-      [{ text: '🌱 Basic - Simple sentences', callback_data: 'level_basic' }],
-      [{ text: '🌿 Middle - With grammar tips', callback_data: 'level_middle' }],
-      [{ text: '🔗 Middle Slavic - False friends & culture', callback_data: 'level_middle-slavic' }],
-    ],
-  },
+  levelSelect: generateLevelSelectKeyboard(),
 
   startMenu: {
     inline_keyboard: [

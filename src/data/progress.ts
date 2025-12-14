@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { UserProgress } from '../types';
+import { UserProgress, FolderType, TargetLanguage } from '../types';
 
 const progressDir = path.join(__dirname, '../../data/.progress');
 
@@ -55,14 +55,14 @@ export function saveUserProgress(progress: UserProgress): void {
 export function initializeUserProgress(
   userId: number,
   category: string = 'greetings',
-  languageTo: 'eng' | 'ru' | 'ua' = 'eng',
-  level: 'basic' | 'middle' | 'middle-slavic' = 'basic'
+  languageTo: TargetLanguage = 'eng',
+  folder: FolderType = 'basic'
 ): UserProgress {
   const progress: UserProgress = {
     userId,
     currentIndex: 0,
     category,
-    level,
+    folder,
     languageFrom: 'bg',
     languageTo,
   };
@@ -84,7 +84,7 @@ export function updateUserIndex(userId: number, newIndex: number): void {
 /**
  * Change target language preference for user
  */
-export function changeTargetLanguage(userId: number, languageTo: 'eng' | 'ru' | 'ua'): void {
+export function changeTargetLanguage(userId: number, languageTo: TargetLanguage): void {
   const progress = getUserProgress(userId) || initializeUserProgress(userId);
   progress.languageTo = languageTo;
   saveUserProgress(progress);
