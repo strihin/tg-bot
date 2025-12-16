@@ -1,11 +1,10 @@
 import express, { Express, Request, Response } from 'express';
-import https from 'https';
-import fs from 'fs';
 import TelegramBot from 'node-telegram-bot-api';
 import { config } from './config';
 
 const PORT = process.env.PORT || 3000;
-const WEBHOOK_URL = process.env.WEBHOOK_URL || `http://localhost:${PORT}`;
+const VPS_IP = process.env.VPS_IP || 'localhost';
+const WEBHOOK_URL = process.env.WEBHOOK_URL || `http://${VPS_IP}:${PORT}`;
 
 export async function setupWebhookServer(bot: TelegramBot): Promise<Express> {
   const app = express();
@@ -87,37 +86,13 @@ export async function setupWebhookServer(bot: TelegramBot): Promise<Express> {
 
 export async function startServer(app: Express): Promise<void> {
   return new Promise((resolve) => {
-    // Check if running in production (VPS) or development (local)
-    const isDev = process.env.NODE_ENV !== 'production';
-    
-    if (isDev) {
-      // Development: Use HTTP
-      app.listen(PORT, () => {
-        console.log(`🚀 Server running on port ${PORT} (HTTP - Development)`);
-        console.log(`📍 Webhook URL: http://localhost:${PORT}/telegram/webhook`);
-        console.log(`🔗 Register webhook: POST http://localhost:${PORT}/telegram/register-webhook`);
-        resolve();
-      });
-    } else {
-      // Production: Use HTTPS with self-signed certificate
-      try {
-        const options = {
-          key: fs.readFileSync('./private.key'),
-          cert: fs.readFileSync('./public.cert')
-        };
-
-        https.createServer(options, app).listen(PORT, '0.0.0.0', () => {
-          console.log(`🚀 Server running on port ${PORT} (HTTPS - Production)`);
-          console.log(`📍 Webhook URL: https://72.62.91.91:${PORT}/telegram/webhook`);
-          console.log(`🔗 Register webhook: POST https://72.62.91.91:${PORT}/telegram/register-webhook`);
-          resolve();
-        });
-      } catch (error) {
-        console.error('❌ SSL certificates not found!');
-        console.error('Generate them with:');
-        console.error('openssl req -x509 -newkey rsa:2048 -keyout private.key -out public.cert -days 365 -nodes');
-        process.exit(1);
-      }
-    }
+    // Use HTTP for now (easier testing)
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Server running on port ${PORT} (HTTP)`);
+      console.log(`📍 Webhook URL: http://${VPS_IP}:${PORT}/telegram/webhook`);
+      console.log(`🔗 n8n action URL: http://${VPS_IP}:${PORT}/n8n/action`);
+      console.log(`🔗 Health check: http://${VPS_IP}:${PORT}/health`);
+      resolve();
+    });
   });
 }
