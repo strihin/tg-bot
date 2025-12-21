@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇧🇬 Bulgarian Learning - Web Version</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        .status {
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .error {
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff0000;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .log {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        button {
+            background: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: none;
+            border-radius: 3px;
+            width: 200px;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        h2 {
+            margin-top: 0;
+            color: #ffd700;
+        }
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .level-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .learning-section {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .sentence-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .bulgarian-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .translation-text {
+            font-size: 18px;
+            color: #27ae60;
+            margin: 15px 0;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hidden {
+            visibility: hidden;
+        }
+        .learning-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .learning-controls button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .reveal-btn {
+            background: #3498db;
+            color: white;
+        }
+        .reveal-btn:hover {
+            background: #2980b9;
+        }
+        .next-btn {
+            background: #27ae60;
+            color: white;
+        }
+        .next-btn:hover {
+            background: #229954;
+        }
+        .prev-btn {
+            background: #95a5a6;
+            color: white;
+        }
+        .prev-btn:hover {
+            background: #7f8c8d;
+        }
+        .progress-info {
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .language-selector {
+            margin: 15px 0;
+        }
+        .language-selector select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🇧🇬 Bulgarian Learning - Web Version</h1>
+
+    <div class="container">
+        <!-- Learning Section -->
+        <div class="learning-section">
+            <h2>📖 Start Learning</h2>
+
+            <div class="language-selector">
+                <label for="learnLanguage">Choose your language: </label>
+                <select id="learnLanguage" onchange="changeLanguage()">
+                    <option value="eng">English</option>
+                    <option value="kharkiv">Kharkiv (Ukrainian Dialect)</option>
+                    <option value="ua">Українська</option>
+                </select>
+            </div>
+
+            <div id="levelSelection">
+                <h3>Choose a Level:</h3>
+                <div id="learnLevels" class="level-grid">
+                    <!-- Learning levels will be loaded here -->
+                </div>
+            </div>
+
+            <div id="categorySelection" style="display: none;">
+                <h3 id="categoryTitle">Choose a Category:</h3>
+                <div id="learnCategories" class="level-grid">
+                    <!-- Categories will be loaded here -->
+                </div>
+                <button onclick="backToLevels()" style="margin-top: 15px;">← Back to Levels</button>
+            </div>
+
+            <div id="learningInterface" style="display: none;">
+                <div class="progress-info" id="progressInfo">
+                    Loading progress...
+                </div>
+
+                <div class="sentence-card">
+                    <div class="bulgarian-text" id="bulgarianText">
+                        Loading sentence...
+                    </div>
+                    <div class="translation-text hidden" id="translationText">
+                        Translation will appear here
+                    </div>
+                </div>
+
+                <div class="learning-controls">
+                    <button class="prev-btn" id="prevBtn" onclick="previousSentence()" disabled>← Previous</button>
+                    <button class="reveal-btn" id="revealBtn" onclick="revealTranslation()">Show Translation</button>
+                    <button class="next-btn" id="nextBtn" onclick="nextSentence()">Next →</button>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="changeCategory()" style="background: #f39c12; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Change Category</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testing Section (Collapsible) -->
+        <div class="container" id="testingSection">
+            <h2 onclick="toggleTesting()" style="cursor: pointer;">🔧 Bot Testing (Click to toggle) ▼</h2>
+
+            <div id="testingContent">
+                <div id="status" class="status">Loading...</div>
+
+                <div class="section">
+                    <h2>🔍 Bot Status</h2>
+                    <button onclick="checkStatus()">Check Bot Status</button>
+                    <button onclick="checkLogs()">View Recent Logs</button>
+                </div>
+
+                <div class="section">
+                    <h2>👤 User Progress</h2>
+                    <input type="number" id="userId" placeholder="Enter User ID" value="178275005">
+                    <button onclick="checkUser()">Check User Progress</button>
+                    <button onclick="resetUser()">Reset User Progress</button>
+                    <div id="userInfo"></div>
+                </div>
+
+                <div class="section">
+                    <h2>📚 Learning Levels</h2>
+                    <div id="levels" class="level-grid">
+                        <!-- Levels will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>📋 Recent Activity</h2>
+                    <div id="logs" class="log">Click "View Recent Logs" to see bot activity...</div>
+                </div>
+
+                <div class="section">
+                    <h2>ℹ️ Instructions</h2>
+                    <p><strong>1.</strong> Use this web interface to test bot functionality without Telegram</p>
+                    <p><strong>2.</strong> Check user progress and learning levels</p>
+                    <p><strong>3.</strong> Monitor bot logs for debugging</p>
+                    <p><strong>4.</strong> The bot should be running in Docker for full functionality</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let logInterval;
+        let currentUserId = Date.now(); // Generate unique user ID for web learning
+        let currentProgress = null;
+        let testingCollapsed = false;
+
+        async function apiCall(endpoint, options = {}) {
+            try {
+                const response = await fetch(endpoint, options);
+                return await response.json();
+            } catch (error) {
+                return { error: error.message };
+            }
+        }
+
+        // Learning Functions
+        async function loadLearningLevels() {
+            const status = await apiCall('/api/status');
+            if (status.levels) {
+                const levelsDiv = document.getElementById('learnLevels');
+                levelsDiv.innerHTML = Object.entries(status.levels).map(([key, level]) =>
+                    `<div class="level-card">
+                        <strong>${level.emoji} ${level.name}</strong><br>
+                        <small>${level.description}</small><br>
+                        <button onclick="selectLevel('${key}')">Start Learning</button>
+                    </div>`
+                ).join('');
+            }
+        }
+
+        async function selectLevel(folder) {
+            const categoriesData = await apiCall(`/api/categories/${folder}`);
+            if (categoriesData.categories) {
+                document.getElementById('levelSelection').style.display = 'none';
+                document.getElementById('categorySelection').style.display = 'block';
+                document.getElementById('categoryTitle').textContent = `Choose a Category in ${categoriesData.level.emoji} ${categoriesData.level.name}:`;
+
+                const categoriesDiv = document.getElementById('learnCategories');
+                categoriesDiv.innerHTML = categoriesData.categories.map(cat =>
+                    `<div class="level-card">
+                        <strong>${cat.emoji} ${cat.name}</strong><br>
+                        <button onclick="startLearning('${folder}', '${cat.id}')">Start</button>
+                    </div>`
+                ).join('');
+            }
+        }
+
+        async function startLearning(folder, category) {
+            const languageTo = document.getElementById('learnLanguage').value;
+
+            const initResult = await apiCall('/api/learn/init', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: currentUserId,
+                    category,
+                    languageTo,
+                    folder
+                })
+            });
+
+            if (initResult.success) {
+                currentProgress = initResult.progress;
+                document.getElementById('categorySelection').style.display = 'none';
+                document.getElementById('learningInterface').style.display = 'block';
+                await loadNextSentence();
+            } else {
+                alert('Failed to start learning: ' + (initResult.error || 'Unknown error'));
+            }
+        }
+
+        async function changeLanguage() {
+            if (!currentProgress) {
+                // Language selection before learning started is fine
+                return;
+            }
+
+            const newLanguage = document.getElementById('learnLanguage').value;
+            const result = await apiCall(`/api/learn/${currentUserId}/language`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ languageTo: newLanguage })
+            });
+
+            if (result.success) {
+                // Reload the current sentence with new language
+                await loadNextSentence();
+            } else {
+                alert('Failed to change language: ' + (result.error || 'Unknown error'));
+                // Revert dropdown to previous value
+                window.location.reload();
+            }
+        }
+
+        async function loadNextSentence() {
+            const result = await apiCall(`/api/learn/${currentUserId}/next`);
+
+            if (result.error) {
+                alert('Error loading sentence: ' + result.error);
+                return;
+            }
+
+            currentProgress = result.progress;
+
+            if (!result.sentence) {
+                document.getElementById('bulgarianText').textContent = '🎉 Congratulations! You completed this category!';
+                document.getElementById('translationText').textContent = '';
+                document.getElementById('translationText').classList.add('hidden');
+                document.getElementById('revealBtn').disabled = true;
+                document.getElementById('nextBtn').disabled = true;
+                return;
+            }
+
+            document.getElementById('bulgarianText').textContent = result.sentence.bg;
+            document.getElementById('translationText').textContent = result.sentence.translation;
+            document.getElementById('translationText').classList.add('hidden');
+
+            document.getElementById('progressInfo').innerHTML = `
+                <strong>Progress:</strong> ${result.currentIndex + 1} / ${result.totalSentences} sentences<br>
+                <strong>Level:</strong> ${result.progress.folder} | <strong>Category:</strong> ${result.progress.category}
+            `;
+
+            document.getElementById('prevBtn').disabled = !result.hasPrevious;
+            document.getElementById('nextBtn').disabled = !result.hasNext;
+            document.getElementById('revealBtn').disabled = false;
+        }
+
+        function revealTranslation() {
+            document.getElementById('translationText').classList.remove('hidden');
+            document.getElementById('revealBtn').disabled = true;
+        }
+
+        async function nextSentence() {
+            const result = await apiCall(`/api/learn/${currentUserId}/next`, { method: 'POST' });
+            if (result.success) {
+                await loadNextSentence();
+            }
+        }
+
+        async function previousSentence() {
+            const result = await apiCall(`/api/learn/${currentUserId}/previous`, { method: 'POST' });
+            if (result.success) {
+                await loadNextSentence();
+            }
+        }
+
+        function changeCategory() {
+            document.getElementById('learningInterface').style.display = 'none';
+            document.getElementById('levelSelection').style.display = 'block';
+        }
+
+        function backToLevels() {
+            document.getElementById('categorySelection').style.display = 'none';
+            document.getElementById('levelSelection').style.display = 'block';
+        }
+
+        function toggleTesting() {
+            testingCollapsed = !testingCollapsed;
+            const content = document.getElementById('testingContent');
+            const header = document.querySelector('#testingSection h2');
+
+            if (testingCollapsed) {
+                content.style.display = 'none';
+                header.textContent = '🔧 Bot Testing (Click to toggle) ▲';
+            } else {
+                content.style.display = 'block';
+                header.textContent = '🔧 Bot Testing (Click to toggle) ▼';
+            }
+        }
+
+        // Existing testing functions
+        async function checkStatus() {
+            const status = await apiCall('/api/status');
+            const statusDiv = document.getElementById('status');
+
+            if (status.error) {
+                statusDiv.className = 'error';
+                statusDiv.textContent = `❌ Error: ${status.error}`;
+            } else {
+                statusDiv.className = 'status';
+                statusDiv.innerHTML = `
+                    ✅ Bot Status: ${status.status}<br>
+                    🕒 Last Check: ${new Date(status.timestamp).toLocaleString()}<br>
+                    📚 Levels Available: ${Object.keys(status.levels).length}
+                `;
+            }
+
+            loadLevels();
+        }
+
+        async function checkUser() {
+            const userId = document.getElementById('userId').value;
+            const userInfo = await apiCall(`/api/user/${userId}`);
+            const userDiv = document.getElementById('userInfo');
+
+            if (userInfo.error) {
+                userDiv.innerHTML = `<div class="error">❌ Error: ${userInfo.error}</div>`;
+            } else if (!userInfo.progress) {
+                userDiv.innerHTML = `<div class="status">ℹ️ No progress found for user ${userId}</div>`;
+            } else {
+                const p = userInfo.progress;
+                userDiv.innerHTML = `
+                    <div class="status">
+                        ✅ User Progress Found<br>
+                        🎯 Language: ${p.languageTo.toUpperCase()}<br>
+                        📁 Level: ${p.folder}<br>
+                        📚 Category: ${p.category}<br>
+                        📍 Current Index: ${p.currentIndex}
+                    </div>
+                `;
+            }
+        }
+
+        async function resetUser() {
+            const userId = document.getElementById('userId').value;
+            const result = await apiCall(`/api/user/${userId}/reset`, { method: 'POST' });
+            alert(result.message || 'Progress reset');
+            checkUser();
+        }
+
+        async function loadLevels() {
+            const status = await apiCall('/api/status');
+            if (status.levels) {
+                const levelsDiv = document.getElementById('levels');
+                levelsDiv.innerHTML = Object.entries(status.levels).map(([key, level]) =>
+                    `<div class="level-card">
+                        <strong>${level.emoji} ${level.name}</strong><br>
+                        <small>${level.description}</small><br>
+                        <button onclick="loadCategories('${key}')">View Categories</button>
+                    </div>`
+                ).join('');
+            }
+        }
+
+        async function loadCategories(folder) {
+            const data = await apiCall(`/api/categories/${folder}`);
+            if (data.categories) {
+                alert(`${data.level.emoji} ${data.level.name}\n\nCategories:\n${data.categories.map(c => `${c.emoji} ${c.name}`).join('\n')}`);
+            }
+        }
+
+        async function checkLogs() {
+            const logsDiv = document.getElementById('logs');
+            try {
+                const logsData = await apiCall('/api/logs?limit=50');
+                if (logsData.logs && logsData.logs.length > 0) {
+                    logsDiv.innerHTML = logsData.logs.map(log => {
+                        const time = new Date(log.timestamp).toLocaleTimeString();
+                        const emoji = log.type === 'callback' ? '🔔' : log.type === 'message' ? '📨' : log.type === 'error' ? '❌' : 'ℹ️';
+                        return `${emoji} <strong>[${time}]</strong> User ${log.userId}: ${log.data}`;
+                    }).join('<br>');
+                } else {
+                    logsDiv.textContent = 'No logs found yet. Click buttons in Telegram to generate logs.';
+                }
+            } catch (error) {
+                logsDiv.textContent = `Error loading logs: ${error.message}`;
+            }
+
+            if (logInterval) clearInterval(logInterval);
+            logInterval = setInterval(checkLogs, 2000); // Auto-refresh logs every 2 seconds
+        }
+        }
+
+        // Auto-check status on load
+        window.onload = function() {
+            checkStatus();
+            loadLearningLevels();
+        };
+
+        // Refresh status every 30 seconds
+        setInterval(checkStatus, 30000);
+    </script>
+</body>
+</html>
