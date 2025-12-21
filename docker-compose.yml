@@ -29,24 +29,22 @@ services:
       retries: 3
       start_period: 40s
 
-  # MongoDB Service (Optional - use if you want to run MongoDB locally)
-  # Uncomment these lines if you want MongoDB running in Docker
-  # mongodb:
-  #   image: mongo:7.0
-  #   container_name: bg-bot-mongodb
-  #   env_file:
-  #     - .env.mongodb
-  #   ports:
-  #     - "27017:27017"
-  #   volumes:
-  #     - mongodb-data:/data/db
-  #   restart: unless-stopped
-  #   networks:
-  #     - bg-bot-network
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: ${MONGO_INIT_USER:-admin}
-  #     MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INIT_PASS:-changeme}
-  #     MONGO_INITDB_DATABASE: bulgarian-bot
+  mongodb:
+    image: mongo:7.0
+    container_name: bg-bot-mongodb
+    env_file:
+      - .env.mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    restart: unless-stopped
+    networks:
+      - bg-bot-network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INIT_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INIT_PASS:-changeme}
+      MONGO_INITDB_DATABASE: bulgarian-bot
 
   # Reverse Proxy / Web Server (Nginx)
   nginx:
