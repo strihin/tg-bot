@@ -1,8 +1,8 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { getUserProgress, saveUserProgress } from '../../db/mongo';
-import { initializeUserProgress } from '../../data/progress';
+import { getUserProgressAsync, saveUserProgress, initializeUserProgress } from '../../data/progress';
 import { LEVELS } from '../../constants';
 import { FolderType } from '../../types';
+import { getUIText } from '../../utils/uiTranslation';
 import { getCategoryKeyboard } from './category';
 
 /**
@@ -19,32 +19,48 @@ export async function handleSelectLevel(
     const userId = callbackQuery.from.id;
     const chatId = callbackQuery.message?.chat.id;
 
-    if (!chatId) return;
+    console.log(`📁 handleSelectLevel - userId: ${userId}, chatId: ${chatId}`);
+
+    if (!chatId) {
+      console.error(`❌ No chatId in callback`);
+      return;
+    }
 
     const data = callbackQuery.data || '';
     const folder = data.replace('folder_', '') as FolderType;
+    console.log(`📁 Selected folder: ${folder}`);
 
     // Update or create user progress with selected folder
-    let progress = await getUserProgress(userId);
+    let progress = await getUserProgressAsync(userId);
     if (progress) {
+      console.log(`📝 User has existing progress, updating folder`);
       progress.folder = folder;
     } else {
-      // Initialize progress if new user selects folder
-      progress = initializeUserProgress(userId, 'greetings', 'eng', folder);
+      // Initialize progress if new user selects folder - use Ukrainian by default
+      console.log(`🆕 Initializing new user with folder: ${folder}`);
+      progress = await initializeUserProgress(userId, 'greetings', 'ua', folder);
     }
     await saveUserProgress(progress);
+    console.log(`✅ Progress saved for user ${userId}`);
 
     const folderInfo = LEVELS[folder];
+    console.log(`📚 Folder info: ${folderInfo.name}`);
 
     // Show category selection after folder choice
+    console.log(`📤 Loading categories for folder: ${folder}`);
+    const keyboard = await getCategoryKeyboard(folder, progress.languageTo);
+    console.log(`✅ Categories loaded, sending message`);
+    
+    const selectCategoryText = getUIText('select_category', progress.languageTo);
     await bot.sendMessage(
       chatId,
-      `${folderInfo.emoji} **${folderInfo.name}** mode selected\n\n_${folderInfo.description}_\n\n📚 Now select a lesson category:`,
+      `${folderInfo.emoji} **${folderInfo.name}** mode selected\n\n_${folderInfo.description}_\n\n${selectCategoryText}`,
       {
         parse_mode: 'Markdown',
-        ...getCategoryKeyboard(folder),
+        ...keyboard,
       }
     );
+    console.log(`✅ Category selection sent to chat ${chatId}`);
   } catch (error) {
     console.error('❌ Error in handleSelectLevel:', error);
   }

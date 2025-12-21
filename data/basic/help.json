@@ -1,139 +1,139 @@
 [
   {
-    "bg": "Помощ!",
+    "bg": "пОмощ!",
     "eng": "Help!",
     "ru": "Помогите!",
     "ua": "Допоможіть!",
     "source": "emergencies"
   },
   {
-    "bg": "Трябва ми лекар",
+    "bg": "трЯбва ми лекАр",
     "eng": "I need a doctor",
     "ru": "Мне нужен врач",
     "ua": "Мені потрібен лікар",
     "source": "emergencies"
   },
   {
-    "bg": "Боли ме...",
+    "bg": "болИ ме...",
     "eng": "It hurts...",
     "ru": "У меня болит...",
     "ua": "У мене болить...",
     "source": "emergencies"
   },
   {
-    "bg": "Главобол",
+    "bg": "главобОл",
     "eng": "Headache",
     "ru": "Голова",
     "ua": "Головний біль",
     "source": "emergencies"
   },
   {
-    "bg": "Стомах",
+    "bg": "стОмах",
     "eng": "Stomach",
     "ru": "Желудок",
     "ua": "Шлунок",
     "source": "emergencies"
   },
   {
-    "bg": "Полиция",
+    "bg": "полИция",
     "eng": "Police",
     "ru": "Полиция",
     "ua": "Поліція",
     "source": "emergencies"
   },
   {
-    "bg": "Обади се на линейка",
+    "bg": "Обади се на линЕйка",
     "eng": "Call an ambulance",
     "ru": "Вызовите скорую",
     "ua": "Викличте швидку",
     "source": "emergencies"
   },
   {
-    "bg": "Къде е болницата?",
+    "bg": "кУде Е болнИцата?",
     "eng": "Where is the hospital?",
     "ru": "Где больница?",
     "ua": "Де лікарня?",
     "source": "emergencies"
   },
   {
-    "bg": "Къде е аптеката?",
+    "bg": "кУде Е Аптеката?",
     "eng": "Where is the pharmacy?",
     "ru": "Где аптека?",
     "ua": "Де аптека?",
     "source": "emergencies"
   },
   {
-    "bg": "Загубих паспорта си",
+    "bg": "загУбих паспОрта си",
     "eng": "I lost my passport",
     "ru": "Я потерял паспорт",
     "ua": "Я втратив паспорт",
     "source": "emergencies"
   },
   {
-    "bg": "Обадете се на полицията",
+    "bg": "Обадете се на полИцията",
     "eng": "Call the police",
     "ru": "Вызовите полицию",
     "ua": "Викличте поліцію",
     "source": "emergencies"
   },
   {
-    "bg": "Кражба",
+    "bg": "крАжба",
     "eng": "Theft",
     "ru": "Кража",
     "ua": "Крадіжка",
     "source": "emergencies"
   },
   {
-    "bg": "Не се чувствам добре",
+    "bg": "не се чувствАм дОбре",
     "eng": "I don't feel well",
     "ru": "Я плохо себя чувствую",
     "ua": "Я погано себе почуваю",
     "source": "emergencies"
   },
   {
-    "bg": "Имам температура",
+    "bg": "Имам темпЕратура",
     "eng": "I have a fever",
     "ru": "У меня температура",
     "ua": "У мене температура",
     "source": "emergencies"
   },
   {
-    "bg": "Трябва ми преводач",
+    "bg": "трЯбва ми преводАч",
     "eng": "I need an interpreter",
     "ru": "Мне нужен переводчик",
     "ua": "Мені потрібен перекладач",
     "source": "emergencies"
   },
   {
-    "bg": "Спешно!",
+    "bg": "спЕшно!",
     "eng": "Emergency!",
     "ru": "Срочно!",
     "ua": "Терміново!",
     "source": "emergencies"
   },
   {
-    "bg": "Пожар!",
+    "bg": "пожАр!",
     "eng": "Fire!",
     "ru": "Пожар!",
     "ua": "Пожежа!",
     "source": "emergencies"
   },
   {
-    "bg": "Какво време е?",
+    "bg": "кАкво врЕме Е?",
     "eng": "What time is it?",
     "ru": "Который час?",
     "ua": "Який час?",
     "source": "emergencies"
   },
   {
-    "bg": "Колко е часът?",
+    "bg": "колкО Е часУт?",
     "eng": "What time is it?",
     "ru": "Сколько времени?",
     "ua": "Скільки часу?",
     "source": "emergencies"
   },
   {
-    "bg": "Днес",
+    "bg": "днес",
     "eng": "Today",
     "ru": "Сегодня",
     "ua": "Сьогодні",
@@ -147,56 +147,56 @@
     "source": "emergencies"
   },
   {
-    "bg": "Вчера",
+    "bg": "вчерА",
     "eng": "Yesterday",
     "ru": "Вчера",
     "ua": "Вчора",
     "source": "emergencies"
   },
   {
-    "bg": "Сега",
+    "bg": "сегА",
     "eng": "Now",
     "ru": "Сейчас",
     "ua": "Зараз",
     "source": "emergencies"
   },
   {
-    "bg": "По-късно",
+    "bg": "по-кУсно",
     "eng": "Later",
     "ru": "Позже",
     "ua": "Пізніше",
     "source": "emergencies"
   },
   {
-    "bg": "Скоро",
+    "bg": "скОро",
     "eng": "Soon",
     "ru": "Скоро",
     "ua": "Скоро",
     "source": "emergencies"
   },
   {
-    "bg": "Веднага",
+    "bg": "веднАга",
     "eng": "Immediately",
     "ru": "Сразу",
     "ua": "Одразу",
     "source": "emergencies"
   },
   {
-    "bg": "Внимание!",
+    "bg": "вниманИе!",
     "eng": "Careful!",
     "ru": "Осторожно!",
     "ua": "Обережно!",
     "source": "emergencies"
   },
   {
-    "bg": "Стой!",
+    "bg": "стой!",
     "eng": "Stop!",
     "ru": "Стой!",
     "ua": "Стій!",
     "source": "emergencies"
   },
   {
-    "bg": "Не пипай!",
+    "bg": "не пипАй!",
     "eng": "Don't touch!",
     "ru": "Не трогай!",
     "ua": "Не чіпай!",
@@ -210,21 +210,21 @@
     "source": "emergencies"
   },
   {
-    "bg": "Забранено",
+    "bg": "забрАнено",
     "eng": "Forbidden",
     "ru": "Запрещено",
     "ua": "Заборонено",
     "source": "emergencies"
   },
   {
-    "bg": "Мога ли да помогна?",
+    "bg": "могА ли да помОгна?",
     "eng": "Can I help?",
     "ru": "Могу ли помочь?",
     "ua": "Я можу допомогти?",
     "source": "emergencies"
   },
   {
-    "bg": "Имам нужда от помощ",
+    "bg": "Имам нуждА От пОмощ",
     "eng": "I need help",
     "ru": "Мне нужна помощь",
     "ua": "Мені потрібна допомога",
@@ -238,112 +238,112 @@
     "source": "emergencies"
   },
   {
-    "bg": "Не работи",
+    "bg": "не рабОти",
     "eng": "It's not working",
     "ru": "Не работает",
     "ua": "Не працює",
     "source": "emergencies"
   },
   {
-    "bg": "Счупено е",
+    "bg": "счупенО Е",
     "eng": "It's broken",
     "ru": "Сломано",
     "ua": "Зламано",
     "source": "emergencies"
   },
   {
-    "bg": "Трябва ми интернет",
+    "bg": "трЯбва ми интернЕт",
     "eng": "I need internet",
     "ru": "Мне нужен интернет",
     "ua": "Мені потрібен інтернет",
     "source": "emergencies"
   },
   {
-    "bg": "Wi-Fi парола",
+    "bg": "Wi-Fi парОла",
     "eng": "Wi-Fi password",
     "ru": "Пароль Wi-Fi",
     "ua": "Пароль Wi-Fi",
     "source": "emergencies"
   },
   {
-    "bg": "Зарядно",
+    "bg": "зарЯдно",
     "eng": "Charger",
     "ru": "Зарядка",
     "ua": "Зарядка",
     "source": "emergencies"
   },
   {
-    "bg": "Батерията ми е слаба",
+    "bg": "батЕрията ми Е слАба",
     "eng": "My battery is low",
     "ru": "У меня садится батарея",
     "ua": "Мій акумулятор розряджається",
     "source": "emergencies"
   },
   {
-    "bg": "Мобилен телефон",
+    "bg": "мобИлен телЕфон",
     "eng": "Mobile phone",
     "ru": "Мобильный телефон",
     "ua": "Мобільний телефон",
     "source": "emergencies"
   },
   {
-    "bg": "Мога ли да се обадя?",
+    "bg": "могА ли да се Обадя?",
     "eng": "Can I make a call?",
     "ru": "Можно позвонить?",
     "ua": "Можна мені позвонити?",
     "source": "emergencies"
   },
   {
-    "bg": "Добре дошли",
+    "bg": "дОбре дошлИ",
     "eng": "Welcome",
     "ru": "Добро пожаловать",
     "ua": "Ласкаво просимо",
     "source": "emergencies"
   },
   {
-    "bg": "Моля, затворете вратата",
+    "bg": "мОля, затвОрете врататА",
     "eng": "Please close the door",
     "ru": "Закройте дверь, пожалуйста",
     "ua": "Будь ласка, закрийте двері",
     "source": "emergencies"
   },
   {
-    "bg": "Тихо, моля",
+    "bg": "тихО, мОля",
     "eng": "Quiet, please",
     "ru": "Тише, пожалуйста",
     "ua": "Тихо, будь ласка",
     "source": "emergencies"
   },
   {
-    "bg": "Не пуши",
+    "bg": "не пушИ",
     "eng": "No smoking",
     "ru": "Не курить",
     "ua": "Не паліть",
     "source": "emergencies"
   },
   {
-    "bg": "Чакай",
+    "bg": "чакАй",
     "eng": "Wait",
     "ru": "Подожди",
     "ua": "Чекай",
     "source": "emergencies"
   },
   {
-    "bg": "Бързам",
+    "bg": "бързАм",
     "eng": "I'm in a hurry",
     "ru": "Я спешу",
     "ua": "Я поспішаю",
     "source": "emergencies"
   },
   {
-    "bg": "Не бързам",
+    "bg": "не бързАм",
     "eng": "I'm not in a hurry",
     "ru": "Не спешу",
     "ua": "Я не поспішаю",
     "source": "emergencies"
   },
   {
-    "bg": "Готов съм",
+    "bg": "готОв съм",
     "eng": "I'm ready",
     "ru": "Я готов",
     "ua": "Я готовий",

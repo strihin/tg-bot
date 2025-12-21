@@ -2,16 +2,18 @@ import TelegramBot from 'node-telegram-bot-api';
 import { getAvailableCategories } from '../../data/loader';
 import { CATEGORIES } from '../../constants';
 import { FolderType } from '../../types';
+import { getUIText } from '../../utils/uiTranslation';
+import { getUserProgressAsync } from '../../data/progress';
 
 /**
  * Create inline keyboard with available categories for a specific folder
  */
-export function getCategoryKeyboard(folder: FolderType = 'basic') {
-  const categories = getAvailableCategories(folder);
-  
-  const buttons = categories.map((category) => [
+export async function getCategoryKeyboard(folder: FolderType = 'basic', language: string = 'eng') {
+  const categories = await getAvailableCategories(folder);
+
+  const buttons = categories.map((category: string) => [
     {
-      text: `${CATEGORIES[category as keyof typeof CATEGORIES]?.emoji || '📚'} ${category.charAt(0).toUpperCase() + category.slice(1)}`,
+      text: `${CATEGORIES[category as keyof typeof CATEGORIES]?.emoji || '📚'} ${getUIText(`cat_${category}`, language as any)}`,
       callback_data: `select_category:${category}`,
     },
   ]);
@@ -42,18 +44,24 @@ export async function handleSelectCategory(
     // Answer callback immediately to prevent duplicate delivery
     await bot.answerCallbackQuery(callbackQuery.id);
 
+    const userId = callbackQuery.from.id;
     const chatId = callbackQuery.message?.chat.id;
     if (!chatId) return;
 
     const data = callbackQuery.data || '';
     const category = data.replace('select_category:', '');
 
+    // Get user's language preference
+    const progress = await getUserProgressAsync(userId);
+    const language = progress?.languageTo || 'eng';
+
     const categoryMeta = CATEGORIES[category as keyof typeof CATEGORIES];
     const emoji = categoryMeta?.emoji || '📚';
+    const categoryName = getUIText(`cat_${category}`, language as any);
 
     await bot.sendMessage(
       chatId,
-      `${emoji} Starting lesson in **${category}** category...\n\n⏱️ Click below to begin:`,
+      `${emoji} Starting lesson in **${categoryName}** category...\n\n⏱️ Click below to begin:`,
       {
         parse_mode: 'Markdown',
         reply_markup: {

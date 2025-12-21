@@ -10,7 +10,7 @@ export function getTranslation(
 ): string {
   const translations: Record<TargetLanguage, string> = {
     eng: sentence.eng || '',
-    ru: sentence.ru || '',
+    kharkiv: sentence.ru || '',
     ua: sentence.ua || '',
   };
   return translations[languageTo] || sentence.eng;
@@ -19,13 +19,13 @@ export function getTranslation(
 /**
  * Get language display name
  */
-export function getLanguageName(language: 'eng' | 'ru' | 'ua' | 'bg'): string {
+export function getLanguageName(language: 'eng' | 'kharkiv' | 'ua' | 'bg'): string {
   return LANGUAGES[language as keyof typeof LANGUAGES].name;
 }
 
 /**
  * Get language emoji
  */
-export function getLanguageEmoji(language: 'eng' | 'ru' | 'ua' | 'bg'): string {
+export function getLanguageEmoji(language: 'eng' | 'kharkiv' | 'ua' | 'bg'): string {
   return LANGUAGES[language as keyof typeof LANGUAGES].emoji;
 }

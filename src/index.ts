@@ -1,31 +1,46 @@
+import TelegramBot from 'node-telegram-bot-api';
 import { createBot } from './bot';
-import { setupWebhookServer, startServer } from './server';
+import { config } from './config';
+import { ensureMongoDBConnection } from './db/mongodb';
+import './web'; // Start web server
+
+async function testBotConnection(bot: TelegramBot): Promise<boolean> {
+  try {
+    const botInfo = await bot.getMe();
+    console.log(`✅ Bot connected successfully: @${botInfo.username} (ID: ${botInfo.id})`);
+    return true;
+  } catch (error) {
+    console.error('❌ Bot connection failed:', error);
+    return false;
+  }
+}
 
 async function main(): Promise<void> {
   try {
-    // Create bot instance
+    console.log('🔧 Loading configuration...');
+    console.log(`🤖 Bot username: ${config.BOT_USERNAME}`);
+    console.log(`🌐 Environment: ${config.NODE_ENV}`);
+
+    // Initialize MongoDB connection
+    await ensureMongoDBConnection();
+
+    // Create bot
     const bot = createBot();
-    console.log('🤖 Bot instance created');
 
-    // Setup Express server with webhook endpoints
-    const app = await setupWebhookServer(bot);
-    console.log('✅ Webhook server configured');
-
-    // Start the server
-    await startServer(app);
-    console.log('✅ Webhook server started');
+    // Test bot connection before starting polling
+    testBotConnection(bot).then((connected) => {
+      if (connected) {
+        console.log('🤖 Bot polling started');
+      } else {
+        console.error('❌ Bot polling not started due to connection failure');
+        process.exit(1);
+      }
+    });
 
     // Graceful shutdown
     process.on('SIGINT', async () => {
-      console.log('\n🛑 Shutting down...');
-      try {
-        // Optionally remove webhook on shutdown
-        // await bot.deleteWebHook();
-        process.exit(0);
-      } catch (error) {
-        console.error('Error during shutdown:', error);
-        process.exit(1);
-      }
+      console.log('Shutting down...');
+      process.exit(0);
     });
   } catch (error) {
     console.error('❌ Startup error:', error);
@@ -33,4 +48,7 @@ async function main(): Promise<void> {
   }
 }
 
-main();
+main().catch((error) => {
+  console.error('❌ Fatal error:', error);
+  process.exit(1);
+});

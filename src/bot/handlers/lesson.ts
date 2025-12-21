@@ -1,9 +1,10 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { getSentenceByIndex, getTotalSentences } from '../../data/loader';
-import { getUserProgress, saveUserProgress } from '../../db/mongo';
-import { initializeUserProgress } from '../../data/progress';
+import { getUserProgressAsync, saveUserProgress, initializeUserProgress } from '../../data/progress';
+import { logActivity } from '../../utils/logger';
 import { getTranslation, getLanguageName, getLanguageEmoji } from '../../utils/translation';
-import { lessonKeyboards } from '../keyboards';
+import { getUIText } from '../../utils/uiTranslation';
+import { getTranslatedKeyboards, lessonKeyboards } from '../keyboards';
 
 export async function handleStartLessonButton(
   callbackQuery: TelegramBot.CallbackQuery,
@@ -24,24 +25,25 @@ export async function handleStartLessonButton(
     }
 
     // Load user progress or initialize with selected category
-    let progress = await getUserProgress(userId);
+    let progress = await getUserProgressAsync(userId);
     if (!progress) {
       // New user: need to have folder already selected, otherwise default to basic
       // But ideally this shouldn't happen - user should select folder first
       const selectedCategory = category || 'greetings';
-      progress = initializeUserProgress(userId, selectedCategory, 'eng', 'basic');
+      progress = await initializeUserProgress(userId, selectedCategory, 'eng', 'basic');
       console.log(`✅ Initialized progress for user ${userId} with category: ${selectedCategory}, folder: basic`);
     } else if (category && progress.category !== category) {
       // Switch to new category (keep same folder)
       progress.category = category;
       progress.currentIndex = 0;
+      await saveUserProgress(progress);  // Save the category change immediately
       console.log(`✅ Switched to category: ${category}`);
     } else {
       console.log(`✅ Loaded progress for user ${userId}: index ${progress.currentIndex}, language: ${progress.languageTo}`);
     }
 
     // Fetch and display sentence
-    const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
+    const sentence = await getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
     if (!sentence) {
       console.error('No sentence found');
       await bot.sendMessage(chatId, '❌ No sentences available.');
@@ -51,10 +53,13 @@ export async function handleStartLessonButton(
 
     console.log(`📖 Fetched sentence at index ${progress.currentIndex}`);
 
-    const totalSentences = getTotalSentences(progress.category, progress.folder);
+    const totalSentences = await getTotalSentences(progress.category, progress.folder);
     const langEmoji = getLanguageEmoji(progress.languageTo);
+    const clickReveal = getUIText('click_reveal', progress.languageTo);
     
-    const text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n✨ _Click button to reveal translation_`;
+    const text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n${clickReveal}`;
+    
+    const keyboards = getTranslatedKeyboards(progress.languageTo);
     
     // Edit the existing message or send new one if no messageId
     if (messageId) {
@@ -63,29 +68,30 @@ export async function handleStartLessonButton(
           chat_id: chatId,
           message_id: messageId,
           parse_mode: 'Markdown',
-          reply_markup: lessonKeyboards.showTranslation,
+          reply_markup: keyboards.showTranslation,
         });
       } catch (error) {
         // If edit fails, fall back to sending new message
         const msg = await bot.sendMessage(chatId, text, {
           parse_mode: 'Markdown',
-          reply_markup: lessonKeyboards.showTranslation,
+          reply_markup: keyboards.showTranslation,
         });
         progress.lessonMessageId = msg.message_id;
       }
     } else {
       const msg = await bot.sendMessage(chatId, text, {
         parse_mode: 'Markdown',
-        reply_markup: lessonKeyboards.showTranslation,
+        reply_markup: keyboards.showTranslation,
       });
       progress.lessonMessageId = msg.message_id;
     }
 
     progress.lessonActive = true;
-    saveUserProgress(progress);
+    await saveUserProgress(progress);
     console.log('✅ Sent/edited lesson message');
 
-    await bot.answerCallbackQuery(callbackQuery.id, { text: '🎓 Lesson started! Good luck!' });
+    const lessonStarted = getUIText('lesson_started', progress.languageTo);
+    await bot.answerCallbackQuery(callbackQuery.id, { text: lessonStarted });
   } catch (error) {
     console.error('❌ Error in handleStartLessonButton:', error);
   }
@@ -101,20 +107,20 @@ export async function handleLessonStart(
   const chatId = msg.chat.id;
 
   // Load user progress or initialize
-  let progress = await getUserProgress(userId);
+  let progress = await getUserProgressAsync(userId);
   if (!progress) {
     const category = 'greetings';
-    progress = initializeUserProgress(userId, category);
+    progress = await initializeUserProgress(userId, category);
   }
 
   // Fetch and display sentence
-  const sentence = getSentenceByIndex(progress.category, progress.currentIndex);
+  const sentence = await getSentenceByIndex(progress.category, progress.currentIndex);
   if (!sentence) {
     await bot.sendMessage(chatId, '❌ No sentences available.');
     return;
   }
 
-  const totalSentences = getTotalSentences(progress.category);
+  const totalSentences = await getTotalSentences(progress.category);
   const text = `📚 Lesson ${progress.currentIndex + 1}/${totalSentences}\n\n${sentence.bg}`;
   await bot.sendMessage(chatId, text, {
     reply_markup: lessonKeyboards.showTranslation,
@@ -131,15 +137,19 @@ export async function handleShowTranslation(
 
   if (!chatId || !messageId) return;
 
-  const progress = await getUserProgress(userId);
+  const progress = await getUserProgressAsync(userId);
   if (!progress) return;
 
-  const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
+  console.log(`🔍 [handleShowTranslation] User ${userId} - Language: ${progress.languageTo}, Category: ${progress.category}, Index: ${progress.currentIndex}`);
+
+  const sentence = await getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
   if (!sentence) return;
 
-  const totalSentences = getTotalSentences(progress.category, progress.folder);
+  const totalSentences = await getTotalSentences(progress.category, progress.folder);
   const translation = getTranslation(sentence, progress.languageTo);
   const langEmoji = getLanguageEmoji(progress.languageTo);
+  
+  console.log(`📝 [handleShowTranslation] Translation language: ${progress.languageTo}, Translation text: ${translation.substring(0, 50)}...`);
   
   let text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n🎯 **${translation}**`;
   
@@ -162,7 +172,7 @@ export async function handleShowTranslation(
 
   // Add language-specific rules for language-comparison and other advanced folders
   if (['language-comparison', 'misc', 'expressions'].includes(progress.folder)) {
-    const ruleKey = progress.languageTo === 'ru' ? 'ruleRu' : progress.languageTo === 'ua' ? 'ruleUA' : 'ruleEng';
+    const ruleKey = progress.languageTo === 'kharkiv' ? 'ruleRu' : progress.languageTo === 'ua' ? 'ruleUA' : 'ruleEng';
     if (sentence[ruleKey as keyof typeof sentence]) {
       text += `\n\n📖 _${sentence[ruleKey as keyof typeof sentence]}_`;
     }
@@ -170,7 +180,7 @@ export async function handleShowTranslation(
 
   // Also add rules for middle-slavic if present
   if (progress.folder === 'middle-slavic') {
-    const ruleKey = progress.languageTo === 'ru' ? 'ruleRu' : progress.languageTo === 'ua' ? 'ruleUA' : 'ruleEng';
+    const ruleKey = progress.languageTo === 'kharkiv' ? 'ruleRu' : progress.languageTo === 'ua' ? 'ruleUA' : 'ruleEng';
     if (sentence[ruleKey as keyof typeof sentence]) {
       text += `\n\n📖 _${sentence[ruleKey as keyof typeof sentence]}_`;
     }
@@ -181,13 +191,14 @@ export async function handleShowTranslation(
       chat_id: chatId,
       message_id: messageId,
       parse_mode: 'Markdown',
-      reply_markup: lessonKeyboards.withNavigation,
+      reply_markup: getTranslatedKeyboards(progress.languageTo).withNavigation,
     });
   } catch (error) {
     console.error('Error editing message:', error);
   }
 
-  await bot.answerCallbackQuery(callbackQuery.id, { text: '🎯 Translation revealed! 👀' });
+  const revealedText = getUIText('translation_revealed', progress.languageTo);
+  await bot.answerCallbackQuery(callbackQuery.id, { text: revealedText });
 }
 
 export async function handleNext(
@@ -200,48 +211,57 @@ export async function handleNext(
 
   if (!chatId || !messageId) return;
 
-  const progress = await getUserProgress(userId);
+  const progress = await getUserProgressAsync(userId);
   if (!progress) return;
 
-  const totalSentences = getTotalSentences(progress.category, progress.folder);
+  const totalSentences = await getTotalSentences(progress.category, progress.folder);
 
   if (progress.currentIndex < totalSentences - 1) {
     progress.currentIndex += 1;
-    const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
+    const sentence = await getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
     if (sentence) {
       const langEmoji = getLanguageEmoji(progress.languageTo);
-      const text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n✨ _Click button to reveal translation_`;
+      const clickReveal = getUIText('click_reveal', progress.languageTo);
+      const text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n${clickReveal}`;
       
+      const keyboards = getTranslatedKeyboards(progress.languageTo);
       try {
         await bot.editMessageText(text, {
           chat_id: chatId,
           message_id: messageId,
           parse_mode: 'Markdown',
-          reply_markup: lessonKeyboards.showTranslation,
+          reply_markup: keyboards.showTranslation,
         });
         progress.lessonMessageId = messageId;
-        saveUserProgress(progress);
+        await saveUserProgress(progress);
       } catch (error) {
         console.error('Error editing message:', error);
       }
     }
   } else {
     // Reached end - edit to show completion message
-    const text = `🎉 **CONGRATULATIONS!** 🎉\n\n✅ You completed the **${progress.category.toUpperCase()}** lesson!\n\n📊 **${totalSentences}/${totalSentences}** sentences mastered\n\n💪 _Great job! Ready for the next category?_`;
+    const congratulations = getUIText('congratulations', progress.languageTo);
+    const completed = getUIText('lesson_completed', progress.languageTo);
+    const mastered = getUIText('sentences_mastered', progress.languageTo);
+    const greatJob = getUIText('great_job', progress.languageTo);
     
+    const text = `${congratulations}\n\n✅ ${completed} **${progress.category.toUpperCase()}** lesson!\n\n📊 **${totalSentences}/${totalSentences}** ${mastered}\n\n${greatJob}`;
+    
+    const keyboards = getTranslatedKeyboards(progress.languageTo);
     try {
       await bot.editMessageText(text, {
         chat_id: chatId,
         message_id: messageId,
         parse_mode: 'Markdown',
-        reply_markup: lessonKeyboards.lessonComplete,
+        reply_markup: keyboards.lessonComplete,
       });
     } catch (error) {
       console.error('Error editing message:', error);
     }
   }
 
-  await bot.answerCallbackQuery(callbackQuery.id, { text: '➡️ Next!' });
+  const nextText = getUIText('next_clicked', progress.languageTo);
+  await bot.answerCallbackQuery(callbackQuery.id, { text: nextText });
 }
 
 export async function handlePrevious(
@@ -254,44 +274,48 @@ export async function handlePrevious(
 
   if (!chatId || !messageId) return;
 
-  const progress = await getUserProgress(userId);
+  const progress = await getUserProgressAsync(userId);
   if (!progress) return;
 
-  const totalSentences = getTotalSentences(progress.category, progress.folder);
+  const totalSentences = await getTotalSentences(progress.category, progress.folder);
 
   if (progress.currentIndex > 0) {
     progress.currentIndex -= 1;
-    const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
+    const sentence = await getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
     if (sentence) {
       const langEmoji = getLanguageEmoji(progress.languageTo);
-      const text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n✨ _Click button to reveal translation_`;
+      const clickReveal = getUIText('click_reveal', progress.languageTo);
+      const text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n${clickReveal}`;
       
+      const keyboards = getTranslatedKeyboards(progress.languageTo);
       try {
         await bot.editMessageText(text, {
           chat_id: chatId,
           message_id: messageId,
           parse_mode: 'Markdown',
-          reply_markup: lessonKeyboards.showTranslation,
+          reply_markup: keyboards.showTranslation,
         });
         progress.lessonMessageId = messageId;
-        saveUserProgress(progress);
+        await saveUserProgress(progress);
       } catch (error) {
         console.error('Error editing message:', error);
       }
     }
   } else {
     // Already at beginning
-    const sentence = getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
+    const sentence = await getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
     if (sentence) {
       const langEmoji = getLanguageEmoji(progress.languageTo);
-      const text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n✨ _You're at the beginning!_`;
+      const atBeginning = getUIText('at_beginning', progress.languageTo);
+      const text = `📚 **${progress.category.toUpperCase()}** | 🇧🇬 → ${langEmoji}\n\n⏳ **${progress.currentIndex + 1}/${totalSentences}**\n\n${sentence.bg}\n\n${atBeginning}`;
       
+      const keyboards = getTranslatedKeyboards(progress.languageTo);
       try {
         await bot.editMessageText(text, {
           chat_id: chatId,
           message_id: messageId,
           parse_mode: 'Markdown',
-          reply_markup: lessonKeyboards.showTranslation,
+          reply_markup: keyboards.showTranslation,
         });
       } catch (error) {
         console.error('Error editing message:', error);
@@ -299,5 +323,6 @@ export async function handlePrevious(
     }
   }
 
-  await bot.answerCallbackQuery(callbackQuery.id, { text: '⬅️ Previous!' });
+  const prevText = getUIText('previous_clicked', progress.languageTo);
+  await bot.answerCallbackQuery(callbackQuery.id, { text: prevText });
 }

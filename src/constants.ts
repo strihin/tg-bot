@@ -12,9 +12,9 @@ export const LANGUAGES = {
     name: 'English',
     emoji: '🇬🇧',
   },
-  ru: {
-    code: 'ru',
-    name: 'Харьковский диалект',
+  kharkiv: {
+    code: 'kharkiv',
+    name: 'Kharkiv (Ukrainian Dialect)',
     emoji: '1654',
   },
   ua: {

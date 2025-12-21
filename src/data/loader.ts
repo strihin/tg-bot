@@ -1,59 +1,94 @@
+import { Sentence, FolderType } from '../types';
+import { SentenceModel, CategoryModel } from '../db/models';
+import { ensureMongoDBConnection } from '../db/mongodb';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Sentence, FolderType } from '../types';
 
 // Cache for loaded sentences
 const sentenceCache: Record<string, Sentence[]> = {};
 
 /**
- * Load sentences from JSON file by category and folder
- * Each folder is independent: basic, middle, middle-slavic, misc, language-comparison, expressions
- * Path: /data/{folder}/{category}.json
+ * Load sentences from JSON files as fallback
  */
-export function loadSentences(category: string, folder: FolderType = 'basic'): Sentence[] {
+function loadSentencesFromJSON(category: string, folder: FolderType = 'basic'): Sentence[] {
+  try {
+    const filePath = path.join(__dirname, `../../data/${folder}/${category}.json`);
+    if (!fs.existsSync(filePath)) {
+      console.warn(`⚠️  JSON file not found: ${filePath}`);
+      return [];
+    }
+
+    const content = fs.readFileSync(filePath, 'utf-8');
+    let data = JSON.parse(content);
+
+    // Handle both array format and object with items format
+    let sentences = Array.isArray(data) ? data : (data.items || []);
+
+    return sentences as Sentence[];
+  } catch (error) {
+    console.error(`❌ Error loading JSON for ${folder}/${category}:`, error);
+    return [];
+  }
+}
+
+/**
+ * Load sentences from MongoDB by category and folder
+ * Each folder is independent: basic, middle, middle-slavic, misc, language-comparison, expressions
+ * Data stored in MongoDB collections
+ */
+export async function loadSentences(category: string, folder: FolderType = 'basic'): Promise<Sentence[]> {
   const cacheKey = `${folder}:${category}`;
-  
+
   if (sentenceCache[cacheKey]) {
     return sentenceCache[cacheKey];
   }
 
-  const filePath = path.join(__dirname, `../../data/${folder}`, `${category}.json`);
-
-  if (!fs.existsSync(filePath)) {
-    console.warn(`⚠️  File not found: ${filePath}`);
-    return [];
-  }
-
-  const content = fs.readFileSync(filePath, 'utf-8');
-  let sentences: Sentence[];
-  
   try {
-    const parsed = JSON.parse(content);
-    
-    // Handle both array format (core) and object with items format (misc, language-comparison, expressions)
-    if (Array.isArray(parsed)) {
-      sentences = parsed;
-    } else if (parsed.items && Array.isArray(parsed.items)) {
-      sentences = parsed.items;
-    } else {
-      console.warn(`⚠️  Unexpected JSON structure in ${filePath}`);
-      return [];
-    }
-  } catch (error) {
-    console.warn(`⚠️  Error parsing JSON in ${filePath}:`, error);
-    return [];
-  }
-  
-  sentenceCache[cacheKey] = sentences;
+    await ensureMongoDBConnection();
 
-  return sentences;
+    const sentences = await SentenceModel.find({ folder, category }).lean();
+
+    // Convert MongoDB documents to Sentence interface
+    const formattedSentences: Sentence[] = sentences.map(doc => ({
+      bg: doc.bg,
+      eng: doc.eng,
+      ru: doc.ru,
+      ua: doc.ua,
+      source: doc.source,
+      grammar: doc.grammar,
+      explanation: doc.explanation,
+      tag: doc.tag,
+      ruleEng: doc.ruleEng,
+      ruleRu: doc.ruleRu,
+      ruleUA: doc.ruleUA,
+      comparison: doc.comparison,
+      falseFriend: doc.falseFriend
+    }));
+
+    // If MongoDB returned empty, try JSON fallback
+    if (formattedSentences.length === 0) {
+      console.log(`📄 MongoDB empty for ${folder}/${category}, falling back to JSON...`);
+      const jsonSentences = loadSentencesFromJSON(category, folder);
+      sentenceCache[cacheKey] = jsonSentences;
+      return jsonSentences;
+    }
+
+    sentenceCache[cacheKey] = formattedSentences;
+    return formattedSentences;
+
+  } catch (error) {
+    console.error(`❌ Error loading from MongoDB for ${folder}/${category}, falling back to JSON:`, error);
+    const jsonSentences = loadSentencesFromJSON(category, folder);
+    sentenceCache[cacheKey] = jsonSentences;
+    return jsonSentences;
+  }
 }
 
 /**
- * Get sentence by index from category
+ * Get sentence by index from category (async version)
  */
-export function getSentenceByIndex(category: string, index: number, folder: FolderType = 'basic'): Sentence | null {
-  const sentences = loadSentences(category, folder);
+export async function getSentenceByIndex(category: string, index: number, folder: FolderType = 'basic'): Promise<Sentence | null> {
+  const sentences = await loadSentences(category, folder);
   if (index >= 0 && index < sentences.length) {
     return sentences[index];
   }
@@ -61,30 +96,49 @@ export function getSentenceByIndex(category: string, index: number, folder: Fold
 }
 
 /**
- * Get total sentence count for category
+ * Get total sentence count for category (async version)
  */
-export function getTotalSentences(category: string, folder: FolderType = 'basic'): number {
-  const sentences = loadSentences(category, folder);
+export async function getTotalSentences(category: string, folder: FolderType = 'basic'): Promise<number> {
+  const sentences = await loadSentences(category, folder);
   return sentences.length;
 }
 
 /**
- * Get available categories for a specific folder
- * Each folder is independent: /data/{folder}/
+ * Get available categories for a specific folder from MongoDB
+ * Each folder is independent: basic, middle, middle-slavic, misc, language-comparison, expressions
  */
-export function getAvailableCategories(folder: FolderType = 'basic'): string[] {
-  const folderPath = path.join(__dirname, `../../data/${folder}`);
+export async function getAvailableCategories(folder: FolderType = 'basic'): Promise<string[]> {
+  try {
+    await ensureMongoDBConnection();
 
-  if (!fs.existsSync(folderPath)) {
-    console.warn(`⚠️  Folder not found: ${folderPath}`);
+    const categories = await CategoryModel.find({ folder }).sort({ id: 1 }).lean();
+    return categories.map(cat => cat.id);
+
+  } catch (error) {
+    console.error(`❌ Error loading categories for ${folder}:`, error);
     return [];
   }
+}
 
-  const files = fs.readdirSync(folderPath);
-  return files
-    .filter((file) => file.endsWith('.json') && file !== '.DS_Store')
-    .map((file) => file.replace('.json', ''))
-    .sort();
+/**
+ * Get category info including name and emoji
+ */
+export async function getCategoryInfo(folder: FolderType, categoryId: string) {
+  try {
+    await ensureMongoDBConnection();
+
+    const category = await CategoryModel.findOne({ folder, id: categoryId }).lean();
+    return category ? {
+      id: category.id,
+      name: category.name,
+      emoji: category.emoji,
+      sentenceCount: category.sentenceCount
+    } : null;
+
+  } catch (error) {
+    console.error(`❌ Error loading category info for ${folder}/${categoryId}:`, error);
+    return null;
+  }
 }
 
 /**

@@ -1,167 +1,167 @@
 [
   {
-    "bg": "Къде е...?",
+    "bg": "кУде Е...?",
     "eng": "Where is...?",
     "ru": "Где...?",
     "ua": "Де...?",
     "source": "directions"
   },
   {
-    "bg": "Как да стигна до...?",
+    "bg": "кАк да стигнА до...?",
     "eng": "How do I get to...?",
     "ru": "Как добраться до...?",
     "ua": "Як дістатися до...?",
     "source": "directions"
   },
   {
-    "bg": "На коя страна е...?",
+    "bg": "на коЯ странА Е...?",
     "eng": "Which way is...?",
     "ru": "В какую сторону...?",
     "ua": "В якому напрямку...?",
     "source": "directions"
   },
   {
-    "bg": "Наляво",
+    "bg": "налЯво",
     "eng": "Left",
     "ru": "Налево",
     "ua": "Вліво",
     "source": "directions"
   },
   {
-    "bg": "Надясно",
+    "bg": "надЯсно",
     "eng": "Right",
     "ru": "Направо",
     "ua": "Вправо",
     "source": "directions"
   },
   {
-    "bg": "Право",
+    "bg": "прАво",
     "eng": "Straight ahead",
     "ru": "Прямо",
     "ua": "Прямо",
     "source": "directions"
   },
   {
-    "bg": "Завийте наляво",
+    "bg": "завИйте налЯво",
     "eng": "Turn left",
     "ru": "Поверните налево",
     "ua": "Поверніть вліво",
     "source": "directions"
   },
   {
-    "bg": "Завийте надясно",
+    "bg": "завИйте надЯсно",
     "eng": "Turn right",
     "ru": "Поверните направо",
     "ua": "Поверніть вправо",
     "source": "directions"
   },
   {
-    "bg": "На светофара",
+    "bg": "на светофАра",
     "eng": "At the traffic light",
     "ru": "На светофоре",
     "ua": "На світлофорі",
     "source": "directions"
   },
   {
-    "bg": "На кръстовището",
+    "bg": "на кръстовИщето",
     "eng": "At the intersection",
     "ru": "На перекрёстке",
     "ua": "На перехресті",
     "source": "directions"
   },
   {
-    "bg": "Близо ли е?",
+    "bg": "блИзо ли Е?",
     "eng": "Is it close?",
     "ru": "Это близко?",
     "ua": "Це близко?",
     "source": "directions"
   },
   {
-    "bg": "Далеч ли е?",
+    "bg": "далЕч ли Е?",
     "eng": "Is it far?",
     "ru": "Это далеко?",
     "ua": "Це далеко?",
     "source": "directions"
   },
   {
-    "bg": "Колко далеч е?",
+    "bg": "колкО далЕч Е?",
     "eng": "How far is it?",
     "ru": "Как далеко?",
     "ua": "Як далеко?",
     "source": "directions"
   },
   {
-    "bg": "Пеша",
+    "bg": "пешА",
     "eng": "On foot",
     "ru": "Пешком",
     "ua": "Пішки",
     "source": "directions"
   },
   {
-    "bg": "С кола",
+    "bg": "С колА",
     "eng": "By car",
     "ru": "На машине",
     "ua": "На машині",
     "source": "directions"
   },
   {
-    "bg": "С автобус",
+    "bg": "С Автобус",
     "eng": "By bus",
     "ru": "На автобусе",
     "ua": "На автобусі",
     "source": "directions"
   },
   {
-    "bg": "С метро",
+    "bg": "С метрО",
     "eng": "By metro",
     "ru": "На метро",
     "ua": "На метро",
     "source": "directions"
   },
   {
-    "bg": "Автобусна спирка",
+    "bg": "Автобусна спИрка",
     "eng": "Bus stop",
     "ru": "Автобусная остановка",
     "ua": "Автобусна зупинка",
     "source": "directions"
   },
   {
-    "bg": "Метростанция",
+    "bg": "метрОстанция",
     "eng": "Metro station",
     "ru": "Станция метро",
     "ua": "Станція метро",
     "source": "directions"
   },
   {
-    "bg": "Такси",
+    "bg": "таксИ",
     "eng": "Taxi",
     "ru": "Такси",
     "ua": "Таксі",
     "source": "directions"
   },
   {
-    "bg": "Къде е тоалетната?",
+    "bg": "кУде Е тоАлетната?",
     "eng": "Where is the toilet?",
     "ru": "Где туалет?",
     "ua": "Де туалет?",
     "source": "directions"
   },
   {
-    "bg": "Къде е банкомат?",
+    "bg": "кУде Е банкОмат?",
     "eng": "Where is the ATM?",
     "ru": "Где банкомат?",
     "ua": "Де банкомат?",
     "source": "directions"
   },
   {
-    "bg": "Къде е банката?",
+    "bg": "кУде Е банкАта?",
     "eng": "Where is the bank?",
     "ru": "Где банк?",
     "ua": "Де банк?",
     "source": "directions"
   },
   {
-    "bg": "Помощ!",
+    "bg": "пОмощ!",
     "eng": "Help!",
     "ru": "Помогите!",
     "ua": "Допоможіть!",
@@ -175,21 +175,21 @@
     "source": "directions"
   },
   {
-    "bg": "Можете ли да ми помогнете?",
+    "bg": "можЕте ли да ми помОгнете?",
     "eng": "Can you help me?",
     "ru": "Можете помочь?",
     "ua": "Можете мені допомогти?",
     "source": "directions"
   },
   {
-    "bg": "Летище",
+    "bg": "летИще",
     "eng": "Airport",
     "ru": "Аэропорт",
     "ua": "Аеропорт",
     "source": "directions"
   },
   {
-    "bg": "Гара",
+    "bg": "гарА",
     "eng": "Train station",
     "ru": "Вокзал",
     "ua": "Вокзал",
@@ -203,77 +203,77 @@
     "source": "directions"
   },
   {
-    "bg": "Билет за...",
+    "bg": "билЕт за...",
     "eng": "Ticket to...",
     "ru": "Билет до...",
     "ua": "Білет до...",
     "source": "directions"
   },
   {
-    "bg": "Еднопосочен билет",
+    "bg": "Еднопосочен билЕт",
     "eng": "One-way ticket",
     "ru": "Билет в одну сторону",
     "ua": "Білет в одну сторону",
     "source": "directions"
   },
   {
-    "bg": "Двупосочен билет",
+    "bg": "двупосОчен билЕт",
     "eng": "Return ticket",
     "ru": "Билет туда-обратно",
     "ua": "Білет туди-назад",
     "source": "directions"
   },
   {
-    "bg": "Кога тръгва?",
+    "bg": "когА тръгвА?",
     "eng": "When does it leave?",
     "ru": "Когда отправляется?",
     "ua": "Коли виїжджає?",
     "source": "directions"
   },
   {
-    "bg": "Кога пристига?",
+    "bg": "когА пристигА?",
     "eng": "When does it arrive?",
     "ru": "Когда прибывает?",
     "ua": "Коли прибуває?",
     "source": "directions"
   },
   {
-    "bg": "Перон",
+    "bg": "перОн",
     "eng": "Platform",
     "ru": "Перрон",
     "ua": "Платформа",
     "source": "directions"
   },
   {
-    "bg": "Колко време отнема?",
+    "bg": "колкО врЕме Отнема?",
     "eng": "How long does it take?",
     "ru": "Сколько времени займёт?",
     "ua": "Скільки часу займе?",
     "source": "directions"
   },
   {
-    "bg": "Тук ли спира?",
+    "bg": "тУк ли спИра?",
     "eng": "Does it stop here?",
     "ru": "Здесь останавливается?",
     "ua": "Тут зупиняється?",
     "source": "directions"
   },
   {
-    "bg": "Следващата спирка",
+    "bg": "следващАта спИрка",
     "eng": "Next stop",
     "ru": "Следующая остановка",
     "ua": "Наступна зупинка",
     "source": "directions"
   },
   {
-    "bg": "Последна спирка",
+    "bg": "послЕдна спИрка",
     "eng": "Last stop",
     "ru": "Конечная остановка",
     "ua": "Кінцева зупинка",
     "source": "directions"
   },
   {
-    "bg": "Вход",
+    "bg": "вход",
     "eng": "Entrance",
     "ru": "Вход",
     "ua": "Вхід",
@@ -287,63 +287,63 @@
     "source": "directions"
   },
   {
-    "bg": "Паркинг",
+    "bg": "паркИнг",
     "eng": "Parking",
     "ru": "Парковка",
     "ua": "Парковка",
     "source": "directions"
   },
   {
-    "bg": "Бензиностанция",
+    "bg": "бензИностанция",
     "eng": "Gas station",
     "ru": "Заправка",
     "ua": "АЗС",
     "source": "directions"
   },
   {
-    "bg": "Тук ли е центърът?",
+    "bg": "тУк ли Е центУрут?",
     "eng": "Is this the center?",
     "ru": "Это центр?",
     "ua": "Це центр?",
     "source": "directions"
   },
   {
-    "bg": "Къде е хотелът?",
+    "bg": "кУде Е хотЕлут?",
     "eng": "Where is the hotel?",
     "ru": "Где отель?",
     "ua": "Де готель?",
     "source": "directions"
   },
   {
-    "bg": "На картата",
+    "bg": "на картАта",
     "eng": "On the map",
     "ru": "На карте",
     "ua": "На карті",
     "source": "directions"
   },
   {
-    "bg": "Покажете ми",
+    "bg": "покАжете ми",
     "eng": "Show me",
     "ru": "Покажите",
     "ua": "Покажіть мені",
     "source": "directions"
   },
   {
-    "bg": "Разбирам",
+    "bg": "разбИрам",
     "eng": "I understand",
     "ru": "Понял",
     "ua": "Я розумію",
     "source": "directions"
   },
   {
-    "bg": "Благодаря за помощта",
+    "bg": "благодарЯ за помОщта",
     "eng": "Thank you for the help",
     "ru": "Спасибо за помощь",
     "ua": "Дякую за допомогу",
     "source": "directions"
   },
   {
-    "bg": "Трябва да сменя влак",
+    "bg": "трЯбва да смЕня влак",
     "eng": "I need to change trains",
     "ru": "Мне нужно сделать пересадку",
     "ua": "Мені потрібна пересадка",

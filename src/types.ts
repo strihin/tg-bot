@@ -6,7 +6,7 @@ export type FolderType = 'basic' | 'middle' | 'middle-slavic' | 'misc' | 'langua
 /**
  * Target language type - unified definition used throughout the project
  */
-export type TargetLanguage = 'eng' | 'ru' | 'ua';
+export type TargetLanguage = 'eng' | 'kharkiv' | 'ua';
 
 export interface Sentence {
   bg: string;

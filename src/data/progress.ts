@@ -1,34 +1,25 @@
-import * as fs from 'fs';
-import * as path from 'path';
 import { UserProgress, FolderType, TargetLanguage } from '../types';
-
-const progressDir = path.join(__dirname, '../../data/.progress');
-
-// Ensure progress directory exists
-function ensureProgressDir(): void {
-  if (!fs.existsSync(progressDir)) {
-    fs.mkdirSync(progressDir, { recursive: true });
-  }
-}
-
-function getProgressFile(userId: number): string {
-  return path.join(progressDir, `${userId}.json`);
-}
+import { UserProgressModel } from '../db/models';
 
 /**
- * Load user progress
+ * Load user progress from MongoDB (async version - RECOMMENDED)
  */
-export function getUserProgress(userId: number): UserProgress | null {
-  ensureProgressDir();
-
-  const filePath = getProgressFile(userId);
-  if (!fs.existsSync(filePath)) {
-    return null;
-  }
-
+export async function getUserProgressAsync(userId: number): Promise<UserProgress | null> {
   try {
-    const content = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(content) as UserProgress;
+    const doc = await UserProgressModel.findOne({ userId });
+    if (!doc) {
+      return null;
+    }
+    return {
+      userId: doc.userId,
+      currentIndex: doc.currentIndex,
+      category: doc.category,
+      folder: doc.folder,
+      languageFrom: doc.languageFrom as 'bg',
+      languageTo: doc.languageTo,
+      lessonMessageId: doc.lessonMessageId,
+      lessonActive: doc.lessonActive,
+    };
   } catch (error) {
     console.error(`❌ Error reading progress for user ${userId}:`, error);
     return null;
@@ -36,14 +27,33 @@ export function getUserProgress(userId: number): UserProgress | null {
 }
 
 /**
- * Save user progress
+ * Load user progress from MongoDB (sync wrapper - for backward compatibility)
+ * WARNING: This is a synchronous wrapper and may not be reliable. Use getUserProgressAsync instead.
  */
-export function saveUserProgress(progress: UserProgress): void {
-  ensureProgressDir();
+export function getUserProgress(userId: number): UserProgress | null {
+  // This returns null for sync access. Handlers should use getUserProgressAsync instead.
+  console.warn('⚠️ getUserProgress called - this is synchronous and not reliable with MongoDB. Use getUserProgressAsync instead.');
+  return null;
+}
 
-  const filePath = getProgressFile(progress.userId);
+/**
+ * Save user progress to MongoDB (async version - RECOMMENDED)
+ */
+export async function saveUserProgress(progress: UserProgress): Promise<void> {
   try {
-    fs.writeFileSync(filePath, JSON.stringify(progress, null, 2), 'utf-8');
+    await UserProgressModel.findOneAndUpdate(
+      { userId: progress.userId },
+      {
+        currentIndex: progress.currentIndex,
+        category: progress.category,
+        folder: progress.folder,
+        languageFrom: progress.languageFrom,
+        languageTo: progress.languageTo,
+        lessonMessageId: progress.lessonMessageId,
+        lessonActive: progress.lessonActive,
+      },
+      { upsert: true, new: true }
+    );
   } catch (error) {
     console.error(`❌ Error saving progress for user ${progress.userId}:`, error);
   }
@@ -52,12 +62,12 @@ export function saveUserProgress(progress: UserProgress): void {
 /**
  * Initialize user progress (first time)
  */
-export function initializeUserProgress(
+export async function initializeUserProgress(
   userId: number,
   category: string = 'greetings',
   languageTo: TargetLanguage = 'eng',
   folder: FolderType = 'basic'
-): UserProgress {
+): Promise<UserProgress> {
   const progress: UserProgress = {
     userId,
     currentIndex: 0,
@@ -66,66 +76,55 @@ export function initializeUserProgress(
     languageFrom: 'bg',
     languageTo,
   };
-  saveUserProgress(progress);
+  await saveUserProgress(progress);
   return progress;
 }
 
 /**
  * Update user index
  */
-export function updateUserIndex(userId: number, newIndex: number): void {
-  const progress = getUserProgress(userId);
+export async function updateUserIndex(userId: number, newIndex: number): Promise<void> {
+  const progress = await getUserProgressAsync(userId);
   if (progress) {
     progress.currentIndex = newIndex;
-    saveUserProgress(progress);
+    await saveUserProgress(progress);
   }
 }
 
 /**
  * Change target language preference for user
  */
-export function changeTargetLanguage(userId: number, languageTo: TargetLanguage): void {
-  const progress = getUserProgress(userId) || initializeUserProgress(userId);
+export async function changeTargetLanguage(userId: number, languageTo: TargetLanguage): Promise<void> {
+  let progress = await getUserProgressAsync(userId);
+  if (!progress) {
+    progress = await initializeUserProgress(userId);
+  }
   progress.languageTo = languageTo;
-  saveUserProgress(progress);
+  progress.currentIndex = 0;  // Reset to beginning when changing language
+  progress.lessonActive = false;  // Reset lesson active state
+  await saveUserProgress(progress);
+  console.log(`✅ Changed language to ${languageTo} and reset progress for user ${userId}`);
 }
 
 /**
- * Clear all progress files except the most recently modified one
+ * Clear all old progress documents except most recent
  */
-export function clearAllProgressExceptLast(): number {
-  ensureProgressDir();
-
+export async function clearAllProgressExceptLast(): Promise<number> {
   try {
-    const files = fs.readdirSync(progressDir).filter(f => f.endsWith('.json'));
+    // Get all documents sorted by updatedAt, keep only the most recent
+    const docs = await UserProgressModel.find().sort({ updatedAt: -1 }).skip(1);
     
-    if (files.length === 0) return 0;
+    if (docs.length === 0) return 0;
 
-    // Get file stats and find the most recently modified
-    const fileStats = files.map(f => ({
-      name: f,
-      path: path.join(progressDir, f),
-      mtime: fs.statSync(path.join(progressDir, f)).mtime.getTime(),
-    }));
-
-    fileStats.sort((a, b) => b.mtime - a.mtime);
-    const mostRecent = fileStats[0];
-
-    // Delete all except the most recent
-    let deletedCount = 0;
-    for (let i = 1; i < fileStats.length; i++) {
-      try {
-        fs.unlinkSync(fileStats[i].path);
-        deletedCount++;
-      } catch (error) {
-        console.error(`Error deleting ${fileStats[i].name}:`, error);
-      }
+    const deletedCount = docs.length;
+    for (const doc of docs) {
+      await UserProgressModel.deleteOne({ _id: doc._id });
     }
 
-    console.log(`✅ Cleared ${deletedCount} progress file(s). Kept: ${mostRecent.name}`);
+    console.log(`✅ Cleared ${deletedCount} progress document(s). Kept the most recently used one`);
     return deletedCount;
   } catch (error) {
-    console.error('❌ Error clearing progress files:', error);
+    console.error('❌ Error clearing progress documents:', error);
     return 0;
   }
 }
