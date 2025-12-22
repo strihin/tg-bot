@@ -22,7 +22,10 @@ async function main(): Promise<void> {
     console.log(`🌐 Environment: ${config.NODE_ENV}`);
 
     // Initialize MongoDB connection
+    console.log('\n📡 BEFORE: Calling ensureMongoDBConnection()');
     await ensureMongoDBConnection();
+    console.log('📡 AFTER: ensureMongoDBConnection() completed');
+
 
     // Create bot
     const bot = createBot();

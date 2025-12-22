@@ -9,6 +9,21 @@ export async function connectMongoDB(): Promise<void> {
   }
 
   try {
+    // Extract username from URI for logging
+    const uriMatch = config.MONGO_URI.match(/mongodb\+srv:\/\/([^:]+):/);
+    const username = uriMatch ? decodeURIComponent(uriMatch[1]) : 'unknown';
+    const clusterMatch = config.MONGO_URI.match(/@([^/?]+)/);
+    const cluster = clusterMatch ? clusterMatch[1] : 'unknown';
+    
+    console.log('');
+    console.log('=== MongoDB Connection Attempt ===');
+    console.log(`🔐 Connecting to MongoDB`);
+    console.log(`   Username: ${username}`);
+    console.log(`   Cluster: ${cluster}`);
+    console.log(`   Full URI starts with: ${config.MONGO_URI.substring(0, 60)}...`);
+    console.log('===================================');
+    console.log('');
+    
     await mongoose.connect(config.MONGO_URI);
     isConnected = true;
     console.log('✅ Connected to MongoDB');

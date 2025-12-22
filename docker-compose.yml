@@ -15,11 +15,8 @@ services:
       - ./data:/app/data
       - ./logs:/app/logs
     restart: unless-stopped
-    depends_on:
-      - mongodb
     environment:
       - NODE_ENV=production
-      - MONGO_URI=mongodb://mongodb:27017/bulgarian-bot
     networks:
       - bg-bot-network
     healthcheck:
@@ -28,23 +25,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-
-  mongodb:
-    image: mongo:7.0
-    container_name: bg-bot-mongodb
-    env_file:
-      - .env.mongodb
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb-data:/data/db
-    restart: unless-stopped
-    networks:
-      - bg-bot-network
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INIT_USER:-admin}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INIT_PASS:-changeme}
-      MONGO_INITDB_DATABASE: bulgarian-bot
 
   # Reverse Proxy / Web Server (Nginx)
   nginx:
@@ -61,10 +41,6 @@ services:
     restart: unless-stopped
     networks:
       - bg-bot-network
-
-volumes:
-  mongodb-data:
-    driver: local
 
 networks:
   bg-bot-network:
