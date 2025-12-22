@@ -9,7 +9,7 @@ A minimal MVP Telegram bot for learning Bulgarian language with multi-language s
 - 🔄 Language pair selection (Bulgarian as source, choose target language)
 - 💾 User progress tracking via JSON files
 - ⌨️ Inline keyboard navigation (next, previous, show translation)
-- ✨ Simple, fast, no external dependencies (no MongoDB, no AI)
+- 🌍 6 independent learning levels: Basic, Middle, Middle Slavic, Misc, Language Comparison, Expressions
 
 ## Quick Start
 
