@@ -1,13 +1,13 @@
 # Bulgarian Language Learning Telegram Bot 🇧🇬
 
-A minimal MVP Telegram bot for learning Bulgarian language with multi-language support (Bulgarian → English/Russian/Ukrainian).
+A minimal MVP Telegram bot for learning Bulgarian language with multi-language support (Bulgarian → English/Ukrainian/Kharkiv Dialect).
 
 ## Features
 
-- 🗺️ 5 lesson categories: direction, greetings, help, restaurant, shopping
-- 📚 600+ Bulgarian sentences with translations to English, Russian, Ukrainian
-- 🔄 Language pair selection (Bulgarian as source, choose target language)
-- 💾 User progress tracking via JSON files
+- 🗺️ 28 lesson categories across 6 learning levels
+- 📚 602 Bulgarian sentences with translations to English, Ukrainian, Kharkiv
+- 🔄 Multi-language support (Bulgarian → ENG/UA/Kharkiv)
+- 💾 User progress tracking via MongoDB
 - ⌨️ Inline keyboard navigation (next, previous, show translation)
 - 🌍 6 independent learning levels: Basic, Middle, Middle Slavic, Misc, Language Comparison, Expressions
 
@@ -15,8 +15,10 @@ A minimal MVP Telegram bot for learning Bulgarian language with multi-language s
 
 ### Prerequisites
 
-- Node.js 18+
+- Docker & Docker Compose (for containerized deployment)
+- Node.js 18+ (for local development)
 - Telegram Bot token (get from [@BotFather](https://t.me/botfather))
+- MongoDB Atlas account (free tier available)
 
 ### Installation
 
@@ -31,30 +33,59 @@ cd bg-bot
 npm install
 ```
 
-3. Set environment variables:
+3. Set up MongoDB Atlas:
+   - Create a cluster at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+   - Add your IP to Network Access (or use 0.0.0.0/0 for dev)
+   - Create a database user in Database Access
+
+4. Configure environment:
 ```bash
 cp .env.example .env
-# Edit .env and add your TELEGRAM_TOKEN
+# Edit .env with:
+#   TELEGRAM_TOKEN=your_bot_token
+#   MONGO_URI=mongodb+srv://user:pass@cluster.mongodb.net/bg-bot
 ```
 
-4. Run the bot:
+5. Run the bot:
 ```bash
-npm run dev        # Development (ts-node with watch)
-npm run build      # TypeScript build
-npm run moskovian  # Run compiled bot
+npm run build      # TypeScript compilation
+node dist/db/migrate.js  # Load data into MongoDB
+npm start          # Start the bot
 ```
 
-### Docker (Local Verification)
+### Docker Deployment
 
-1. Ensure Docker Desktop is running
-2. Build and run with Docker Compose:
+#### Using Shell Scripts (Recommended)
+
+The project includes convenient shell scripts for building and running:
+
+**Build the Docker image:**
 ```bash
-docker-compose up --build
+./build.sh
 ```
-3. Or manually:
+This script:
+- ✅ Verifies Docker is running
+- ✅ Cleans up old containers and images
+- ✅ Builds a fresh image with `docker-compose build --no-cache`
+- ✅ Optionally starts the container interactively
+
+**Run the bot container:**
 ```bash
-docker build -t bg-bot .
-docker run --env-file .env -v $(pwd)/data:/app/data bg-bot
+./run.sh
+```
+This script:
+- ✅ Verifies Docker is running
+- ✅ Checks .env file exists
+- ✅ Verifies image exists
+- ✅ Cleans up any conflicting containers
+- ✅ Starts the bot with environment variables from .env
+
+#### Using docker-compose directly
+
+```bash
+docker-compose up --build    # Build and start all services
+docker-compose down          # Stop all services
+docker-compose logs          # View logs
 ```
 
 ## Web Testing Interface
@@ -86,11 +117,17 @@ open http://localhost:3000
 
 ## Learning Flow
 
-1. **Language Selection**: 🇧🇬 → 🇬🇧/🇺🇦/🇷🇺
-2. **Level Selection**: 🌱 Basic, 🌿 Middle, 🔗 Middle Slavic, 📖 Misc, 🌍 Language Comparison, 💬 Expressions
-3. **Category Selection**: Greetings, Restaurant, Shopping, etc.
-4. **Lesson**: Show translation, navigate next/previous
-5. **Navigation**: Back to menu, change level, exit lesson
+1. **Language Selection**: 🇧🇬 → 🇬🇧 English / 🇺🇦 Ukrainian / 🎭 Kharkiv Dialect
+2. **Level Selection**: Choose from 6 independent levels
+   - 🌱 Basic (fundamental phrases)
+   - 🌿 Middle (grammar + complexity)
+   - 🔗 Middle Slavic (Slavic connections)
+   - 📖 Misc (idioms, slang, folklore)
+   - 🌍 Language Comparison (grammar, vocabulary)
+   - 💬 Expressions (food, love, culture)
+3. **Category Selection**: Pick from 28 available categories
+4. **Lesson**: Bulgarian text → Click to reveal translation → Navigate with buttons
+5. **Navigation**: Next/Previous, change level, change category, exit
 
 ## Project Structure
 
@@ -120,24 +157,36 @@ src/
 
 ## Data Format
 
-**Sentence files** (`data/*.json`):
+**Sentences in MongoDB** (`sentences` collection):
 ```json
-[
-  {
-    "bg": "Здравей",
-    "eng": "Hello",
-    "ru": "Привет",
-    "ua": "Привіт",
-    "source": "greetings"
-  }
-]
+{
+  "bg": "Здравей",
+  "eng": "Hello",
+  "ua": "Привіт",
+  "kharkiv": "Привіт (Kharkiv dialect)",
+  "folder": "basic",
+  "category": "greetings"
+}
 ```
 
-**User progress** (`data/.progress/{userId}.json`):
+**Categories in MongoDB** (`categories` collection):
+```json
+{
+  "id": "greetings",
+  "name": "Greetings",
+  "emoji": "👋",
+  "folder": "basic",
+  "sentenceCount": 50
+}
+```
+
+**User progress in MongoDB** (`user_progress` collection):
 ```json
 {
   "userId": 123456,
   "currentIndex": 5,
+  "category": "greetings",
+  "folder": "basic",
   "languageFrom": "bg",
   "languageTo": "eng"
 }
@@ -153,30 +202,16 @@ npm run type-check  # Type checking only
 
 ## 🚀 Production Deployment
 
-Ready to deploy to production? See the **deployment guides**:
+For production deployment, use Docker and docker-compose:
 
-- **[DEPLOYMENT_PLAN.md](./DEPLOYMENT_PLAN.md)** - High-level overview & timeline
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Detailed step-by-step instructions
-- **[DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md)** - Progress tracking
-- **[QUICK_COMMANDS.md](./QUICK_COMMANDS.md)** - Command reference
+```bash
+# Build and push image to registry
+docker build -t bg-bot:latest .
+docker push your-registry/bg-bot:latest
 
-### Quick Deployment (TL;DR)
-
-1. **Push to GitHub:**
-   ```bash
-   git push origin main
-   ```
-
-2. **GitHub Actions automatically:**
-   - Connects to VPS
-   - Pulls latest code
-   - Rebuilds Docker containers
-   - Restarts services
-
-3. **Access via Cloudflare Tunnel:**
-   ```
-   https://your-domain.com
-   ```
+# Deploy with docker-compose
+docker-compose -f docker-compose.yml up -d
+```
 
 ### Tech Stack
 
@@ -184,19 +219,18 @@ Ready to deploy to production? See the **deployment guides**:
 - **Docker Compose** - Multi-service orchestration
 - **Nginx** - Reverse proxy
 - **MongoDB Atlas** - Cloud database
-- **Cloudflare Tunnel** - Secure domain access
-- **GitHub Actions** - Automated deployment
-- **Hostinger VPS** - Application hosting
+- **Node.js** - Runtime
 
 ## Stage 1 Scope (MVP)
 
-✅ Sentence-based learning (28 categories, 602+ sentences)  
-✅ Multi-language support (BG → ENG/RU/UA)  
-✅ User progress tracking (MongoDB)  
-✅ Stress marks on Bulgarian words  
-✅ Docker containerization  
-✅ Automated CI/CD deployment  
-✅ Cloudflare Tunnel support  
+✅ Sentence-based learning (28 categories, 602 sentences)  
+✅ Multi-language support (BG → ENG/UA/Kharkiv)  
+✅ 6 independent learning levels  
+✅ User progress tracking (MongoDB Atlas)  
+✅ Docker containerization & docker-compose  
+✅ Web testing interface  
+✅ REST API for content browsing  
+✅ Automated data migration from JSON to MongoDB  
 
 ❌ Grammar explanations  
 ❌ AI/audio/video  
