@@ -2,242 +2,105 @@
 
 A minimal MVP Telegram bot for learning Bulgarian language with multi-language support (Bulgarian → English/Ukrainian/Kharkiv Dialect).
 
-## Features
+## 🎯 Features
 
-- 🗺️ 28 lesson categories across 6 learning levels
-- 📚 602 Bulgarian sentences with translations to English, Ukrainian, Kharkiv
-- 🔄 Multi-language support (Bulgarian → ENG/UA/Kharkiv)
-- 💾 User progress tracking via MongoDB
-- ⌨️ Inline keyboard navigation (next, previous, show translation)
-- 🌍 6 independent learning levels: Basic, Middle, Middle Slavic, Misc, Language Comparison, Expressions
+- 🗺️ **28 lesson categories** across 6 independent learning levels
+- 📚 **602 Bulgarian sentences** with translations to English, Ukrainian, Kharkiv
+- 🔄 **Multi-language support** (Bulgarian → ENG/UA/Kharkiv)
+- 💾 **User progress tracking** via MongoDB with auto-mastery recording
+- ✅ **Completion tracking** - see progress per category with checkmarks
+- ⌨️ **Inline keyboard navigation** (next, previous, show translation)
+- 📖 **Spoiler/blur effect** for translations - tap to reveal
+- ⭐ **Save favourite sentences** for later practice
+- 🎙️ **Audio support** for sentence pronunciation
+- 📊 **Progress monitoring** across all categories
 
-## Quick Start
+## 📚 Documentation
 
-### Prerequisites
+**Getting started?** Choose your path:
 
-- Docker & Docker Compose (for containerized deployment)
-- Node.js 18+ (for local development)
-- Telegram Bot token (get from [@BotFather](https://t.me/botfather))
-- MongoDB Atlas account (free tier available)
+- **[🚀 Quick Start](QUICK_START.md)** - 5 minutes to running locally
+- **[💻 Local Development](LOCAL_DEVELOPMENT.md)** - Full setup for Mac development
+- **[🌍 Production Deployment](PRODUCTION_DEPLOYMENT.md)** - Deploy to Hostinger + Cloudflare
+- **[⚙️ Configuration](CONFIGURATION.md)** - Environment variables reference
+- **[📋 START_HERE](START_HERE.md)** - High-level overview & deployment checklist
 
-### Installation
-
-1. Clone the repository:
-```bash
-git clone <repo-url>
-cd bg-bot
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Set up MongoDB Atlas:
-   - Create a cluster at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-   - Add your IP to Network Access (or use 0.0.0.0/0 for dev)
-   - Create a database user in Database Access
-
-4. Configure environment:
-```bash
-cp .env.example .env
-# Edit .env with:
-#   TELEGRAM_TOKEN=your_bot_token
-#   MONGO_URI=mongodb+srv://user:pass@cluster.mongodb.net/bg-bot
-```
-
-5. Run the bot:
-```bash
-npm run build      # TypeScript compilation
-node dist/db/migrate.js  # Load data into MongoDB
-npm start          # Start the bot
-```
-
-### Docker Deployment
-
-#### Using Shell Scripts (Recommended)
-
-The project includes convenient shell scripts for building and running:
-
-**Build the Docker image:**
-```bash
-./build.sh
-```
-This script:
-- ✅ Verifies Docker is running
-- ✅ Cleans up old containers and images
-- ✅ Builds a fresh image with `docker-compose build --no-cache`
-- ✅ Optionally starts the container interactively
-
-**Run the bot container:**
-```bash
-./run.sh
-```
-This script:
-- ✅ Verifies Docker is running
-- ✅ Checks .env file exists
-- ✅ Verifies image exists
-- ✅ Cleans up any conflicting containers
-- ✅ Starts the bot with environment variables from .env
-
-#### Using docker-compose directly
-
-```bash
-docker-compose up --build    # Build and start all services
-docker-compose down          # Stop all services
-docker-compose logs          # View logs
-```
-
-## Web Testing Interface
-
-For debugging and testing without Telegram, the bot includes a web interface:
-
-```bash
-# Access the web interface
-open http://localhost:3000
-```
-
-**Features:**
-- ✅ **Bot Status Monitoring** - Check if bot is running
-- ✅ **User Progress Inspection** - View user learning data
-- ✅ **Level/Category Browser** - Explore available content
-- ✅ **API Endpoints** - RESTful API for testing
-
-**API Endpoints:**
-- `GET /api/status` - Bot status and configuration
-- `GET /api/user/:userId` - User progress data
-- `POST /api/user/:userId/reset` - Reset user progress
-- `GET /api/categories/:folder` - Available categories per level
-
-## Bot Commands
-
-- `/start` - Show language selection (Bulgarian → target language)
-- `/clear` - Remove all user progress files except the most recent
-- `/test` - Show complete bot flow status (for debugging)
-
-## Learning Flow
-
-1. **Language Selection**: 🇧🇬 → 🇬🇧 English / 🇺🇦 Ukrainian / 🎭 Kharkiv Dialect
-2. **Level Selection**: Choose from 6 independent levels
-   - 🌱 Basic (fundamental phrases)
-   - 🌿 Middle (grammar + complexity)
-   - 🔗 Middle Slavic (Slavic connections)
-   - 📖 Misc (idioms, slang, folklore)
-   - 🌍 Language Comparison (grammar, vocabulary)
-   - 💬 Expressions (food, love, culture)
-3. **Category Selection**: Pick from 28 available categories
-4. **Lesson**: Bulgarian text → Click to reveal translation → Navigate with buttons
-5. **Navigation**: Next/Previous, change level, change category, exit
-
-## Project Structure
+## 🏗️ Project Structure
 
 ```
 src/
 ├── bot/                    # Telegram bot handlers
-│   ├── index.ts           # Bot initialization & callback routing
+│   ├── index.ts           # Bot initialization & routing
 │   ├── handlers/          # Command handlers
-│   │   ├── lesson.ts      # Lesson navigation (next, prev, translate, exit)
+│   │   ├── lesson.ts      # Lesson navigation
 │   │   ├── category.ts    # Category selection
-│   │   └── language.ts    # Target language selection
-│   ├── keyboards.ts       # Inline button layouts
-│   └── index.ts          # Main bot entry
+│   │   └── language.ts    # Language selection
+│   └── keyboards.ts       # Inline button layouts
 ├── data/                   # Data layer
-│   ├── loader.ts          # JSON sentence loader with caching
-│   ├── progress.ts        # User progress persistence
-│   └── *.json             # Sentence data (5 categories)
-├── constants.ts           # Languages & categories metadata
-├── types.ts               # TypeScript interfaces
-├── config.ts              # Environment config
-└── index.ts               # App entry point
+│   ├── loader.ts          # JSON sentence loader
+│   └── progress.ts        # User progress persistence
+├── db/                    # MongoDB operations
+│   ├── mongodb.ts         # Connection & queries
+│   └── models.ts          # Data schemas
+└── types.ts               # TypeScript interfaces
 ```
 
-## Bot Commands
+## 🎮 Bot Commands
 
-- `/start` - Show language selection (Bulgarian is source language, select target)
+| Command | Description |
+|---------|-------------|
+| `/start` | Begin or resume learning with language selection |
+| `/help` | View complete guide (available in 🇬🇧🇷🇺🇺🇦) |
+| `/progress` | See learning progress across all categories |
+| `/favourite` | View and practice saved sentences |
+| `/refresh` | Reset all progress and start fresh |
 
-## Data Format
+## 🗂️ Data Format
 
-**Sentences in MongoDB** (`sentences` collection):
+All data is stored in MongoDB with the following structure:
+
+**Sentences** collection:
 ```json
 {
   "bg": "Здравей",
   "eng": "Hello",
   "ua": "Привіт",
-  "kharkiv": "Привіт (Kharkiv dialect)",
+  "kharkiv": "Привіт (Kharkiv)",
   "folder": "basic",
   "category": "greetings"
 }
 ```
 
-**Categories in MongoDB** (`categories` collection):
-```json
-{
-  "id": "greetings",
-  "name": "Greetings",
-  "emoji": "👋",
-  "folder": "basic",
-  "sentenceCount": 50
-}
-```
-
-**User progress in MongoDB** (`user_progress` collection):
+**User Progress** collection:
 ```json
 {
   "userId": 123456,
   "currentIndex": 5,
   "category": "greetings",
   "folder": "basic",
-  "languageFrom": "bg",
   "languageTo": "eng"
 }
 ```
 
-## Development
+## 🛠️ Tech Stack
 
-```bash
-npm run build       # Compile TypeScript → dist/
-npm run dev         # Watch + ts-node (auto-restart on changes)
-npm run type-check  # Type checking only
-```
-
-## 🚀 Production Deployment
-
-For production deployment, use Docker and docker-compose:
-
-```bash
-# Build and push image to registry
-docker build -t bg-bot:latest .
-docker push your-registry/bg-bot:latest
-
-# Deploy with docker-compose
-docker-compose -f docker-compose.yml up -d
-```
-
-### Tech Stack
-
-- **Docker** - Containerization
-- **Docker Compose** - Multi-service orchestration
-- **Nginx** - Reverse proxy
+- **Node.js 18+** - Runtime
+- **TypeScript** - Type safety
+- **Telegram Bot API** - Bot framework
 - **MongoDB Atlas** - Cloud database
-- **Node.js** - Runtime
+- **Docker & Docker Compose** - Containerization
+- **Nginx** - Reverse proxy
 
-## Stage 1 Scope (MVP)
+## 📋 Quick Links
 
-✅ Sentence-based learning (28 categories, 602 sentences)  
-✅ Multi-language support (BG → ENG/UA/Kharkiv)  
-✅ 6 independent learning levels  
-✅ User progress tracking (MongoDB Atlas)  
-✅ Docker containerization & docker-compose  
-✅ Web testing interface  
-✅ REST API for content browsing  
-✅ Automated data migration from JSON to MongoDB  
+| Goal | Guide |
+|------|-------|
+| Start right now | [Quick Start](QUICK_START.md) |
+| Develop locally | [Local Development](LOCAL_DEVELOPMENT.md) |
+| Deploy to production | [Production Deployment](PRODUCTION_DEPLOYMENT.md) |
+| Configure settings | [Configuration](CONFIGURATION.md) |
+| See checklist | [START_HERE](START_HERE.md) |
 
-❌ Grammar explanations  
-❌ AI/audio/video  
-❌ SRS algorithms  
-❌ Analytics/gamification  
-❌ Complex schemas  
-
-## License
+## 📄 License
 
 MIT

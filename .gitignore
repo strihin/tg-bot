@@ -7,6 +7,9 @@ yarn.lock
 .env
 .env.local
 .env.*.local
+.env.dev
+.env.mongodb
+.env.prod.bak
 
 # Build output
 dist/

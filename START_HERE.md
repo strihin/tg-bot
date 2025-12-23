@@ -1,393 +1,140 @@
-# 🎉 Deployment Plan - Summary
+# Start Here - Deployment Overview
 
-## What Was Just Created
-
-I've set up a complete **production-ready deployment plan** for your BG-Bot with automated CI/CD, Cloudflare Tunnel, and Hostinger VPS integration.
-
-### ✅ Completed (Ready to Use)
-
-1. **Docker Compose Setup**
-   - Multi-service orchestration (app + nginx)
-   - Optional local MongoDB support
-   - Health checks configured
-   - Volume mounts for persistence
-
-2. **Nginx Reverse Proxy**
-   - Port 80/443 forwarding
-   - Gzip compression enabled
-   - SSL-ready configuration
-   - Upstream proxy to Node.js app
-
-3. **GitHub Actions CI/CD**
-   - Automatic deployment on `git push main`
-   - SSH connection to VPS
-   - Docker rebuild and restart
-   - Health check verification
-
-4. **Complete Documentation**
-   - `DEPLOYMENT.md` - Step-by-step guide (follow this!)
-   - `DEPLOYMENT_PLAN.md` - Overview & timeline
-   - `DEPLOYMENT_CHECKLIST.md` - Progress tracking
-   - `QUICK_COMMANDS.md` - Command reference
-   - `.env.example` - Environment variable template
+Welcome! This guide helps you choose the right path for your needs.
 
 ---
 
-## 🚀 Your Next Steps (In Order)
+## 🎯 Choose Your Path
 
-### **Step 1: Create GitHub Repository** (1 hour)
-```bash
-cd ~/Documents/code/personal/bg-bot
+### Just Want to Try It? (5 minutes)
+→ **[Quick Start](QUICK_START.md)**
 
-git init
-git add .
-git commit -m "Initial commit: bg-bot production-ready"
-git branch -M main
+Get the bot running locally in 5 minutes with minimal setup.
 
-# Go to https://github.com/new and create a repository
-# Then run:
-git remote add origin https://github.com/YOUR_USERNAME/bg-bot.git
-git push -u origin main
-```
+### Developing Locally? (30 minutes)
+→ **[Local Development](LOCAL_DEVELOPMENT.md)**
 
-**What this does:**
-- Stores your code in the cloud
-- Enables automatic deployment
-- Creates backup of your code
+Complete guide for developing on your Mac with Docker optional.
+
+### Ready for Production? (2-3 hours)
+→ **[Production Deployment](PRODUCTION_DEPLOYMENT.md)**
+
+Deploy to Hostinger VPS with Cloudflare Tunnel + automatic CI/CD.
+
+### Need to Configure Stuff? (Reference)
+→ **[Configuration](CONFIGURATION.md)**
+
+Complete reference for all environment variables.
 
 ---
 
-### **Step 2: Set Up Hostinger VPS** (1-2 hours)
+## 📋 Quick Decision Tree
 
-#### 2.1 Connect to VPS
-```bash
-ssh -p YOUR_PORT YOUR_USERNAME@YOUR_VPS_IP
 ```
+What do you want to do?
 
-#### 2.2 Install Docker & Docker Compose
-```bash
-# On VPS:
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
-docker --version
-docker-compose --version
-```
-
-#### 2.3 Clone Your Repository
-```bash
-cd ~
-git clone https://github.com/YOUR_USERNAME/bg-bot.git
-cd bg-bot
-```
-
-#### 2.4 Create .env File
-```bash
-cat > .env << 'EOF'
-TELEGRAM_TOKEN=YOUR_TELEGRAM_TOKEN
-BOT_USERNAME=your_bot_name
-MONGO_URI=mongodb+srv://bulgarian_bot:HhlR9hV8vgr1On2Y@cluster0.zkjt23i.mongodb.net/bulgarian-bot?retryWrites=true&w=majority
-DEEPL_API_KEY=YOUR_DEEPL_KEY
-NODE_ENV=production
-EOF
-
-chmod 600 .env
-```
-
-#### 2.5 Start Services
-```bash
-docker-compose build
-docker-compose up -d
-
-# Verify it's running
-curl http://localhost:3000/api/status
+├─ Try the bot right now
+│  └─ Go to: QUICK_START.md
+│
+├─ Develop features locally
+│  └─ Go to: LOCAL_DEVELOPMENT.md
+│
+├─ Deploy to production (Hostinger)
+│  └─ Go to: PRODUCTION_DEPLOYMENT.md
+│
+└─ Configure environment variables
+   └─ Go to: CONFIGURATION.md
 ```
 
 ---
 
-### **Step 3: Set Up Cloudflare Tunnel** (30 minutes)
-
-#### 3.1 Install Cloudflared
 ```bash
-# Still on VPS:
-curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
-sudo dpkg -i cloudflared.deb
+npm install
+npm run build
+npm start
 ```
 
-#### 3.2 Authenticate & Create Tunnel
-```bash
-cloudflared tunnel login
-# Follow browser prompt to login to your Cloudflare account
-
-cloudflared tunnel create bg-bot
-cloudflared tunnel list  # Note the tunnel ID
-```
-
-#### 3.3 Configure Tunnel
-```bash
-cat > ~/.cloudflared/config.yml << 'EOF'
-tunnel: bg-bot
-credentials-file: /home/YOUR_USERNAME/.cloudflared/YOUR_TUNNEL_ID.json
-
-ingress:
-  - hostname: your-domain.com
-    service: http://localhost:3000
-  - service: http_status:404
-EOF
-```
-
-#### 3.4 Make Tunnel Persistent
-```bash
-sudo cloudflared service install --token YOUR_TOKEN
-sudo systemctl start cloudflared
-sudo systemctl enable cloudflared
-```
-
-#### 3.5 Create DNS Record
-1. Go to **Cloudflare Dashboard**
-2. Select your domain
-3. **DNS** → **Add Record**
-   - Type: `CNAME`
-   - Name: `bot` (or whatever subdomain)
-   - Target: `YOUR_TUNNEL_ID.cfargotunnel.com`
-   - Proxy status: Proxied (orange cloud)
-   - Save
-
-Now your bot is at: `https://bot.your-domain.com`
+**Done in 5 minutes!** Test in Telegram.
 
 ---
 
-### **Step 4: Configure GitHub Actions** (15 minutes)
+## 🚀 Production Deployment Overview (2-3 hours)
 
-#### 4.1 Add GitHub Secrets
-1. Go to GitHub → **Settings** → **Secrets and variables** → **Actions**
-2. Add these 6 secrets:
-   - `VPS_HOST` = Your VPS IP address
-   - `VPS_USER` = Your VPS username
-   - `VPS_PORT` = SSH port (usually 22)
-   - `VPS_SSH_KEY` = Your SSH private key (from `~/.ssh/id_rsa`)
-   - `TELEGRAM_TOKEN` = Your bot token
-   - `MONGO_URI` = Your MongoDB connection string
+If deploying to Hostinger VPS:
 
-#### 4.2 Test Deployment
-```bash
-# Locally:
-git add .
-git commit -m "Test deployment"
-git push origin main
+1. **GitHub** - Create repository
+2. **VPS Setup** - Install Docker, clone code, create `.env`
+3. **Cloudflare** - Set up tunnel for HTTPS
+4. **CI/CD** - Configure automatic deployment
+5. **Verify** - Test everything
 
-# Watch on GitHub Actions tab to see it deploy automatically!
-```
-
----
-
-### **Step 5: Test Everything** (1 hour)
-
-#### Via Telegram
-- Open Telegram
-- Message your bot with `/start`
-- Verify everything works
-
-#### Via API
-```bash
-curl https://your-domain.com/api/status
-```
-
-#### Via Logs
-```bash
-ssh YOUR_USERNAME@YOUR_VPS_IP
-cd bg-bot
-docker-compose logs -f
-```
-
----
-
-## 📁 Files Created
-
-```
-bg-bot/
-├── docker-compose.yml          ✅ Multi-service orchestration
-├── nginx.conf                  ✅ Reverse proxy config
-├── .env.example                ✅ Environment template
-├── .github/
-│   └── workflows/
-│       └── deploy.yml          ✅ GitHub Actions workflow
-├── DEPLOYMENT.md               ✅ Complete step-by-step guide
-├── DEPLOYMENT_PLAN.md          ✅ Overview & timeline
-├── DEPLOYMENT_CHECKLIST.md     ✅ Progress tracker
-├── QUICK_COMMANDS.md           ✅ Command reference
-└── README.md                   ✅ Updated with links
-```
-
----
-
-## 🎯 What Happens After Each Step
-
-### After Step 1 (GitHub)
-- ✅ Code backed up in the cloud
-- ✅ Ready for automatic deployment
-
-### After Step 2 (VPS)
-- ✅ Bot running on your VPS
-- ✅ Accessible via VPS IP
-
-### After Step 3 (Cloudflare)
-- ✅ Bot accessible via custom domain
-- ✅ Automatic HTTPS/SSL
-- ✅ No firewall needed
-
-### After Step 4 (GitHub Actions)
-- ✅ Every `git push` automatically deploys
-- ✅ No manual VPS login needed for updates
-- ✅ Health checks verify service is running
-
-### After Step 5 (Testing)
-- ✅ Full production bot
-- ✅ Same Telegram functionality
-- ✅ Automatic updates
-- ✅ Professional deployment
-
----
-
-## 🔄 Normal Workflow (After Setup)
-
-Once deployed, your workflow becomes simple:
-
-```bash
-# Edit code locally
-nano src/bot/handlers/start.ts
-
-# Commit and push
-git add .
-git commit -m "Add new feature"
-git push origin main
-
-# ✨ Automatic deployment happens!
-# GitHub Actions automatically:
-# 1. Connects to VPS
-# 2. Pulls latest code
-# 3. Rebuilds Docker
-# 4. Restarts bot
-# Done! Changes live in seconds
-```
-
----
-
-## 🆘 If Something Goes Wrong
-
-### Check logs on VPS:
-```bash
-ssh YOUR_USERNAME@YOUR_VPS_IP
-cd bg-bot
-docker-compose logs -f bg-bot
-```
-
-### Restart services:
-```bash
-docker-compose restart
-```
-
-### Manual deployment:
-```bash
-git pull origin main
-docker-compose build
-docker-compose up -d
-```
-
-### Check GitHub Actions:
-- Go to GitHub → Actions tab
-- See deployment status
-- View error messages if any
-
----
-
-## 🔒 Security Checklist
-
-- [ ] `.env` file NOT in Git (it's in .gitignore)
-- [ ] GitHub Secrets configured (never in logs)
-- [ ] SSH key permissions: `chmod 600 ~/.ssh/key`
-- [ ] MongoDB IP whitelist configured
-- [ ] Firewall allows only ports 22, 80, 443
-- [ ] Cloudflare tunnel token secure
-- [ ] Regular backups of MongoDB
+See [Production Deployment](PRODUCTION_DEPLOYMENT.md) for detailed steps.
 
 ---
 
 ## 📚 Documentation Files
 
-| File | Purpose |
-|------|---------|
-| **DEPLOYMENT.md** | Full step-by-step guide - **START HERE** |
-| **DEPLOYMENT_PLAN.md** | High-level overview & timeline |
-| **DEPLOYMENT_CHECKLIST.md** | Track your progress |
-| **QUICK_COMMANDS.md** | Copy-paste ready commands |
-| **.env.example** | Template for environment variables |
-
----
-
-## ⏱️ Time Estimate
-
-| Step | Time | Difficulty |
-|------|------|-----------|
-| 1. GitHub Setup | 1 hour | Easy 🟢 |
-| 2. VPS Setup | 1-2 hours | Medium 🟡 |
-| 3. Cloudflare Tunnel | 30 min | Medium 🟡 |
-| 4. GitHub Actions | 15 min | Easy 🟢 |
-| 5. Testing | 1 hour | Easy 🟢 |
-| **TOTAL** | **3-4.5 hours** | **Achievable** ✅ |
-
----
-
-## 🎉 Expected Result
-
-After completing all steps:
-
-✅ Your bot runs on professional hosting (Hostinger)
-✅ Auto-deploys on every code push
-✅ HTTPS with Cloudflare Tunnel (no firewall needed)
-✅ Same Telegram functionality as local
-✅ Scales automatically with Docker
-✅ Backup to MongoDB Atlas
-✅ Monitoring via logs
-
----
-
-## 📞 Quick Help
-
-**Most Common Issues:**
-
-1. **Can't SSH to VPS**
-   - Check IP and port
-   - Verify SSH key permissions: `chmod 600 ~/.ssh/key`
-
-2. **Docker not running on VPS**
-   - Check disk space: `df -h`
-   - Check Docker: `docker ps`
-
-3. **Cloudflare tunnel not working**
-   - Check tunnel: `cloudflared tunnel list`
-   - Check logs: `sudo journalctl -u cloudflared -f`
-
-4. **Bot not responding in Telegram**
-   - Check bot logs: `docker-compose logs -f`
-   - Test endpoint: `curl https://your-domain.com/api/status`
-
----
-
-## 🚀 Ready to Start?
-
-**Option A: Recommended** (Start with GitHub)
-```bash
-git init && git add . && git commit -m "Initial"
-git remote add origin <your-repo>
-git push -u origin main
+```
+README.md                       # Project overview & features
+├─ QUICK_START.md              # Fastest path (5 min)
+├─ LOCAL_DEVELOPMENT.md        # Local setup (30 min)
+├─ PRODUCTION_DEPLOYMENT.md    # VPS setup (2-3 hours)
+├─ CONFIGURATION.md            # Environment variables
+└─ START_HERE.md               # This file (navigation)
 ```
 
-**Option B: Test Docker First**
+---
+
+## 🔧 Common Commands
+
+**Local:**
 ```bash
+npm run dev           # Auto-reload development
+npm start            # Run bot
+npm run build        # Compile TypeScript
+docker-compose up    # With Docker MongoDB
+```
+
+**Production (on VPS):**
+```bash
+docker-compose logs -f     # View logs
+docker-compose restart     # Restart services
+git pull && docker-compose up -d  # Manual update
+```
+
+**Deployment:**
+```bash
+git push origin main  # Auto-deploys via GitHub Actions
+```
+
+---
+
+## 📋 Reading Order
+
+**First Time?**
+1. This file (you are here)
+2. [Quick Start](QUICK_START.md) or [Local Development](LOCAL_DEVELOPMENT.md)
+3. Try the bot!
+
+**Going to Production?**
+1. [Local Development](LOCAL_DEVELOPMENT.md) - confirm it works locally
+2. [Production Deployment](PRODUCTION_DEPLOYMENT.md) - step by step
+3. [Configuration](CONFIGURATION.md) - reference as needed
+
+---
+
+## 🎯 Next Steps
+
+Pick one:
+
+1. **Try it now** → [Quick Start](QUICK_START.md)
+2. **Set up locally** → [Local Development](LOCAL_DEVELOPMENT.md)  
+3. **Deploy to VPS** → [Production Deployment](PRODUCTION_DEPLOYMENT.md)
+4. **Configure vars** → [Configuration](CONFIGURATION.md)
+
+---
+
+**You've got this! 🚀**
 docker-compose up -d
 docker-compose logs -f
 ```
