@@ -4,19 +4,29 @@ import { CATEGORIES } from '../../constants';
 import { FolderType } from '../../types';
 import { getUIText } from '../../utils/uiTranslation';
 import { getUserProgressAsync } from '../../data/progress';
+import { isCategoryCompleted } from '../../data/completion';
 
 /**
  * Create inline keyboard with available categories for a specific folder
  */
-export async function getCategoryKeyboard(folder: FolderType = 'basic', language: string = 'eng') {
+export async function getCategoryKeyboard(folder: FolderType = 'basic', language: string = 'eng', userId?: number) {
   const categories = await getAvailableCategories(folder);
 
-  const buttons = categories.map((category: string) => [
-    {
-      text: `${CATEGORIES[category as keyof typeof CATEGORIES]?.emoji || '📚'} ${getUIText(`cat_${category}`, language as any)}`,
-      callback_data: `select_category:${category}`,
-    },
-  ]);
+  if (userId) {
+    console.log(`🎯 [KEYBOARD] Building category keyboard for user ${userId}, folder: ${folder}`);
+  }
+
+  const buttons = await Promise.all(categories.map(async (category: string) => {
+    const completed = userId ? await isCategoryCompleted(userId, folder, category) : false;
+    const emoji = completed ? ' ✅' : '';
+    console.log(`  → Category "${category}": completed=${completed} emoji="${emoji}"`);
+    return [
+      {
+        text: `${CATEGORIES[category as keyof typeof CATEGORIES]?.emoji || '📚'} ${getUIText(`cat_${category}`, language as any)}${emoji}`,
+        callback_data: `select_category:${category}`,
+      },
+    ];
+  }));
 
   // Add back button to return to folder selection
   buttons.push([

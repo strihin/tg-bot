@@ -9,6 +9,7 @@ export type FolderType = 'basic' | 'middle' | 'middle-slavic' | 'misc' | 'langua
 export type TargetLanguage = 'eng' | 'kharkiv' | 'ua';
 
 export interface Sentence {
+  _id?: string;             // MongoDB ObjectId
   bg: string;
   eng: string;
   ru: string;
@@ -22,6 +23,8 @@ export interface Sentence {
   ruleUA?: string;          // Rule explanation in Ukrainian
   comparison?: string;      // Comparison with other languages
   falseFriend?: string;     // False friend note
+  audioUrl?: string;        // Base64 audio data URL for Telegram
+  audioGenerated?: boolean; // Flag indicating audio was generated
 }
 
 export interface UserProgress {
@@ -32,6 +35,7 @@ export interface UserProgress {
   languageFrom: 'bg';
   languageTo: TargetLanguage;
   lessonMessageId?: number; // Message ID of current lesson for editing
+  audioMessageId?: number;  // Message ID of audio sent as reply (for current sentence)
   lessonActive?: boolean;   // Track if user is in active lesson
 }
 

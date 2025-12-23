@@ -1,12 +1,13 @@
 import express from 'express';
-import { getUserProgressAsync, saveUserProgress, initializeUserProgress, updateUserIndex, changeTargetLanguage } from './data/progress';
+import { getUserProgressAsync, initializeUserProgress, updateUserIndex, changeTargetLanguage } from './data/progress';
 import { getRecentActivity } from './utils/logger';
-import { LEVELS, CATEGORIES } from './constants';
+import { LEVELS } from './constants';
 import { getAvailableCategories, getSentenceByIndex, getTotalSentences, getCategoryInfo } from './data/loader';
 import { TargetLanguage, FolderType } from './types';
+import { config } from './config';
 
 const app = express();
-const PORT = 3000;
+const PORT = config.PORT;
 
 // Middleware
 app.use(express.json());
@@ -179,7 +180,7 @@ app.post('/api/learn/:userId/language', async (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🌐 Web testing interface running at http://localhost:${PORT}`);
   console.log(`📊 API endpoints:`);
   console.log(`   GET  /api/status`);
@@ -191,4 +192,11 @@ app.listen(PORT, () => {
   console.log(`   POST /api/learn/:userId/next`);
   console.log(`   POST /api/learn/:userId/previous`);
   console.log(`   POST /api/learn/:userId/language`);
+
 });
+
+
+
+export function getExpressApp(): express.Application {
+  return app;
+}

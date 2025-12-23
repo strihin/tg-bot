@@ -40,6 +40,7 @@ export async function loadSentences(category: string, folder: FolderType = 'basi
   const cacheKey = `${folder}:${category}`;
 
   if (sentenceCache[cacheKey]) {
+    console.log(`📦 [LOADER] Returning cached sentences for ${cacheKey} (${sentenceCache[cacheKey].length} sentences, audioUrl: ${!!sentenceCache[cacheKey][0]?.audioUrl})`);
     return sentenceCache[cacheKey];
   }
 
@@ -48,8 +49,14 @@ export async function loadSentences(category: string, folder: FolderType = 'basi
 
     const sentences = await SentenceModel.find({ folder, category }).lean();
 
+    console.log(`🔍 [LOADER] Fetched ${sentences.length} sentences from MongoDB for ${folder}/${category}`);
+    if (sentences.length > 0) {
+      console.log(`   - First sentence has audioUrl: ${!!sentences[0].audioUrl}, audioGenerated: ${sentences[0].audioGenerated}`);
+    }
+
     // Convert MongoDB documents to Sentence interface
     const formattedSentences: Sentence[] = sentences.map(doc => ({
+      _id: doc._id?.toString(),
       bg: doc.bg,
       eng: doc.eng,
       ru: doc.ru,
@@ -62,7 +69,9 @@ export async function loadSentences(category: string, folder: FolderType = 'basi
       ruleRu: doc.ruleRu,
       ruleUA: doc.ruleUA,
       comparison: doc.comparison,
-      falseFriend: doc.falseFriend
+      falseFriend: doc.falseFriend,
+      audioUrl: doc.audioUrl,
+      audioGenerated: doc.audioGenerated
     }));
 
     // If MongoDB returned empty, try JSON fallback

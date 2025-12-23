@@ -14,13 +14,13 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'what_to_do': 'What would you like to do?',
     'resume_lesson': '📖 Resume lesson',
     'start_new': '🚀 Start new lesson',
-    
+
     // Language selection
     'select_language': 'Select your learning language:',
     'language_eng': '🇬🇧 English',
     'language_ua': '🇺🇦 Ukrainian',
     'language_kharkiv': '🎭 Kharkiv (Ukrainian Dialect)',
-    
+
     // Level selection
     'select_level': 'Select your learning level:',
     'level_basic': '🎓 Basic',
@@ -35,11 +35,11 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'misc_desc': 'Idioms, slang, and cultural',
     'language_comparison_desc': 'Compare Bulgarian with other languages',
     'expressions_desc': 'Common expressions and sayings',
-    
+
     // Category selection
     'select_category': 'Select a lesson category:',
     'no_categories': 'No categories available',
-    
+
     // Categories
     'cat_direction': 'Direction',
     'cat_greetings': 'Greetings',
@@ -68,9 +68,11 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'cat_love': 'Love',
     'cat_rakiya': 'Rakiya',
     'cat_soft-insult': 'Soft Insults',
-    
+
     // Lesson controls
     'show_translation': '📖 Show translation',
+    'listen': 'Listen',
+    'add_favourite': '⭐ Add to favourites',
     'skip_next': '⏭️ Skip to next',
     'change_folder': '📚 Change folder',
     'main_menu': '🏠 Main menu',
@@ -78,7 +80,7 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'next': 'Next ➡️',
     'exit_lesson': '❌ Exit lesson',
     'choose_another': '📚 Choose another category',
-    
+
     // Lesson messages
     'lesson_started': '🎓 Lesson started! Good luck!',
     'translation_revealed': '🎯 Translation revealed! 👀',
@@ -90,12 +92,16 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'great_job': '💪 Great job! Ready for the next category?',
     'at_beginning': '✨ You\'re at the beginning!',
     'no_sentences': '❌ No sentences available.',
-    
+
     // Errors
     'error_occurred': 'Error occurred',
     'no_progress_found': 'No progress found',
     'session_expired': 'Your session has expired. Please start again.',
-    
+
+    // Progress
+    'progress_title': '📊 **Your Learning Progress**',
+    'progress_no_lessons': '📚 No lessons started yet. Use /start to begin!',
+
     // Status
     'loading': '⏳ Loading...',
     'lesson': '📚 Lesson',
@@ -110,13 +116,13 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'what_to_do': 'Шо вы хотели бы делать?',
     'resume_lesson': '📖 Продолжить урок',
     'start_new': '🚀 Начать новый урок',
-    
+
     // Language selection
     'select_language': 'Выберите язык обучения:',
     'language_eng': '🇬🇧 Английский',
     'language_ua': '🇺🇦 Украинский',
     'language_kharkiv': '🎭 Харьков (слобожанский говор)',
-    
+
     // Level selection
     'select_level': 'Выберите уровень обучения:',
     'level_basic': '🎓 Базовый',
@@ -131,11 +137,11 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'misc_desc': 'Идиомы, сленг и культура',
     'language_comparison_desc': 'Сравнить болгарский с другими языками',
     'expressions_desc': 'Распространенные выражения и пословицы',
-    
+
     // Category selection
     'select_category': 'Выберите категорию урока:',
     'no_categories': 'Категории недоступны',
-    
+
     // Categories
     'cat_direction': 'Направления',
     'cat_greetings': 'Приветствия',
@@ -164,17 +170,22 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'cat_love': 'Любовь',
     'cat_rakiya': 'Ракия',
     'cat_soft-insult': 'Мягкие оскорбления',
-    
+
     // Lesson controls
     'show_translation': '📖 Показать перевод',
+    'listen': 'Слушать',
+    'add_favourite': '⭐ Добавить в избранное',
     'skip_next': '⏭️ Перейти к следующему',
     'change_folder': '📚 Сменить уровень',
+    'change_level': '📈 Сменить уровень',
+    'change_category': '🏷️ Сменить категорию',
     'main_menu': '🏠 Главное меню',
     'previous': '⬅️ Предыдущий',
     'next': 'Следующий ➡️',
     'exit_lesson': '❌ Выйти из урока',
     'choose_another': '📚 Выбрать другую категорию',
-    
+    'click_reveal': '✨ Нажмите кнопку, чтобы раскрыть перевод',
+
     // Lesson messages
     'lesson_started': '🎓 Урок начался! Удачи!',
     'translation_revealed': '🎯 Перевод раскрыт! 👀',
@@ -186,17 +197,20 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'great_job': '💪 Отличная работа! Готовы к следующей категории?',
     'at_beginning': '✨ Вы в начале!',
     'no_sentences': '❌ Нет доступных предложений.',
-    
+
     // Errors
     'error_occurred': 'Произошла ошибка',
     'no_progress_found': 'Прогресс не найден',
     'session_expired': 'Ваша сессия закончилась. Пожалуйста, начните заново.',
-    
+
+    // Progress
+    'progress_title': '📊 **Ваш прогресс обучения**',
+    'progress_no_lessons': '📚 Уроки еще не начаты. Используйте /start для начала!',
+
     // Status
     'loading': '⏳ Загрузка...',
     'lesson': '📚 Урок',
     'of': 'из',
-    'click_reveal': '✨ Нажмите кнопку, чтобы раскрыть перевод',
   },
 
   ua: {
@@ -206,13 +220,13 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'what_to_do': 'Що б ви хотіли робити?',
     'resume_lesson': '📖 Продовжити урок',
     'start_new': '🚀 Почати новий урок',
-    
+
     // Language selection
     'select_language': 'Виберіть мову навчання:',
     'language_eng': '🇬🇧 Англійська',
     'language_ua': '🇺🇦 Українська',
     'language_kharkiv': '🎭 Харків (український діалект)',
-    
+
     // Level selection
     'select_level': 'Виберіть рівень навчання:',
     'level_basic': '🎓 Базовий',
@@ -227,11 +241,11 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'misc_desc': 'Ідіоми, сленг та культура',
     'language_comparison_desc': 'Порівняти болгарську з іншими мовами',
     'expressions_desc': 'Поширені вирази та приказки',
-    
+
     // Category selection
     'select_category': 'Виберіть категорію уроку:',
     'no_categories': 'Категорії недоступні',
-    
+
     // Categories
     'cat_direction': 'Напрямок',
     'cat_greetings': 'Привітання',
@@ -260,17 +274,22 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'cat_love': 'Любов',
     'cat_rakiya': 'Ракія',
     'cat_soft-insult': 'М\'які образи',
-    
+
     // Lesson controls
     'show_translation': '📖 Показати переклад',
+    'listen': 'Слухати',
+    'add_favourite': '⭐ Додати до улюблених',
     'skip_next': '⏭️ Перейти до наступного',
     'change_folder': '📚 Змінити рівень',
+    'change_level': '📈 Змінити рівень',
+    'change_category': '🏷️ Змінити категорію',
     'main_menu': '🏠 Головне меню',
     'previous': '⬅️ Попередній',
     'next': 'Наступний ➡️',
     'exit_lesson': '❌ Вийти з уроку',
     'choose_another': '📚 Вибрати іншу категорію',
-    
+    'click_reveal': '✨ Натисніть кнопку, щоб розкрити переклад',
+
     // Lesson messages
     'lesson_started': '🎓 Урок розпочався! Удачі!',
     'translation_revealed': '🎯 Переклад розкрито! 👀',
@@ -282,17 +301,20 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'great_job': '💪 Чудова робота! Готові до наступної категорії?',
     'at_beginning': '✨ Ви на початку!',
     'no_sentences': '❌ Немає доступних речень.',
-    
+
     // Errors
     'error_occurred': 'Сталася помилка',
     'no_progress_found': 'Прогрес не знайдено',
     'session_expired': 'Ваша сесія закінчилася. Будь ласка, почніть заново.',
-    
+
+    // Progress
+    'progress_title': '📊 **Ваш прогрес навчання**',
+    'progress_no_lessons': '📚 Уроки ще не розпочаті. Використайте /start для початку!',
+
     // Status
     'loading': '⏳ Завантаження...',
     'lesson': '📚 Урок',
     'of': 'з',
-    'click_reveal': '✨ Натисніть кнопку, щоб розкрити переклад',
   },
 };
 
@@ -305,33 +327,4 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
 export function getUIText(key: string, language: UILanguage = 'eng'): string {
   const translations = uiTranslations[language] || uiTranslations.eng;
   return translations[key] || key;
-}
-
-/**
- * Get all translations for a language
- * @param language - Target language
- * @returns Dictionary of all translations
- */
-export function getAllUITranslations(language: UILanguage = 'eng'): Record<string, string> {
-  return uiTranslations[language] || uiTranslations.eng;
-}
-
-/**
- * Format a message with multiple translations
- * Useful for messages that combine multiple keys
- */
-export function formatUIMessage(template: string, language: UILanguage = 'eng', values: Record<string, string> = {}): string {
-  let result = template;
-  
-  // Replace {{key}} patterns with translated values
-  result = result.replace(/\{\{(\w+)\}\}/g, (match, key) => {
-    return getUIText(key, language);
-  });
-  
-  // Replace {{key:value}} patterns with custom values
-  Object.entries(values).forEach(([key, value]) => {
-    result = result.replace(new RegExp(`{{${key}}}`, 'g'), value);
-  });
-  
-  return result;
 }

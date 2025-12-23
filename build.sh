@@ -93,10 +93,11 @@ if [[ "$run_container" =~ ^[Yy]$ ]]; then
         --name "${CONTAINER_NAME}" \
         --env-file .env \
         -p 3000:3000 \
+        -p 3001:3001 \
         -v "$(pwd)/data:/app/data" \
         "${IMAGE_NAME}:${IMAGE_TAG}"
 else
     echo -e "${GREEN}✅ Build complete. Image ready: ${IMAGE_NAME}:${IMAGE_TAG}${NC}"
     echo -e "\n${BLUE}To run the container manually:${NC}"
-    echo "docker run --env-file .env -p 3000:3000 -v \$(pwd)/data:/app/data ${IMAGE_NAME}:${IMAGE_TAG}"
+    echo "docker run --env-file .env -p 3000:3000 -p 3001:3001 -v \$(pwd)/data:/app/data ${IMAGE_NAME}:${IMAGE_TAG}"
 fi

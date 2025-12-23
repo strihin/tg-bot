@@ -25,8 +25,8 @@ RUN npm prune --production
 # Copy environment file
 COPY .env ./
 
-# Expose port (though bot uses polling, not webhooks)
-EXPOSE 3000
+# Expose ports (3000 for production polling, 3001 for development webhooks)
+EXPOSE 3000 3001
 
 # Run the bot
 CMD ["npm", "start"]

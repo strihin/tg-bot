@@ -4,6 +4,7 @@ import { LEVELS } from '../../constants';
 import { FolderType } from '../../types';
 import { getUIText } from '../../utils/uiTranslation';
 import { getCategoryKeyboard } from './category';
+import { isFolderCompleted } from '../../data/completion';
 
 /**
  * Handle folder selection (6 independent learning levels)
@@ -48,13 +49,17 @@ export async function handleSelectLevel(
 
     // Show category selection after folder choice
     console.log(`📤 Loading categories for folder: ${folder}`);
-    const keyboard = await getCategoryKeyboard(folder, progress.languageTo);
+    const keyboard = await getCategoryKeyboard(folder, progress.languageTo, userId);
     console.log(`✅ Categories loaded, sending message`);
+    
+    // Check if folder is completed
+    const folderCompleted = await isFolderCompleted(userId, folder);
+    const completionIcon = folderCompleted ? ' ✅' : '';
     
     const selectCategoryText = getUIText('select_category', progress.languageTo);
     await bot.sendMessage(
       chatId,
-      `${folderInfo.emoji} **${folderInfo.name}** mode selected\n\n_${folderInfo.description}_\n\n${selectCategoryText}`,
+      `${folderInfo.emoji} **${folderInfo.name}**${completionIcon} mode selected\n\n_${folderInfo.description}_\n\n${selectCategoryText}`,
       {
         parse_mode: 'Markdown',
         ...keyboard,

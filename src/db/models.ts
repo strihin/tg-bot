@@ -17,6 +17,8 @@ export interface ISentence extends Document {
   ruleUA?: string;
   comparison?: string;
   falseFriend?: string;
+  audioUrl?: string;  // URL to ElevenLabs audio
+  audioGenerated?: boolean;  // Whether audio has been generated
 }
 
 const SentenceSchema = new Schema<ISentence>({
@@ -34,7 +36,9 @@ const SentenceSchema = new Schema<ISentence>({
   ruleRu: { type: String },
   ruleUA: { type: String },
   comparison: { type: String },
-  falseFriend: { type: String }
+  falseFriend: { type: String },
+  audioUrl: { type: String },
+  audioGenerated: { type: Boolean, default: false }
 });
 
 // Create indexes for efficient queries
@@ -73,6 +77,7 @@ export interface IUserProgress extends Document {
   languageFrom: string;
   languageTo: TargetLanguage;
   lessonMessageId?: number;
+  audioMessageId?: number;
   lessonActive?: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -87,6 +92,7 @@ const UserProgressSchema = new Schema<IUserProgress>(
     languageFrom: { type: String, default: 'bg' },
     languageTo: { type: String, default: 'eng', enum: ['eng', 'kharkiv', 'ua'] },
     lessonMessageId: { type: Number },
+    audioMessageId: { type: Number },
     lessonActive: { type: Boolean, default: false },
   },
   { timestamps: true }
@@ -96,3 +102,75 @@ const UserProgressSchema = new Schema<IUserProgress>(
 // Note: userId is already set as unique in the field definition, so we don't need a separate index
 
 export const UserProgressModel = mongoose.model<IUserProgress>('UserProgress', UserProgressSchema);
+
+export interface ISentenceMastery extends Document {
+  userId: number;
+  sentenceId: string;  // MongoDB ObjectId of the sentence
+  folder: FolderType;
+  category: string;
+  status: 'new' | 'learning' | 'learned' | 'known';  // new=not touched, learning=attempted, learned=mastered, known=already knew
+  reviewCount: number;  // How many times reviewed
+  lastReviewedAt?: Date;
+  masteredAt?: Date;  // When marked as learned/known
+}
+
+const SentenceMasterySchema = new Schema<ISentenceMastery>(
+  {
+    userId: { type: Number, required: true },
+    sentenceId: { type: String, required: true },
+    folder: { type: String, required: true },
+    category: { type: String, required: true },
+    status: { 
+      type: String, 
+      enum: ['new', 'learning', 'learned', 'known'],
+      default: 'new'
+    },
+    reviewCount: { type: Number, default: 0 },
+    lastReviewedAt: { type: Date },
+    masteredAt: { type: Date },
+  },
+  { timestamps: true }
+);
+
+// Create indexes for efficient queries
+SentenceMasterySchema.index({ userId: 1, folder: 1, category: 1 });
+SentenceMasterySchema.index({ userId: 1, sentenceId: 1 }, { unique: true });
+SentenceMasterySchema.index({ userId: 1, status: 1 });
+
+export const SentenceMasteryModel = mongoose.model<ISentenceMastery>('SentenceMastery', SentenceMasterySchema);
+
+export interface IFavourite extends Document {
+  userId: number;
+  sentenceId: string;  // MongoDB ObjectId of the sentence
+  folder: FolderType;
+  category: string;
+  bg: string;  // Cache Bulgarian text for quick access
+  eng: string;  // Cache English text
+  ru: string;
+  ua: string;
+  audioUrl?: string;  // Base64 audio data
+  addedAt: Date;
+}
+
+const FavouriteSchema = new Schema<IFavourite>(
+  {
+    userId: { type: Number, required: true },
+    sentenceId: { type: String, required: true },
+    folder: { type: String, required: true },
+    category: { type: String, required: true },
+    bg: { type: String, required: true },
+    eng: { type: String, required: true },
+    ru: { type: String, required: true },
+    ua: { type: String, required: true },
+    audioUrl: { type: String, default: null },
+    addedAt: { type: Date, default: () => new Date() },
+  },
+  { timestamps: true }
+);
+
+// Create indexes for efficient queries
+FavouriteSchema.index({ userId: 1 });
+FavouriteSchema.index({ userId: 1, sentenceId: 1 }, { unique: true });
+FavouriteSchema.index({ userId: 1, folder: 1, category: 1 });
+
+export const FavouriteModel = mongoose.model<IFavourite>('Favourite', FavouriteSchema);

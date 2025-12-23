@@ -18,6 +18,7 @@ export async function getUserProgressAsync(userId: number): Promise<UserProgress
       languageFrom: doc.languageFrom as 'bg',
       languageTo: doc.languageTo,
       lessonMessageId: doc.lessonMessageId,
+      audioMessageId: doc.audioMessageId,
       lessonActive: doc.lessonActive,
     };
   } catch (error) {
@@ -50,6 +51,7 @@ export async function saveUserProgress(progress: UserProgress): Promise<void> {
         languageFrom: progress.languageFrom,
         languageTo: progress.languageTo,
         lessonMessageId: progress.lessonMessageId,
+        audioMessageId: progress.audioMessageId,
         lessonActive: progress.lessonActive,
       },
       { upsert: true, new: true }

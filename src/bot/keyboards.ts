@@ -1,85 +1,138 @@
 import { LEVELS } from '../constants';
 import { TargetLanguage } from '../types';
 import { getUIText } from '../utils/uiTranslation';
+import { isFolderCompleted } from '../data/completion';
 
 /**
  * Generate level/folder selection keyboard dynamically from LEVELS constant
+ * This async version includes completion status for folders
+ */
+export async function generateLevelSelectKeyboardWithCompletion(language: TargetLanguage = 'eng', userId?: number) {
+  const buttons = await Promise.all(Object.entries(LEVELS).map(async ([key, level]) => {
+    const keyWithUnderscores = key.replace(/-/g, '_');
+    const completionIcon = userId ? (await isFolderCompleted(userId, key as any) ? ' ✅' : '') : '';
+    return [
+      {
+        text: `${level.emoji} ${getUIText(`level_${keyWithUnderscores}`, language)} - ${getUIText(`${keyWithUnderscores}_desc`, language)}${completionIcon}`,
+        callback_data: `folder_${key}`,
+      },
+    ];
+  }));
+
+  return {
+    inline_keyboard: buttons,
+  };
+}
+
+/**
+ * Generate level/folder selection keyboard dynamically from LEVELS constant (synchronous)
  */
 const generateLevelSelectKeyboard = (language: TargetLanguage = 'eng') => {
   return {
-    inline_keyboard: Object.entries(LEVELS).map(([key, level]) => (
-      [
+    inline_keyboard: Object.entries(LEVELS).map(([key, level]) => {
+      const keyWithUnderscores = key.replace(/-/g, '_');
+      return [
         {
-          text: `${level.emoji} ${getUIText(`level_${key}`, language)} - ${getUIText(`${key}_desc`, language)}`,
+          text: `${level.emoji} ${getUIText(`level_${keyWithUnderscores}`, language)} - ${getUIText(`${keyWithUnderscores}_desc`, language)}`,
           callback_data: `folder_${key}`,
         },
-      ]
-    )),
+      ];
+    }),
   };
 };
 
 /**
  * Get dynamic lesson keyboards with translations
  */
-const getLessonKeyboards = (language: TargetLanguage = 'eng') => ({
-  showTranslation: {
-    inline_keyboard: [
-      [{ text: getUIText('show_translation', language), callback_data: 'show_translation' }],
-      [{ text: getUIText('skip_next', language), callback_data: 'next' }],
-      [
-        { text: getUIText('change_folder', language), callback_data: 'change_folder' },
-        { text: getUIText('main_menu', language), callback_data: 'back_to_menu' },
+const getLessonKeyboards = (language: TargetLanguage = 'eng', category?: string, folder?: string, index?: number) => {
+  // Build the Listen button with callback (web_app URLs require HTTPS which isn't available in development)
+  const listenButton = {
+    text: '🎙️ ' + getUIText('listen', language),
+    callback_data: 'listen_audio',
+  };
+
+  return {
+    showTranslation: {
+      inline_keyboard: [
+        [
+          { text: getUIText('previous', language), callback_data: 'prev' },
+          { text: getUIText('next', language), callback_data: 'next' },
+        ],
+        [
+          listenButton,
+          {
+            text: getUIText('add_favourite', language),
+            callback_data: 'add_favourite',
+          },
+        ],
+        [
+          {
+            text: getUIText('change_folder', language),
+            callback_data: 'change_folder',
+          },
+          {
+            text: getUIText('main_menu', language),
+            callback_data: 'back_to_menu',
+          },
+        ],
       ],
-    ],
-  },
+    },
 
-  withNavigation: {
-    inline_keyboard: [
-      [
-        { text: getUIText('previous', language), callback_data: 'prev' },
-        { text: getUIText('next', language), callback_data: 'next' },
+    withNavigation: {
+      inline_keyboard: [
+        [
+          { text: getUIText('previous', language), callback_data: 'prev' },
+          { text: getUIText('next', language), callback_data: 'next' },
+        ],
+        [
+          listenButton,
+          {
+            text: getUIText('add_favourite', language),
+            callback_data: 'add_favourite',
+          },
+        ],
+        [
+          { text: getUIText('change_folder', language), callback_data: 'change_folder' },
+          { text: getUIText('main_menu', language), callback_data: 'back_to_menu' },
+        ],
+        [{ text: getUIText('exit_lesson', language), callback_data: 'exit' }],
       ],
-      [
-        { text: getUIText('change_folder', language), callback_data: 'change_folder' },
-        { text: getUIText('main_menu', language), callback_data: 'back_to_menu' },
+    },
+
+    lessonComplete: {
+      inline_keyboard: [
+        [{ text: getUIText('choose_another', language), callback_data: 'exit' }],
       ],
-      [{ text: getUIText('exit_lesson', language), callback_data: 'exit' }],
-    ],
-  },
+    },
 
-  lessonComplete: {
-    inline_keyboard: [
-      [{ text: getUIText('choose_another', language), callback_data: 'exit' }],
-    ],
-  },
+    levelSelect: undefined as any, // Will be generated dynamically
 
-  levelSelect: undefined as any, // Will be generated dynamically
-
-  startMenu: {
-    inline_keyboard: [
-      [{ text: getUIText('start_new', language), callback_data: 'start_lesson' }],
-      [{ text: getUIText('resume_lesson', language), callback_data: 'continue_lesson' }],
-    ],
-  },
-
-  sourceLanguageSelect: {
-    inline_keyboard: [
-      [
-        { text: '��🇬 Bulgarian (BG)', callback_data: 'lang_from_bg' },
+    startMenu: {
+      inline_keyboard: [
+        [{ text: getUIText('start_new', language), callback_data: 'start_lesson' }],
+        [{ text: getUIText('resume_lesson', language), callback_data: 'continue_lesson' }],
       ],
-    ],
-  },
+    },
 
-  targetLanguageSelect: {
-    inline_keyboard: [
-      [
-        { text: '🇬🇧', callback_data: 'lang_to_eng' },
-        { text: '🇺🇦', callback_data: 'lang_to_ua' },
-        { text: '🎭', callback_data: 'lang_to_kharkiv' },
-      ]
-    ],
-  },
-});
+    sourceLanguageSelect: {
+      inline_keyboard: [
+        [
+          { text: '🇧🇬 Bulgarian (BG)', callback_data: 'lang_from_bg' },
+        ],
+      ],
+    },
+
+    targetLanguageSelect: {
+      inline_keyboard: [
+        [
+          { text: '🇬🇧', callback_data: 'lang_to_eng' },
+          { text: '🇺🇦', callback_data: 'lang_to_ua' },
+          { text: '🎭', callback_data: 'lang_to_kharkiv' },
+        ]
+      ],
+    },
+  };
+};
 
 // Static keyboards that don't need translation
 export const staticKeyboards = {
@@ -105,14 +158,26 @@ export const staticKeyboards = {
 /**
  * Get translated lesson keyboards for a given language
  * @param language - Target language for translations
+ * @param category - Optional: current category for building audio player URL
+ * @param folder - Optional: current folder for building audio player URL
+ * @param index - Optional: current sentence index for building audio player URL
  * @returns Object with all lesson keyboard layouts
  */
-export function getTranslatedKeyboards(language: TargetLanguage = 'eng') {
-  const keyboards = getLessonKeyboards(language);
+export function getTranslatedKeyboards(language: TargetLanguage = 'eng', category?: string, folder?: string, index?: number) {
+  const keyboards = getLessonKeyboards(language, category, folder, index);
   keyboards.levelSelect = generateLevelSelectKeyboard(language);
   return keyboards;
 }
 
+/**
+ * Get translated keyboards with completion status (async version)
+ * Use this for main menu level selection to show completion emojis
+ */
+export async function getTranslatedKeyboardsWithCompletion(language: TargetLanguage = 'eng', userId?: number) {
+  const keyboards = getLessonKeyboards(language);
+  keyboards.levelSelect = await generateLevelSelectKeyboardWithCompletion(language, userId);
+  return keyboards;
+}
 /**
  * Legacy export for backward compatibility - returns English keyboards
  */

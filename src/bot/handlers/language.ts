@@ -1,9 +1,8 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { changeTargetLanguage, getUserProgressAsync } from '../../data/progress';
-import { getLanguageName, getLanguageEmoji } from '../../utils/translation';
+import { getLanguageEmoji } from '../../utils/translation';
 import { getUIText } from '../../utils/uiTranslation';
-import { getCategoryKeyboard } from './category';
-import { getTranslatedKeyboards, lessonKeyboards } from '../keyboards';
+import { getTranslatedKeyboardsWithCompletion } from '../keyboards';
 import { TargetLanguage } from '../../types';
 
 /**
@@ -35,7 +34,7 @@ export async function handleSelectTargetLanguage(
     const userId = callbackQuery.from.id;
     await changeTargetLanguage(userId, languageTo);
     console.log(`💾 Language preference saved for user ${userId}: ${languageTo}`);
-    
+
     // Verify it was saved correctly
     const savedProgress = await getUserProgressAsync(userId);
     console.log(`🔍 Verified saved progress for user ${userId}:`, savedProgress);
@@ -46,7 +45,7 @@ export async function handleSelectTargetLanguage(
     // Show level selection after language choice
     console.log(`📤 Sending level selection message to chat ${chatId}`);
     const selectLevelText = getUIText('select_level', languageTo);
-    const keyboards = getTranslatedKeyboards(languageTo);
+    const keyboards = await getTranslatedKeyboardsWithCompletion(languageTo, userId);
     const result = await bot.sendMessage(
       chatId,
       `🇧🇬 → ${langEmoji}\n\n_${selectLevelText}_`,

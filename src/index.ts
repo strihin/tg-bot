@@ -2,7 +2,8 @@ import TelegramBot from 'node-telegram-bot-api';
 import { createBot } from './bot';
 import { config } from './config';
 import { ensureMongoDBConnection } from './db/mongodb';
-import './web'; // Start web server
+import { setupWebhook, removeWebhook } from './bot/webhook';
+import { getExpressApp } from './web'; // Start web server and get app instance
 
 async function testBotConnection(bot: TelegramBot): Promise<boolean> {
   try {
@@ -26,16 +27,24 @@ async function main(): Promise<void> {
     await ensureMongoDBConnection();
     console.log('📡 AFTER: ensureMongoDBConnection() completed');
 
+    // Get Express app
+    const app = getExpressApp();
 
     // Create bot
     const bot = createBot();
 
-    // Test bot connection before starting polling
+    // Test bot connection before starting polling/webhook
     testBotConnection(bot).then((connected) => {
       if (connected) {
-        console.log('🤖 Bot polling started');
+        console.log(`🔧 WEBHOOK_MODE: ${config.WEBHOOK_MODE} | PORT: ${config.PORT}`);
+        if (config.WEBHOOK_MODE) {
+          console.log('🔌 Setting up webhook mode for bot');
+          setupWebhook(app, bot, config.TELEGRAM_TOKEN, config.PORT);
+        } else {
+          console.log('🤖 Bot polling started');
+        }
       } else {
-        console.error('❌ Bot polling not started due to connection failure');
+        console.error('❌ Bot not started due to connection failure');
         process.exit(1);
       }
     });
@@ -43,6 +52,9 @@ async function main(): Promise<void> {
     // Graceful shutdown
     process.on('SIGINT', async () => {
       console.log('Shutting down...');
+      if (config.WEBHOOK_MODE) {
+        await removeWebhook(bot);
+      }
       process.exit(0);
     });
   } catch (error) {
