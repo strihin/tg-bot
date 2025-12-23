@@ -17,33 +17,34 @@ A minimal MVP Telegram bot for learning Bulgarian language with multi-language s
 
 ## 📚 Documentation
 
-**Getting started?** Choose your path:
+**Getting started?** Choose your path (all docs in `/docs`):
 
-- **[🚀 Quick Start](QUICK_START.md)** - 5 minutes to running locally
-- **[💻 Local Development](LOCAL_DEVELOPMENT.md)** - Full setup for Mac development
-- **[🌍 Production Deployment](PRODUCTION_DEPLOYMENT.md)** - Deploy to Hostinger + Cloudflare
-- **[⚙️ Configuration](CONFIGURATION.md)** - Environment variables reference
-- **[📋 START_HERE](START_HERE.md)** - High-level overview & deployment checklist
+- **[🚀 Quick Start](docs/QUICK_START.md)** - 5 minutes to running locally
+- **[💻 Local Development](docs/LOCAL_DEVELOPMENT.md)** - Full setup for Mac development
+- **[🌍 Production Deployment](docs/PRODUCTION_DEPLOYMENT.md)** - Deploy to Hostinger + Cloudflare
+- **[⚙️ Configuration](docs/CONFIGURATION.md)** - Environment variables reference
+- **[📋 START_HERE](docs/START_HERE.md)** - Navigation guide (READ FIRST!)
+- **[📂 Project Structure](PROJECT_STRUCTURE.md)** - How files are organized
 
 ## 🏗️ Project Structure
 
+## 📂 Project Organization
+
 ```
-src/
-├── bot/                    # Telegram bot handlers
-│   ├── index.ts           # Bot initialization & routing
-│   ├── handlers/          # Command handlers
-│   │   ├── lesson.ts      # Lesson navigation
-│   │   ├── category.ts    # Category selection
-│   │   └── language.ts    # Language selection
-│   └── keyboards.ts       # Inline button layouts
-├── data/                   # Data layer
-│   ├── loader.ts          # JSON sentence loader
-│   └── progress.ts        # User progress persistence
-├── db/                    # MongoDB operations
-│   ├── mongodb.ts         # Connection & queries
-│   └── models.ts          # Data schemas
-└── types.ts               # TypeScript interfaces
+bg-bot/
+├── README.md              # You are here
+├── PROJECT_STRUCTURE.md   # Detailed folder structure
+├── package.json
+├── src/                   # Application code
+├── data/                  # Sentence datasets
+├── public/                # Web interface
+├── config/                # Docker & Nginx configs
+├── scripts/               # Helper scripts
+├── docs/                  # All documentation
+└── env-templates/         # .env templates (samples)
 ```
+
+For detailed structure, see [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)
 
 ## 🎮 Bot Commands
 
@@ -95,12 +96,29 @@ All data is stored in MongoDB with the following structure:
 
 | Goal | Guide |
 |------|-------|
-| Start right now | [Quick Start](QUICK_START.md) |
-| Develop locally | [Local Development](LOCAL_DEVELOPMENT.md) |
-| Deploy to production | [Production Deployment](PRODUCTION_DEPLOYMENT.md) |
-| Configure settings | [Configuration](CONFIGURATION.md) |
-| See checklist | [START_HERE](START_HERE.md) |
+| Start right now | [Quick Start](docs/QUICK_START.md) |
+| Develop locally | [Local Development](docs/LOCAL_DEVELOPMENT.md) |
+| Deploy to production | [Production Deployment](docs/PRODUCTION_DEPLOYMENT.md) |
+| Configure settings | [Configuration](docs/CONFIGURATION.md) |
+| See checklist | [START_HERE](docs/START_HERE.md) |
 
 ## 📄 License
 
 MIT
+```
+src/
+├── bot/                    # Telegram bot handlers
+│   ├── index.ts           # Bot initialization & routing
+│   ├── handlers/          # Command handlers
+│   │   ├── lesson.ts      # Lesson navigation
+│   │   ├── category.ts    # Category selection
+│   │   └── language.ts    # Language selection
+│   └── keyboards.ts       # Inline button layouts
+├── data/                   # Data layer
+│   ├── loader.ts          # JSON sentence loader
+│   └── progress.ts        # User progress persistence
+├── db/                    # MongoDB operations
+│   ├── mongodb.ts         # Connection & queries
+│   └── models.ts          # Data schemas
+└── types.ts               # TypeScript interfaces
+```

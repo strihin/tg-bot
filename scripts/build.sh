@@ -37,7 +37,7 @@ cleanup_containers() {
     
     if [ "$compose_running" -gt 0 ]; then
         echo -e "${YELLOW}⚠️  Found running docker-compose services. Stopping them...${NC}"
-        docker-compose down 2>/dev/null || true
+        docker-compose -f config/docker-compose.yml down 2>/dev/null || true
         echo -e "${GREEN}✅ Docker-compose services stopped${NC}"
     fi
     
