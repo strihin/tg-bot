@@ -23,11 +23,11 @@ Complete reference for all environment variables and configuration options.
 ```bash
 # Your Telegram Bot token from @BotFather
 # Get it: https://t.me/botfather → /newbot
-TELEGRAM_TOKEN=YOUR_TOKEN_HERE
+TELEGRAM_TOKEN=<your_telegram_bot_token>
 
 # Your bot's username (without @)
 # Example: if bot is @bulgarian_bot, use: bulgarian_bot
-BOT_USERNAME=bulgarian_bot
+BOT_USERNAME=<your_bot_username>
 ```
 
 ### MongoDB Configuration
@@ -36,10 +36,10 @@ BOT_USERNAME=bulgarian_bot
 # MongoDB connection string
 # 
 # Option 1: MongoDB Atlas (Cloud) - Recommended
-MONGO_URI=mongodb+srv://username:password@cluster0.mongodb.net/db-name?retryWrites=true&w=majority
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<db-name>?retryWrites=true&w=majority
 
 # Option 2: Local MongoDB (if using Docker)
-MONGO_URI=mongodb://username:password@localhost:27017/bg-bot
+MONGO_URI=mongodb://<username>:<password>@localhost:27017/bg-bot
 
 # Format breakdown:
 # mongodb+srv://USER:PASSWORD@HOST/DATABASE?OPTIONS
@@ -86,10 +86,10 @@ PORT=3001
 WEBHOOK_MODE=true
 
 # Your domain name
-VPS_DOMAIN=bot.your-domain.com
+VPS_DOMAIN=<your-domain.com>
 
 # Your VPS public IP (reference only)
-VPS_IP=123.45.67.89
+VPS_IP=<your_vps_public_ip>
 ```
 
 ---
@@ -131,11 +131,11 @@ LOG_LEVEL=debug  # or: info, warn, error
 **Local machine `.env`:**
 ```bash
 # Telegram
-TELEGRAM_TOKEN=1234567890:ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgh
+TELEGRAM_TOKEN=<your_telegram_token_here>
 BOT_USERNAME=bulgarian_bot_test
 
 # MongoDB Atlas (cloud)
-MONGO_URI=mongodb+srv://admin:mypassword@cluster0.zkjt23i.mongodb.net/bg-bot?retryWrites=true&w=majority
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/bg-bot?retryWrites=true&w=majority
 
 # Local dev
 NODE_ENV=development
@@ -147,9 +147,9 @@ WEBHOOK_MODE=false
 
 **`.env`:**
 ```bash
-TELEGRAM_TOKEN=1234567890:ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgh
+TELEGRAM_TOKEN=<your_telegram_token_here>
 BOT_USERNAME=bulgarian_bot_test
-MONGO_URI=mongodb://devuser:devpass@localhost:27017/bg-bot
+MONGO_URI=mongodb://<username>:<password>@localhost:27017/bg-bot
 NODE_ENV=development
 PORT=3001
 WEBHOOK_MODE=false
@@ -157,8 +157,8 @@ WEBHOOK_MODE=false
 
 **`.env.mongodb`:**
 ```bash
-MONGO_INITDB_ROOT_USERNAME=devuser
-MONGO_INITDB_ROOT_PASSWORD=devpass
+MONGO_INITDB_ROOT_USERNAME=<your_mongo_username>
+MONGO_INITDB_ROOT_PASSWORD=<your_mongo_password>
 MONGO_INITDB_DATABASE=bg-bot
 ```
 
@@ -170,11 +170,11 @@ MONGO_INITDB_DATABASE=bg-bot
 
 ```bash
 # Telegram (production bot token)
-TELEGRAM_TOKEN=your_production_token
-BOT_USERNAME=your_production_bot_name
+TELEGRAM_TOKEN=<your_production_telegram_token>
+BOT_USERNAME=<your_production_bot_name>
 
 # MongoDB Atlas (NEVER local on VPS)
-MONGO_URI=mongodb+srv://prod_user:prod_password@cluster0.zkjt23i.mongodb.net/prod-db
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<prod-db>
 
 # Production
 NODE_ENV=production
@@ -182,7 +182,7 @@ PORT=3001
 WEBHOOK_MODE=true
 
 # Domain
-VPS_DOMAIN=bot.your-domain.com
+VPS_DOMAIN=<your-domain.com>
 ```
 
 **⚠️ Security Notes:**
