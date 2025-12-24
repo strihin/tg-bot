@@ -125,19 +125,29 @@ EOF
 
 # Secure the .env file (readable only by owner)
 chmod 600 .env
+
+# OPTIONAL: Add to .env so you don't have to use -f flag every time
+echo "COMPOSE_FILE=config/docker-compose.yml" >> .env
 ```
 
 ### 2.5 Build and Start Services
 
 ```bash
 # Still on VPS in ~/bg-bot:
-docker-compose build
-docker-compose up -d
+docker-compose -f config/docker-compose.yml build
+
+# Stop any existing containers first
+docker-compose -f config/docker-compose.yml down
+
+# Start services
+docker-compose -f config/docker-compose.yml up -d
 
 # Verify services are running
-docker-compose ps
-docker-compose logs -f bg-bot
+docker-compose -f config/docker-compose.yml ps
+docker-compose -f config/docker-compose.yml logs -f bg-bot
 ```
+
+**If container name conflict:** Use `docker rm -f bg-bot-app` to force remove old container, then `docker-compose -f config/docker-compose.yml up -d`
 
 **Expected output:** Bot starts and connects to MongoDB.
 
@@ -299,8 +309,8 @@ jobs:
             
             # Rebuild and restart
             docker-compose down
-            docker-compose build --no-cache
-            docker-compose up -d
+            docker-compose -f config/docker-compose.yml build --no-cache
+            docker-compose -f config/docker-compose.yml up -d
             
             # Wait and check health
             sleep 10
@@ -415,14 +425,27 @@ Since you're using MongoDB Atlas, backups are automatic. But you can:
 # SSH to VPS:
 cd ~/bg-bot
 
-# Check container status
+# Check container status (use SERVICE NAME, not container name)
 docker-compose ps
 
-# View logs
-docker-compose logs bg-bot | tail -20
+# View logs (use service name: bg-bot, not container name: bg-bot-app)
+docker-compose logs bg-bot
+
+# Fix docker-compose.yml if you see "version is obsolete" warning
+sed -i '/^version:/d' config/docker-compose.yml
+
+# Common error messages:
+# - "Cannot find module" → Missing dependency (run: docker-compose build)
+# - "TELEGRAM_TOKEN is not set" → .env file missing or not sourced
+# - "MongoDB connection failed" → Check MONGO_URI and IP whitelist in MongoDB Atlas
+# - "no such service: bg-bot-app" → Use service name 'bg-bot' not container name 'bg-bot-app'
+# - "Exited with code 1" → Bot crashed, check logs for details
 
 # Restart
 docker-compose restart bg-bot
+
+# Watch logs in real-time
+docker-compose logs -f bg-bot
 ```
 
 ### Cloudflare tunnel not working
@@ -457,16 +480,46 @@ df -h                  # Check disk usage
 
 ### MongoDB connection failing
 
+**Error: "bad auth: authentication failed"**
+
 ```bash
-# Check .env on VPS:
+# SSH to VPS:
+cd ~/bg-bot
+
+# 1. Check current MONGO_URI
 cat .env | grep MONGO_URI
 
-# Verify:
-# 1. Connection string is correct
-# 2. IP whitelist includes your VPS IP (in MongoDB Atlas)
-# 3. Database user credentials are correct
-# 4. Database user has correct permissions
+# 2. Get your VPS IP to add to whitelist
+curl ifconfig.me
+
+# 3. Go to MongoDB Atlas and:
+#    - Click your cluster → Connect
+#    - Choose Drivers → Node.js
+#    - Copy the connection string
+#    - Replace <username> and <password> with ACTUAL credentials
+#    - Verify the password doesn't have special characters that need escaping
+
+# 4. Update .env on VPS:
+nano .env
+# Find MONGO_URI line, paste the correct connection string, save (Ctrl+X, Y, Enter)
+
+# 5. Add VPS IP to MongoDB Atlas whitelist:
+#    - Go to Network Access in MongoDB Atlas
+#    - Add your VPS IP (from step 2)
+#    - Wait ~5 minutes for changes to propagate
+
+# 6. Restart the container:
+docker-compose restart bg-bot
+
+# 7. Check logs:
+docker-compose logs -f bg-bot
 ```
+
+**Common issues:**
+- **Wrong password** - Verify it matches MongoDB Atlas user credentials
+- **IP not whitelisted** - Add your VPS IP to MongoDB Atlas Network Access
+- **Special characters in password** - URI encode special chars: `@` → `%40`, `:` → `%3A`
+- **Wrong cluster** - Ensure the cluster name in URI matches your MongoDB Atlas cluster
 
 ---
 

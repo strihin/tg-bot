@@ -57,15 +57,45 @@ export async function handleSelectLevel(
     const completionIcon = folderCompleted ? ' ✅' : '';
     
     const selectCategoryText = getUIText('select_category', progress.languageTo);
-    await bot.sendMessage(
-      chatId,
-      `${folderInfo.emoji} **${folderInfo.name}**${completionIcon} mode selected\n\n_${folderInfo.description}_\n\n${selectCategoryText}`,
-      {
-        parse_mode: 'Markdown',
-        ...keyboard,
+    const messageText = `${folderInfo.emoji} **${folderInfo.name}**${completionIcon} mode selected\n\n_${folderInfo.description}_\n\n${selectCategoryText}`;
+    
+    // Always try to edit the current message first, fall back to send new
+    const messageId = callbackQuery.message?.message_id;
+    if (messageId) {
+      try {
+        await bot.editMessageText(messageText, {
+          chat_id: chatId,
+          message_id: messageId,
+          parse_mode: 'Markdown',
+          ...keyboard,
+        });
+        console.log(`✏️ Edited menu message ${messageId}`);
+        progress.menuMessageId = messageId;
+      } catch (error) {
+        console.log(`⚠️ Failed to edit menu, sending new:`, error);
+        const msg = await bot.sendMessage(
+          chatId,
+          messageText,
+          {
+            parse_mode: 'Markdown',
+            ...keyboard,
+          }
+        );
+        progress.menuMessageId = msg.message_id;
       }
-    );
-    console.log(`✅ Category selection sent to chat ${chatId}`);
+    } else {
+      const msg = await bot.sendMessage(
+        chatId,
+        messageText,
+        {
+          parse_mode: 'Markdown',
+          ...keyboard,
+        }
+      );
+      progress.menuMessageId = msg.message_id;
+    }
+    await saveUserProgress(progress);
+    console.log(`✅ Category selection sent/edited to chat ${chatId}`);
   } catch (error) {
     console.error('❌ Error in handleSelectLevel:', error);
   }

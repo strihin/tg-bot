@@ -149,3 +149,17 @@ docker-compose logs -f
 All the infrastructure is ready. You just need to follow the steps above and your bot will be live in production!
 
 Questions? Check the docs or run: `docker-compose logs -f`
+
+
+
+TOP commands on vps:
+1. Restart app:
+docker-compose -f config/docker-compose.yml down && docker-compose -f config/docker-compose.yml build --no-cache && docker-compose -f config/docker-compose.yml up -d
+2. lofg
+
+docker-compose logs bg-bot --tail=200 2>&1 | grep -A 20 "API endpoints"
+
+0.0.0.0/0
+(includes your current IP address)
+
+mongodb+srv://<db_username>:<db_password>@cluster0.zkjt23i.mongodb.net/{bot-name}?retryWrites=true&w=majority

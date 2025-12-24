@@ -1,5 +1,5 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { changeTargetLanguage, getUserProgressAsync } from '../../data/progress';
+import { changeTargetLanguage, getUserProgressAsync, saveUserProgress } from '../../data/progress';
 import { getLanguageEmoji } from '../../utils/translation';
 import { getUIText } from '../../utils/uiTranslation';
 import { getTranslatedKeyboardsWithCompletion } from '../keyboards';
@@ -46,15 +46,55 @@ export async function handleSelectTargetLanguage(
     console.log(`📤 Sending level selection message to chat ${chatId}`);
     const selectLevelText = getUIText('select_level', languageTo);
     const keyboards = await getTranslatedKeyboardsWithCompletion(languageTo, userId);
-    const result = await bot.sendMessage(
-      chatId,
-      `🇧🇬 → ${langEmoji}\n\n_${selectLevelText}_`,
-      {
-        parse_mode: 'Markdown',
-        reply_markup: keyboards.levelSelect,
+    const messageText = `🇧🇬 → ${langEmoji}\n\n_${selectLevelText}_`;
+    
+    // Always try to edit the current message first, fall back to send new
+    const messageId = callbackQuery.message?.message_id;
+    let newProgress = await getUserProgressAsync(userId);
+    
+    if (messageId) {
+      try {
+        await bot.editMessageText(messageText, {
+          chat_id: chatId,
+          message_id: messageId,
+          parse_mode: 'Markdown',
+          reply_markup: keyboards.levelSelect,
+        });
+        console.log(`✏️ Edited level selection message ${messageId}`);
+        if (newProgress) {
+          newProgress.menuMessageId = messageId;
+          await saveUserProgress(newProgress);
+        }
+      } catch (error) {
+        console.log(`⚠️ Failed to edit, sending new:`, error);
+        const result = await bot.sendMessage(
+          chatId,
+          messageText,
+          {
+            parse_mode: 'Markdown',
+            reply_markup: keyboards.levelSelect,
+          }
+        );
+        if (newProgress) {
+          newProgress.menuMessageId = result.message_id;
+          await saveUserProgress(newProgress);
+        }
       }
-    );
-    console.log(`✅ Level selection message sent, ID: ${result.message_id}`);
+    } else {
+      const result = await bot.sendMessage(
+        chatId,
+        messageText,
+        {
+          parse_mode: 'Markdown',
+          reply_markup: keyboards.levelSelect,
+        }
+      );
+      if (newProgress) {
+        newProgress.menuMessageId = result.message_id;
+        await saveUserProgress(newProgress);
+      }
+    }
+    console.log(`✅ Level selection sent/edited to chat ${chatId}`);
   } catch (error) {
     console.error('❌ Error in handleSelectTargetLanguage:', error);
     // Try to answer callback even on error to remove spinner

@@ -45,12 +45,6 @@ const generateLevelSelectKeyboard = (language: TargetLanguage = 'eng') => {
  * Get dynamic lesson keyboards with translations
  */
 const getLessonKeyboards = (language: TargetLanguage = 'eng', category?: string, folder?: string, index?: number) => {
-  // Build the Listen button with callback (web_app URLs require HTTPS which isn't available in development)
-  const listenButton = {
-    text: '🎙️ ' + getUIText('listen', language),
-    callback_data: 'listen_audio',
-  };
-
   return {
     showTranslation: {
       inline_keyboard: [
@@ -59,7 +53,6 @@ const getLessonKeyboards = (language: TargetLanguage = 'eng', category?: string,
           { text: getUIText('next', language), callback_data: 'next' },
         ],
         [
-          listenButton,
           {
             text: getUIText('add_favourite', language),
             callback_data: 'add_favourite',
@@ -85,7 +78,6 @@ const getLessonKeyboards = (language: TargetLanguage = 'eng', category?: string,
           { text: getUIText('next', language), callback_data: 'next' },
         ],
         [
-          listenButton,
           {
             text: getUIText('add_favourite', language),
             callback_data: 'add_favourite',
@@ -104,6 +96,16 @@ const getLessonKeyboards = (language: TargetLanguage = 'eng', category?: string,
         [{ text: getUIText('choose_another', language), callback_data: 'exit' }],
       ],
     },
+
+    // Quick resume keyboard: "Continue [Category]?" with Yes/No
+    quickResume: (category: string, language: TargetLanguage = 'eng') => ({
+      inline_keyboard: [
+        [
+          { text: '✅ Continue', callback_data: 'resume_lesson' },
+          { text: '❌ Choose new', callback_data: 'new_lesson' },
+        ],
+      ],
+    }),
 
     levelSelect: undefined as any, // Will be generated dynamically
 

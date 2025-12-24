@@ -10,7 +10,6 @@ import {
   handleShowTranslation,
   handleNext,
   handlePrevious,
-  handleListenAudio,
 } from './handlers/lesson';
 import { getCategoryKeyboard, handleSelectCategory } from './handlers/category';
 import { handleSelectTargetLanguage } from './handlers/language';
@@ -27,7 +26,7 @@ export function createBot(): TelegramBot {
     ? {}  // No internal server, we handle it via Express
     : { 
         polling: {
-          interval: 300,
+          interval: 100,
           autoStart: true,
           params: {
             timeout: 10,
@@ -67,8 +66,31 @@ export function createBot(): TelegramBot {
     try {
       const progress = await getUserProgressAsync(userId);
 
-      // Check if user has an active lesson
-      if (progress && progress.lessonActive) {
+      // Check if user has an active lesson with saved last category
+      if (progress && progress.lessonActive && progress.lastCategory && progress.lastFolder) {
+        // Smart Resume: Show "Continue [Category]?" option
+        const langEmoji = getLanguageEmoji(progress.languageTo);
+        const continueQuestion = getUIText('continue_question', progress.languageTo);
+        const continueText = getUIText('continue_lesson', progress.languageTo);
+        const startNewText = getUIText('start_new', progress.languageTo);
+        
+        console.log(`📤 Sending quick resume message to chat ${chatId} for category: ${progress.lastCategory}`);
+        const result = await bot.sendMessage(
+          chatId,
+          `<b>🎯 ${continueQuestion}</b>\n\n📚 <b>${progress.lastCategory.toUpperCase()}</b> (🇧🇬 → ${langEmoji})\n\n<i>Pick up where you left off or start something new</i>`,
+          {
+            parse_mode: 'HTML',
+            reply_markup: {
+              inline_keyboard: [
+                [{ text: `✅ ${continueText}`, callback_data: 'resume_lesson' }],
+                [{ text: `❌ ${startNewText}`, callback_data: 'start_new' }],
+              ],
+            },
+          }
+        );
+        console.log(`✅ Quick resume message sent to chat ${chatId}, message ID: ${result.message_id}`);
+      } else if (progress && progress.lessonActive) {
+        // Legacy: active lesson but no last category stored
         const langEmoji = getLanguageEmoji(progress.languageTo);
         const welcomeBack = getUIText('welcome_back', progress.languageTo);
         const activeLesson = getUIText('active_lesson', progress.languageTo);
@@ -352,6 +374,29 @@ Enjoy learning Bulgarian! 🇧🇬`;
         }
         await handleStartLessonButton(query, bot);
         console.log(`✅ Lesson start/continue handled`);
+      } else if (data === 'resume_lesson') {
+        // Smart resume: Continue the last category without going through menus
+        console.log(`⏯️ Handling smart resume...`);
+        const userId = query.from.id;
+        const chatId = query.message?.chat.id;
+        
+        if (!chatId) return;
+        
+        const progress = await getUserProgressAsync(userId);
+        if (progress && progress.lastCategory && progress.lastFolder) {
+          try {
+            await bot.deleteMessage(chatId, query.message!.message_id);
+            console.log(`🗑️ Resume prompt deleted`);
+          } catch (e) {
+            console.log(`⚠️ Could not delete resume message:`, e);
+          }
+          // Resume with last category
+          await handleStartLessonButton(query, bot, progress.lastCategory);
+          console.log(`✅ Smart resume completed for category: ${progress.lastCategory}`);
+        } else {
+          // Fallback if no last category found
+          await bot.answerCallbackQuery(query.id, { text: '❌ No lesson found to resume' });
+        }
       } else if (data === 'start_new') {
         console.log(`🔄 Handling start new...`);
         const chatId = query.message?.chat.id;
@@ -383,30 +428,21 @@ Enjoy learning Bulgarian! 🇧🇬`;
         const { handleAddFavourite } = await import('./handlers/favourite');
         await handleAddFavourite(query, bot);
         console.log(`✅ Added to favourites`);
-      } else if (data && data.startsWith('show_favourite_translation:')) {
-        console.log(`📖 Handling show favourite translation...`);
-        const { handleShowFavouriteTranslation } = await import('./handlers/favourite');
-        await handleShowFavouriteTranslation(query, bot);
-        console.log(`✅ Favourite translation shown`);
-      } else if (data === 'favourite_listen_audio') {
-        console.log(`🎙️ Handling favourite listen audio...`);
-        const { handleFavouriteListenAudio } = await import('./handlers/favourite');
-        await handleFavouriteListenAudio(query, bot);
-        console.log(`✅ Favourite audio sent`);
       } else if (data === 'favourite_next') {
         console.log(`⏭️ Handling favourite next...`);
         const { handleFavouriteNext } = await import('./handlers/favourite');
         await handleFavouriteNext(query, bot);
         console.log(`✅ Favourite next handled`);
-      } else if (data && data.startsWith('remove_favourite:')) {
-        console.log(`🗑️ Handling remove favourite...`);
+      } else if (data === 'favourite_previous') {
+        console.log(`⬅️ Handling favourite previous...`);
+        const { handleFavouritePrevious } = await import('./handlers/favourite');
+        await handleFavouritePrevious(query, bot);
+        console.log(`✅ Favourite previous handled`);
+      } else if (data === 'favourite_remove') {
+        console.log(`🗑️ Handling favourite remove...`);
         const { handleRemoveFavourite } = await import('./handlers/favourite');
         await handleRemoveFavourite(query, bot);
         console.log(`✅ Favourite removed`);
-      } else if (data === 'listen_audio') {
-        console.log(`🎙️ Handling listen audio...`);
-        await handleListenAudio(query, bot);
-        console.log(`✅ Audio sent`);
       } else if (data === 'next') {
         console.log(`⏭️ Handling next...`);
         await handleNext(query, bot);

@@ -23,7 +23,7 @@ RUN npm run build
 RUN npm prune --production
 
 # Copy environment file
-COPY .env ./
+COPY config/.env ./
 
 # Expose ports (3000 for production polling, 3001 for development webhooks)
 EXPOSE 3000 3001

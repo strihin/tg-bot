@@ -4,11 +4,14 @@ import { ensureMongoDBConnection } from '../../db/mongodb';
 import { getSentenceByIndex } from '../../data/loader';
 import { getUserProgressAsync } from '../../data/progress';
 
-// Store favourite index per user temporarily
-const favouriteIndexMap: Record<number, number> = {};
+// Store favourite index, message ID, and list for each user (session map)
+export const favouriteIndexMap: Record<number, number> = {};
+export const favouriteMessageIdMap: Record<number, number> = {};
+export const favouritesListMap: Record<number, any[]> = {};
 
 /**
- * Add current sentence to user's favourites
+ * Add current lesson sentence to favourites
+ * Called from lesson handler when user clicks ⭐ button
  */
 export async function handleAddFavourite(
   callbackQuery: TelegramBot.CallbackQuery,
@@ -80,7 +83,7 @@ export async function handleAddFavourite(
 }
 
 /**
- * Get user's favourite sentences count
+ * Get count of user's favourite sentences
  */
 export async function getFavouritesCount(userId: number): Promise<number> {
   await ensureMongoDBConnection();
@@ -88,7 +91,7 @@ export async function getFavouritesCount(userId: number): Promise<number> {
 }
 
 /**
- * Get all user's favourites
+ * Get all user's favourite sentences
  */
 export async function getUserFavourites(userId: number) {
   await ensureMongoDBConnection();
@@ -99,6 +102,7 @@ export async function getUserFavourites(userId: number) {
 
 /**
  * Start favourite lesson with user's saved sentences
+ * Displays one favourite card at a time with audio in caption (like lesson handler)
  */
 export async function handleStartFavouriteLesson(
   msg: TelegramBot.Message,
@@ -127,9 +131,12 @@ export async function handleStartFavouriteLesson(
       return;
     }
 
-    // Show first favourite
+    // Cache favourites and reset index for this session
+    favouritesListMap[userId] = favourites;
     favouriteIndexMap[userId] = 0;
-    await displayFavourite(chatId, bot, userId, favourites, 0);
+
+    // Show first favourite with audio in caption
+    await displayFavouriteCard(chatId, bot, userId, 0);
 
     console.log(`⭐ Started favourite lesson with ${count} sentences`);
   } catch (error) {
@@ -139,99 +146,30 @@ export async function handleStartFavouriteLesson(
 }
 
 /**
- * Display favourite sentence with keyboard
+ * Display favourite card with audio in caption (same pattern as lesson.ts)
+ * Shows Bulgarian → translation in spoiler
  */
-async function displayFavourite(
+async function displayFavouriteCard(
   chatId: number,
   bot: TelegramBot,
   userId: number,
-  favourites: any[],
   index: number
 ): Promise<void> {
-  const favourite = favourites[index];
-  const count = favourites.length;
-
-  const text = `<b>⭐ FAVOURITE WORDS | Learning</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${favourite.eng}</tg-spoiler>`;
-
-  const keyboards = {
-    inline_keyboard: [
-      [
-        {
-          text: '📖 Show translation',
-          callback_data: `show_favourite_translation:${index}`,
-        },
-        {
-          text: '🎙️ Listen',
-          callback_data: 'favourite_listen_audio',
-        },
-      ],
-      [
-        {
-          text: '🗑️ Remove from favourite',
-          callback_data: `remove_favourite:${index}`,
-        },
-        {
-          text: '⏭️ Next',
-          callback_data: 'favourite_next',
-        },
-      ],
-      [
-        {
-          text: '🏠 Main menu',
-          callback_data: 'back_to_menu',
-        },
-      ],
-    ],
-  };
-
-  const message = await bot.sendMessage(chatId, text, {
-    parse_mode: 'HTML',
-    reply_markup: keyboards,
-  });
-}
-
-/**
- * Show translation for favourite
- */
-export async function handleShowFavouriteTranslation(
-  callbackQuery: TelegramBot.CallbackQuery,
-  bot: TelegramBot
-): Promise<void> {
   try {
-    const userId = callbackQuery.from.id;
-    const chatId = callbackQuery.message?.chat.id;
-    const data = callbackQuery.data || '';
-    const index = parseInt(data.split(':')[1]) || 0;
-
-    if (!chatId) return;
-
-    const favourites = await getUserFavourites(userId);
-    if (!favourites || index >= favourites.length) {
-      await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ Sentence not found' });
-      return;
-    }
+    const favourites = favouritesListMap[userId] || [];
+    if (!favourites[index]) return;
 
     const favourite = favourites[index];
     const count = favourites.length;
 
-    const text = `<b>⭐ FAVOURITE WORDS | Learning</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n🇬🇧 <b>${favourite.eng}</b>`;
+    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${favourite.eng}</tg-spoiler>`;
 
     const keyboards = {
       inline_keyboard: [
         [
           {
-            text: '📖 Show translation',
-            callback_data: `show_favourite_translation:${index}`,
-          },
-          {
-            text: '🎙️ Listen',
-            callback_data: 'favourite_listen_audio',
-          },
-        ],
-        [
-          {
-            text: '🗑️ Remove from favourite',
-            callback_data: `remove_favourite:${index}`,
+            text: '⬅️ Previous',
+            callback_data: 'favourite_previous',
           },
           {
             text: '⏭️ Next',
@@ -240,6 +178,10 @@ export async function handleShowFavouriteTranslation(
         ],
         [
           {
+            text: '🗑️ Remove',
+            callback_data: 'favourite_remove',
+          },
+          {
             text: '🏠 Main menu',
             callback_data: 'back_to_menu',
           },
@@ -247,83 +189,47 @@ export async function handleShowFavouriteTranslation(
       ],
     };
 
-    const messageId = callbackQuery.message?.message_id;
-    if (messageId) {
-      await bot.editMessageText(text, {
-        chat_id: chatId,
-        message_id: messageId,
+    let msg;
+
+    // Send audio with caption (exactly like lesson handler does)
+    if (favourite.audioUrl) {
+      try {
+        const base64Data = favourite.audioUrl.includes(',')
+          ? favourite.audioUrl.split(',')[1]
+          : favourite.audioUrl;
+        const audioBuffer = Buffer.from(base64Data, 'base64');
+        msg = await bot.sendAudio(chatId, audioBuffer, {
+          caption: text,
+          parse_mode: 'HTML',
+          reply_markup: keyboards,
+          title: `Favourite ${index + 1}/${count}`,
+        });
+        console.log(`🎵 Favourite audio message sent with ID ${msg.message_id}`);
+      } catch (audioError) {
+        console.log(`⚠️ Failed to send favourite audio, sending text only:`, audioError);
+        msg = await bot.sendMessage(chatId, text, {
+          parse_mode: 'HTML',
+          reply_markup: keyboards,
+        });
+      }
+    } else {
+      msg = await bot.sendMessage(chatId, text, {
         parse_mode: 'HTML',
         reply_markup: keyboards,
       });
     }
 
-    await bot.answerCallbackQuery(callbackQuery.id);
+    // Store message ID for editing on next/previous
+    favouriteMessageIdMap[userId] = msg.message_id;
   } catch (error) {
-    console.error('❌ Error showing favourite translation:', error);
-    await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ Error' });
+    console.error('❌ Error displaying favourite card:', error);
   }
 }
 
-/**
- * Listen to favourite sentence audio
- */
-export async function handleFavouriteListenAudio(
-  callbackQuery: TelegramBot.CallbackQuery,
-  bot: TelegramBot
-): Promise<void> {
-  try {
-    const userId = callbackQuery.from.id;
-    const chatId = callbackQuery.message?.chat.id;
-
-    if (!chatId) {
-      await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ Error: No chat found' });
-      return;
-    }
-
-    const currentIndex = favouriteIndexMap[userId] || 0;
-    const favourites = await getUserFavourites(userId);
-
-    if (!favourites || currentIndex >= favourites.length) {
-      await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ Sentence not found' });
-      return;
-    }
-
-    const favourite = favourites[currentIndex];
-
-    if (!favourite.audioUrl) {
-      await bot.answerCallbackQuery(callbackQuery.id, { text: '⏳ Audio not available' });
-      return;
-    }
-
-    // Extract base64 audio and decode
-    if (!favourite.audioUrl.startsWith('data:audio')) {
-      await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ Audio format error' });
-      return;
-    }
-
-    const base64Data = favourite.audioUrl.split(',')[1];
-    if (!base64Data) {
-      await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ Cannot decode audio' });
-      return;
-    }
-
-    const audioBuffer = Buffer.from(base64Data, 'base64');
-
-    // Send audio file to Telegram
-    await bot.sendAudio(chatId, audioBuffer, {
-      caption: `<b>🎙️ ${favourite.bg}</b>`,
-      parse_mode: 'HTML',
-    });
-
-    await bot.answerCallbackQuery(callbackQuery.id, { text: '✅ Audio sent' });
-  } catch (error) {
-    console.error('❌ Error in handleFavouriteListenAudio:', error);
-    await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ Error' });
-  }
-}
 
 /**
- * Next favourite
+ * Navigate to next favourite
+ * Sends new message with new audio, then deletes old one (like lesson handler)
  */
 export async function handleFavouriteNext(
   callbackQuery: TelegramBot.CallbackQuery,
@@ -332,64 +238,92 @@ export async function handleFavouriteNext(
   try {
     const userId = callbackQuery.from.id;
     const chatId = callbackQuery.message?.chat.id;
+    const messageId = callbackQuery.message?.message_id;
 
-    if (!chatId) return;
+    if (!chatId || !messageId) return;
 
-    const favourites = await getUserFavourites(userId);
-    if (!favourites || favourites.length === 0) {
+    const favourites = favouritesListMap[userId] || [];
+    if (favourites.length === 0) {
       await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ No favourites' });
       return;
     }
 
-    let currentIndex = favouriteIndexMap[userId] || 0;
-    currentIndex = (currentIndex + 1) % favourites.length;
-    favouriteIndexMap[userId] = currentIndex;
+    let index = (favouriteIndexMap[userId] || 0) + 1;
+    if (index >= favourites.length) {
+      index = 0; // Loop back to start
+    }
 
-    const messageId = callbackQuery.message?.message_id;
-    if (messageId) {
-      const favourite = favourites[currentIndex];
-      const count = favourites.length;
+    favouriteIndexMap[userId] = index;
+    const favourite = favourites[index];
+    const count = favourites.length;
 
-      const text = `<b>⭐ FAVOURITE WORDS | Learning</b>\n\n⏳ <b>${currentIndex + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${favourite.eng}</tg-spoiler>`;
+    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${favourite.eng}</tg-spoiler>`;
 
-      const keyboards = {
-        inline_keyboard: [
-          [
-            {
-              text: '📖 Show translation',
-              callback_data: `show_favourite_translation:${currentIndex}`,
-            },
-            {
-              text: '🎙️ Listen',
-              callback_data: 'favourite_listen_audio',
-            },
-          ],
-          [
-            {
-              text: '🗑️ Remove from favourite',
-              callback_data: `remove_favourite:${currentIndex}`,
-            },
-            {
-              text: '⏭️ Next',
-              callback_data: 'favourite_next',
-            },
-          ],
-          [
-            {
-              text: '🏠 Main menu',
-              callback_data: 'back_to_menu',
-            },
-          ],
+    const keyboards = {
+      inline_keyboard: [
+        [
+          {
+            text: '⬅️ Previous',
+            callback_data: 'favourite_previous',
+          },
+          {
+            text: '⏭️ Next',
+            callback_data: 'favourite_next',
+          },
         ],
-      };
+        [
+          {
+            text: '🗑️ Remove',
+            callback_data: 'favourite_remove',
+          },
+          {
+            text: '🏠 Main menu',
+            callback_data: 'back_to_menu',
+          },
+        ],
+      ],
+    };
 
-      await bot.editMessageText(text, {
-        chat_id: chatId,
-        message_id: messageId,
+    // Send new message with new audio (like lesson handler)
+    let msg;
+    if (favourite.audioUrl) {
+      try {
+        const base64Data = favourite.audioUrl.includes(',')
+          ? favourite.audioUrl.split(',')[1]
+          : favourite.audioUrl;
+        const audioBuffer = Buffer.from(base64Data, 'base64');
+        msg = await bot.sendAudio(chatId, audioBuffer, {
+          caption: text,
+          parse_mode: 'HTML',
+          reply_markup: keyboards,
+          title: `Favourite ${index + 1}/${count}`,
+        });
+        console.log(`🎵 Favourite audio message sent with ID ${msg.message_id}`);
+      } catch (audioError) {
+        console.log(`⚠️ Failed to send favourite audio:`, audioError);
+        msg = await bot.sendMessage(chatId, text, {
+          parse_mode: 'HTML',
+          reply_markup: keyboards,
+        });
+      }
+    } else {
+      msg = await bot.sendMessage(chatId, text, {
         parse_mode: 'HTML',
         reply_markup: keyboards,
       });
     }
+
+    favouriteMessageIdMap[userId] = msg.message_id;
+
+    // Delete old message after brief delay (100ms for smooth animation)
+    setTimeout(async () => {
+      try {
+        await bot.deleteMessage(chatId, messageId);
+        console.log(`🗑️ Deleted old favourite message ${messageId}`);
+      } catch (error) {
+        console.log(`⚠️ Failed to delete old favourite message:`, error);
+      }
+    }, 100);
 
     await bot.answerCallbackQuery(callbackQuery.id);
   } catch (error) {
@@ -399,7 +333,113 @@ export async function handleFavouriteNext(
 }
 
 /**
- * Remove favourite
+ * Navigate to previous favourite
+ * Sends new message with new audio, then deletes old one (like lesson handler)
+ */
+export async function handleFavouritePrevious(
+  callbackQuery: TelegramBot.CallbackQuery,
+  bot: TelegramBot
+): Promise<void> {
+  try {
+    const userId = callbackQuery.from.id;
+    const chatId = callbackQuery.message?.chat.id;
+    const messageId = callbackQuery.message?.message_id;
+
+    if (!chatId || !messageId) return;
+
+    const favourites = favouritesListMap[userId] || [];
+    if (favourites.length === 0) {
+      await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ No favourites' });
+      return;
+    }
+
+    let index = (favouriteIndexMap[userId] || 0) - 1;
+    if (index < 0) {
+      index = favourites.length - 1; // Loop back to end
+    }
+
+    favouriteIndexMap[userId] = index;
+    const favourite = favourites[index];
+    const count = favourites.length;
+
+    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${favourite.eng}</tg-spoiler>`;
+
+    const keyboards = {
+      inline_keyboard: [
+        [
+          {
+            text: '⬅️ Previous',
+            callback_data: 'favourite_previous',
+          },
+          {
+            text: '⏭️ Next',
+            callback_data: 'favourite_next',
+          },
+        ],
+        [
+          {
+            text: '🗑️ Remove',
+            callback_data: 'favourite_remove',
+          },
+          {
+            text: '🏠 Main menu',
+            callback_data: 'back_to_menu',
+          },
+        ],
+      ],
+    };
+
+    // Send new message with new audio (like lesson handler)
+    let msg;
+    if (favourite.audioUrl) {
+      try {
+        const base64Data = favourite.audioUrl.includes(',')
+          ? favourite.audioUrl.split(',')[1]
+          : favourite.audioUrl;
+        const audioBuffer = Buffer.from(base64Data, 'base64');
+        msg = await bot.sendAudio(chatId, audioBuffer, {
+          caption: text,
+          parse_mode: 'HTML',
+          reply_markup: keyboards,
+          title: `Favourite ${index + 1}/${count}`,
+        });
+        console.log(`🎵 Favourite audio message sent with ID ${msg.message_id}`);
+      } catch (audioError) {
+        console.log(`⚠️ Failed to send favourite audio:`, audioError);
+        msg = await bot.sendMessage(chatId, text, {
+          parse_mode: 'HTML',
+          reply_markup: keyboards,
+        });
+      }
+    } else {
+      msg = await bot.sendMessage(chatId, text, {
+        parse_mode: 'HTML',
+        reply_markup: keyboards,
+      });
+    }
+
+    favouriteMessageIdMap[userId] = msg.message_id;
+
+    // Delete old message after brief delay (100ms for smooth animation)
+    setTimeout(async () => {
+      try {
+        await bot.deleteMessage(chatId, messageId);
+        console.log(`🗑️ Deleted old favourite message ${messageId}`);
+      } catch (error) {
+        console.log(`⚠️ Failed to delete old favourite message:`, error);
+      }
+    }, 100);
+
+    await bot.answerCallbackQuery(callbackQuery.id);
+  } catch (error) {
+    console.error('❌ Error in handleFavouritePrevious:', error);
+    await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ Error' });
+  }
+}
+
+/**
+ * Remove favourite and show next one or end lesson
+ * Sends new message with new audio, then deletes old one (like lesson handler)
  */
 export async function handleRemoveFavourite(
   callbackQuery: TelegramBot.CallbackQuery,
@@ -408,63 +448,117 @@ export async function handleRemoveFavourite(
   try {
     const userId = callbackQuery.from.id;
     const chatId = callbackQuery.message?.chat.id;
-    const data = callbackQuery.data || '';
-    const index = parseInt(data.split(':')[1]) || 0;
+    const messageId = callbackQuery.message?.message_id;
 
-    if (!chatId) return;
+    if (!chatId || !messageId) return;
 
-    const favourites = await getUserFavourites(userId);
-    if (!favourites || index >= favourites.length) {
+    const favourites = favouritesListMap[userId] || [];
+    const index = favouriteIndexMap[userId] || 0;
+
+    if (!favourites[index]) {
       await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ Sentence not found' });
       return;
     }
 
     const favourite = favourites[index];
 
-    console.log(`🗑️ DEBUG: Removing favourite at index ${index}`);
-    console.log(`🗑️ DEBUG: sentenceId to delete: ${favourite.sentenceId}`);
-    console.log(`🗑️ DEBUG: userId: ${userId}`);
-
-    // Delete from favourites
-    const deleteResult = await FavouriteModel.deleteOne({
+    // Delete from database
+    await ensureMongoDBConnection();
+    await FavouriteModel.deleteOne({
       userId,
       sentenceId: favourite.sentenceId,
     });
 
-    console.log(`🗑️ DEBUG: Delete result:`, deleteResult);
-
     console.log(`🗑️ Removed from favourites: "${favourite.bg}"`);
 
-    // Get updated favourites
-    const updated = await getUserFavourites(userId);
+    // Remove from cache
+    favourites.splice(index, 1);
 
-    if (updated.length === 0) {
-      // No more favourites
+    // If no more favourites, end lesson
+    if (favourites.length === 0) {
+      await bot.deleteMessage(chatId, messageId).catch(() => {});
       await bot.sendMessage(chatId, '⭐ All favourites removed!\n\nYou can add new ones during lessons using the ⭐ button.');
-      await bot.answerCallbackQuery(callbackQuery.id, { text: '✅ Removed' });
+      await bot.answerCallbackQuery(callbackQuery.id, { text: '🗑️ Removed' });
       return;
     }
 
-    // Show next favourite or previous
+    // Show next or previous favourite (adjust index if at end)
     let nextIndex = index;
-    if (nextIndex >= updated.length) {
-      nextIndex = updated.length - 1;
+    if (nextIndex >= favourites.length) {
+      nextIndex = favourites.length - 1;
     }
 
     favouriteIndexMap[userId] = nextIndex;
+    const nextFavourite = favourites[nextIndex];
+    const count = favourites.length;
 
-    // Delete old message first
-    const messageId = callbackQuery.message?.message_id;
-    if (messageId) {
+    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${nextIndex + 1}/${count}</b>\n\n${nextFavourite.bg}\n\n<tg-spoiler>${nextFavourite.eng}</tg-spoiler>`;
+
+    const keyboards = {
+      inline_keyboard: [
+        [
+          {
+            text: '⬅️ Previous',
+            callback_data: 'favourite_previous',
+          },
+          {
+            text: '⏭️ Next',
+            callback_data: 'favourite_next',
+          },
+        ],
+        [
+          {
+            text: '🗑️ Remove',
+            callback_data: 'favourite_remove',
+          },
+          {
+            text: '🏠 Main menu',
+            callback_data: 'back_to_menu',
+          },
+        ],
+      ],
+    };
+
+    // Send new message with new audio (like lesson handler)
+    let msg;
+    if (nextFavourite.audioUrl) {
       try {
-        await bot.deleteMessage(chatId, messageId);
-      } catch (e) {
-        // Ignore delete errors
+        const base64Data = nextFavourite.audioUrl.includes(',')
+          ? nextFavourite.audioUrl.split(',')[1]
+          : nextFavourite.audioUrl;
+        const audioBuffer = Buffer.from(base64Data, 'base64');
+        msg = await bot.sendAudio(chatId, audioBuffer, {
+          caption: text,
+          parse_mode: 'HTML',
+          reply_markup: keyboards,
+          title: `Favourite ${nextIndex + 1}/${count}`,
+        });
+        console.log(`🎵 Favourite audio message sent with ID ${msg.message_id}`);
+      } catch (audioError) {
+        console.log(`⚠️ Failed to send favourite audio:`, audioError);
+        msg = await bot.sendMessage(chatId, text, {
+          parse_mode: 'HTML',
+          reply_markup: keyboards,
+        });
       }
+    } else {
+      msg = await bot.sendMessage(chatId, text, {
+        parse_mode: 'HTML',
+        reply_markup: keyboards,
+      });
     }
 
-    // Send new message with updated favourite
-    await displayFavourite(chatId, bot, userId, updated, nextIndex);
+    favouriteMessageIdMap[userId] = msg.message_id;
+
+    // Delete old message after brief delay (100ms for smooth animation)
+    setTimeout(async () => {
+      try {
+        await bot.deleteMessage(chatId, messageId);
+        console.log(`🗑️ Deleted old favourite message ${messageId}`);
+      } catch (error) {
+        console.log(`⚠️ Failed to delete old favourite message:`, error);
+      }
+    }, 100);
 
     await bot.answerCallbackQuery(callbackQuery.id, { text: '🗑️ Removed from favourites' });
   } catch (error) {
@@ -472,3 +566,4 @@ export async function handleRemoveFavourite(
     await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ Error' });
   }
 }
+

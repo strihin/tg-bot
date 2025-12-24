@@ -3,7 +3,7 @@ import { getAvailableCategories } from '../../data/loader';
 import { CATEGORIES } from '../../constants';
 import { FolderType } from '../../types';
 import { getUIText } from '../../utils/uiTranslation';
-import { getUserProgressAsync } from '../../data/progress';
+import { getUserProgressAsync, saveUserProgress } from '../../data/progress';
 import { isCategoryCompleted } from '../../data/completion';
 
 /**
@@ -56,12 +56,13 @@ export async function handleSelectCategory(
 
     const userId = callbackQuery.from.id;
     const chatId = callbackQuery.message?.chat.id;
+    const messageId = callbackQuery.message?.message_id;
     if (!chatId) return;
 
     const data = callbackQuery.data || '';
     const category = data.replace('select_category:', '');
 
-    // Get user's language preference
+    // Get user's language preference and progress
     const progress = await getUserProgressAsync(userId);
     const language = progress?.languageTo || 'eng';
 
@@ -69,23 +70,52 @@ export async function handleSelectCategory(
     const emoji = categoryMeta?.emoji || '📚';
     const categoryName = getUIText(`cat_${category}`, language as any);
 
-    await bot.sendMessage(
-      chatId,
-      `${emoji} Starting lesson in **${categoryName}** category...\n\n⏱️ Click below to begin:`,
-      {
-        parse_mode: 'Markdown',
-        reply_markup: {
-          inline_keyboard: [
-            [
-              {
-                text: '▶️ Start Lesson',
-                callback_data: `start_lesson:${category}`,
-              },
-            ],
-          ],
-        },
+    const messageText = `${emoji} Starting lesson in **${categoryName}** category...\n\n⏱️ Click below to begin:`;
+    const replyMarkup = {
+      inline_keyboard: [
+        [
+          {
+            text: '▶️ Start Lesson',
+            callback_data: `start_lesson:${category}`,
+          },
+        ],
+      ],
+    };
+
+    // Always try to edit the current message first, fall back to send new
+    if (messageId) {
+      try {
+        await bot.editMessageText(messageText, {
+          chat_id: chatId,
+          message_id: messageId,
+          parse_mode: 'Markdown',
+          reply_markup: replyMarkup,
+        });
+        console.log(`✏️ Edited category message ${messageId}`);
+        if (progress) {
+          progress.menuMessageId = messageId;
+        }
+      } catch (error) {
+        console.log(`⚠️ Failed to edit category, sending new:`, error);
+        const msg = await bot.sendMessage(chatId, messageText, {
+          parse_mode: 'Markdown',
+          reply_markup: replyMarkup,
+        });
+        if (progress) {
+          progress.menuMessageId = msg.message_id;
+          await saveUserProgress(progress);
+        }
       }
-    );
+    } else {
+      const msg = await bot.sendMessage(chatId, messageText, {
+        parse_mode: 'Markdown',
+        reply_markup: replyMarkup,
+      });
+      if (progress) {
+        progress.menuMessageId = msg.message_id;
+        await saveUserProgress(progress);
+      }
+    }
   } catch (error) {
     console.error('❌ Error in handleSelectCategory:', error);
   }

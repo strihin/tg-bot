@@ -36,7 +36,11 @@ export interface UserProgress {
   languageTo: TargetLanguage;
   lessonMessageId?: number; // Message ID of current lesson for editing
   audioMessageId?: number;  // Message ID of audio sent as reply (for current sentence)
+  menuMessageId?: number;   // Message ID of category/folder menu for editing
   lessonActive?: boolean;   // Track if user is in active lesson
+  translationRevealed?: boolean; // Track if current sentence translation is revealed
+  lastFolder?: FolderType;  // Remember last used folder for quick resume
+  lastCategory?: string;    // Remember last used category for quick resume
 }
 
 export interface BotMessage {
