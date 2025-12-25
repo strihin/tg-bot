@@ -107,6 +107,19 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'lesson': '📚 Lesson',
     'of': 'of',
     'click_reveal': '✨ Click button to reveal translation',
+
+    // Profile commands
+    'change_language': 'Change your learning language anytime with /profile',
+    'cancel': '❌ Cancel',
+
+    // Refresh command
+    'refresh_options': 'What would you like to clear?',
+    'clear_results': 'Clear all progress results',
+    'clear_messages': 'Clear chat messages',
+    'results_cleared': 'All mastery results cleared!',
+    'clear_messages_info': 'Clear messages feature coming soon! This will help keep your chat tidy.',
+    'messages_cleared': 'Chat messages cleared!',
+    'messages_cleared_info': 'Your recent lesson messages have been removed to keep your chat clean.',
   },
 
   kharkiv: {
@@ -184,7 +197,6 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'next': 'Следующий ➡️',
     'exit_lesson': '❌ Выйти из урока',
     'choose_another': '📚 Выбрать другую категорию',
-    'click_reveal': '✨ Нажмите кнопку, чтобы раскрыть перевод',
 
     // Lesson messages
     'lesson_started': '🎓 Урок начался! Удачи!',
@@ -211,6 +223,20 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'loading': '⏳ Загрузка...',
     'lesson': '📚 Урок',
     'of': 'из',
+    'click_reveal': '✨ Нажмите кнопку, чтобы раскрыть перевод',
+
+    // Profile commands
+    'change_language': 'Измените язык обучения в любое время с помощью /profile',
+    'cancel': '❌ Отмена',
+
+    // Refresh command
+    'refresh_options': 'Что вы хотите очистить?',
+    'clear_results': 'Очистить все результаты прогресса',
+    'clear_messages': 'Очистить сообщения чата',
+    'results_cleared': 'Все результаты мастерства очищены!',
+    'clear_messages_info': 'Функция очистки сообщений скоро появится! Это поможет содержать ваш чат в чистоте.',
+    'messages_cleared': 'Сообщения чата очищены!',
+    'messages_cleared_info': 'Ваши недавние сообщения урока удалены, чтобы ваш чат был чистым.',
   },
 
   ua: {
@@ -288,7 +314,6 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'next': 'Наступний ➡️',
     'exit_lesson': '❌ Вийти з уроку',
     'choose_another': '📚 Вибрати іншу категорію',
-    'click_reveal': '✨ Натисніть кнопку, щоб розкрити переклад',
 
     // Lesson messages
     'lesson_started': '🎓 Урок розпочався! Удачі!',
@@ -315,6 +340,20 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'loading': '⏳ Завантаження...',
     'lesson': '📚 Урок',
     'of': 'з',
+    'click_reveal': '✨ Натисніть кнопку, щоб розкрити переклад',
+
+    // Profile commands
+    'change_language': 'Змініть мову навчання в будь-який час за допомогою /profile',
+    'cancel': '❌ Скасувати',
+
+    // Refresh command
+    'refresh_options': 'Що ви хочете очистити?',
+    'clear_results': 'Очистити всі результати прогресу',
+    'clear_messages': 'Очистити повідомлення чату',
+    'results_cleared': 'Всі результати мастерства очищено!',
+    'clear_messages_info': 'Функція очистки повідомлень скоро з\'явиться! Це допоможе тримати ваш чат у чистоті.',
+    'messages_cleared': 'Повідомлення чату очищено!',
+    'messages_cleared_info': 'Ваші недавні повідомлення уроку видалено, щоб ваш чат був чистим.',
   },
 };
 

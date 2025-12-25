@@ -6,7 +6,6 @@ import { getUIText } from '../utils/uiTranslation';
 import { logActivity } from '../utils/logger';
 import {
   handleStartLessonButton,
-  handleLessonStart,
   handleShowTranslation,
   handleNext,
   handlePrevious,
@@ -14,17 +13,18 @@ import {
 import { getCategoryKeyboard, handleSelectCategory } from './handlers/category';
 import { handleSelectTargetLanguage } from './handlers/language';
 import { handleSelectLevel } from './handlers/level';
-import { getTranslatedKeyboards, getTranslatedKeyboardsWithCompletion, staticKeyboards } from './keyboards';
+import { handleProfileCommand } from './handlers/profile';
+import { getTranslatedKeyboardsWithCompletion, staticKeyboards } from './keyboards';
 
 export function createBot(): TelegramBot {
   // Use webhook mode if WEBHOOK_MODE env var is set, otherwise use polling
   const useWebhook = config.WEBHOOK_MODE;
-  
+
   // For webhook mode, don't let TelegramBot create its own server
   // We'll use the Express app instead
-  const botOptions = useWebhook 
+  const botOptions = useWebhook
     ? {}  // No internal server, we handle it via Express
-    : { 
+    : {
         polling: {
           interval: 100,
           autoStart: true,
@@ -34,20 +34,25 @@ export function createBot(): TelegramBot {
           }
         }
       };
-  
+
   const bot = new TelegramBot(config.TELEGRAM_TOKEN, botOptions);
 
   // Setup persistent menu button with all commands
   // This adds a "Menu" button at the bottom left of the chat
   bot.setMyCommands([
     { command: 'start', description: '🚀 Start learning - Select language' },
+    { command: 'profile', description: '👤 View/edit your profile and language' },
     { command: 'favourite', description: '⭐ View saved favourite sentences' },
     { command: 'progress', description: '📊 Check your learning progress' },
     { command: 'refresh', description: '🔄 Reset progress and start fresh' },
     { command: 'help', description: '❓ Show available commands' },
-  ]).catch(error => {
-    console.warn('⚠️  Could not set bot commands menu (may not be critical):', error.message);
-  });
+  ])
+    .then(() => {
+      console.log('✅ Bot command menu set successfully');
+    })
+    .catch(error => {
+      console.warn('⚠️  Could not set bot commands menu (may not be critical):', error.message);
+    });
 
   // Log all incoming updates for debugging
   bot.on('update', (update) => {
@@ -69,7 +74,7 @@ export function createBot(): TelegramBot {
     console.log(`✅ /start command MATCHED and handler executing!`);
     console.log(`✅ Chat ID: ${chatId}, User ID: ${userId}, Username: ${msg.from?.username}`);
     console.log(`✅ =============================================================\n`);
-    
+
     if (!userId) {
       console.log(`❌ No user ID found in message`);
       return;
@@ -85,7 +90,7 @@ export function createBot(): TelegramBot {
         const continueQuestion = getUIText('continue_question', progress.languageTo);
         const continueText = getUIText('continue_lesson', progress.languageTo);
         const startNewText = getUIText('start_new', progress.languageTo);
-        
+
         console.log(`📤 Sending quick resume message to chat ${chatId} for category: ${progress.lastCategory}`);
         const result = await bot.sendMessage(
           chatId,
@@ -109,7 +114,7 @@ export function createBot(): TelegramBot {
         const whatToDo = getUIText('what_to_do', progress.languageTo);
         const resumeText = getUIText('resume_lesson', progress.languageTo);
         const startNewText = getUIText('start_new', progress.languageTo);
-        
+
         console.log(`📤 Sending welcome back message to chat ${chatId}`);
         const result = await bot.sendMessage(
           chatId,
@@ -126,18 +131,54 @@ export function createBot(): TelegramBot {
         );
         console.log(`✅ Welcome back message sent to chat ${chatId}, message ID: ${result.message_id}`);
       } else {
-        // First time or no active lesson - show language selection
-        console.log(`📤 Sending language selection message to chat ${chatId}`);
-        const selectLanguageText = getUIText('select_language', 'eng');
-        const result = await bot.sendMessage(
-          chatId,
-          `<b>🇧🇬 Welcome to Bulgarian Learning Bot! 🎓</b>\n\nBulgarian is your source language.\n\n<i>${selectLanguageText}</i>\n\n<b>💡 Tip:</b> Send <code>/help</code> to see all available commands and how to use them!`,
-          {
-            parse_mode: 'HTML',
-            reply_markup: staticKeyboards.targetLanguageSelect,
-          }
-        );
-        console.log(`✅ Language selection message sent to chat ${chatId}, message ID: ${result.message_id}`);
+        // User exists but no active lesson - check if they need language selection
+        // If progress exists with a category (not default), they've already chosen language
+        if (progress && progress.category && progress.category !== 'greetings') {
+          // Already has completed initial setup - show category selection
+          console.log(`📤 User has completed setup: ${progress.languageTo}, category: ${progress.category}`);
+          const langEmoji = getLanguageEmoji(progress.languageTo);
+          const selectCategoryText = getUIText('select_category', progress.languageTo);
+          const categoryKeyboardObj = await getCategoryKeyboard(progress.folder, progress.languageTo, userId!);
+
+          const result = await bot.sendMessage(
+            chatId,
+            `🇧🇬 → ${langEmoji}\n\n<i>${selectCategoryText}</i>`,
+            {
+              parse_mode: 'HTML',
+              reply_markup: categoryKeyboardObj.reply_markup,
+            }
+          );
+          console.log(`✅ Category selection sent to chat ${chatId}, message ID: ${result.message_id}`);
+        } else if (progress && progress.languageTo && progress.languageTo !== 'eng') {
+          // User has explicitly changed from default language - show categories
+          console.log(`📤 User has custom language: ${progress.languageTo}`);
+          const langEmoji = getLanguageEmoji(progress.languageTo);
+          const selectCategoryText = getUIText('select_category', progress.languageTo);
+          const categoryKeyboardObj = await getCategoryKeyboard(progress.folder || 'basic', progress.languageTo, userId!);
+
+          const result = await bot.sendMessage(
+            chatId,
+            `🇧🇬 → ${langEmoji}\n\n<i>${selectCategoryText}</i>`,
+            {
+              parse_mode: 'HTML',
+              reply_markup: categoryKeyboardObj.reply_markup,
+            }
+          );
+          console.log(`✅ Category selection sent to chat ${chatId}, message ID: ${result.message_id}`);
+        } else {
+          // First time or default state - show language selection
+          console.log(`📤 Sending language selection message to chat ${chatId}`);
+          const selectLanguageText = getUIText('select_language', 'eng');
+          const result = await bot.sendMessage(
+            chatId,
+            `<b>🇧🇬 Welcome to Bulgarian Learning Bot! 🎓</b>\n\nBulgarian is your source language.\n\n<i>${selectLanguageText}</i>\n\n<b>💡 Tip:</b> Send <code>/help</code> to see all available commands and how to use them!`,
+            {
+              parse_mode: 'HTML',
+              reply_markup: staticKeyboards.targetLanguageSelect,
+            }
+          );
+          console.log(`✅ Language selection message sent to chat ${chatId}, message ID: ${result.message_id}`);
+        }
       }
     } catch (error) {
       console.error(`❌ Error in /start handler for chat ${chatId}:`, error);
@@ -179,7 +220,7 @@ export function createBot(): TelegramBot {
     const chatId = msg.chat.id;
     const userId = msg.from?.id;
     const language = 'eng'; // Default to English for help
-    
+
     if (!userId) return;
 
     // Get user's preferred language if they have active progress
@@ -187,7 +228,7 @@ export function createBot(): TelegramBot {
     const userLang = progress?.languageTo || 'eng';
 
     let helpText = '';
-    
+
     if (userLang === 'eng') {
       helpText = `<b>📚 Bulgarian Learning Bot - Quick Guide</b>
 
@@ -312,6 +353,12 @@ Enjoy learning Bulgarian! 🇧🇬`;
     await handleRefreshCommand(msg, bot);
   });
 
+  // Command: /profile - Show user profile and allow language change
+  bot.onText(/\/profile/, async (msg: TelegramBot.Message) => {
+    console.log(`👤 /profile command received`);
+    await handleProfileCommand(msg, bot);
+  });
+
   // Command: /favourite - Start lesson with favourite sentences
   bot.onText(/\/favourite/, async (msg: TelegramBot.Message) => {
     console.log(`⭐ /favourite command received`);
@@ -376,6 +423,17 @@ Enjoy learning Bulgarian! 🇧🇬`;
         }
         await handleStartLessonButton(query, bot, category);
         console.log(`✅ Lesson started`);
+      } else if (data?.startsWith('continue_lesson:')) {
+        const category = data.replace('continue_lesson:', '');
+        console.log(`⏯️ Continuing lesson in category: ${category}`);
+        try {
+          await bot.deleteMessage(query.message!.chat.id, query.message!.message_id);
+          console.log(`🗑️ Previous message deleted`);
+        } catch (e) {
+          console.log(`⚠️ Could not delete message:`, e);
+        }
+        await handleStartLessonButton(query, bot, category);
+        console.log(`✅ Lesson continued`);
       } else if (data === 'start_lesson' || data === 'continue_lesson') {
         console.log(`▶️ Handling lesson start/continue...`);
         try {
@@ -391,9 +449,9 @@ Enjoy learning Bulgarian! 🇧🇬`;
         console.log(`⏯️ Handling smart resume...`);
         const userId = query.from.id;
         const chatId = query.message?.chat.id;
-        
+
         if (!chatId) return;
-        
+
         const progress = await getUserProgressAsync(userId);
         if (progress && progress.lastCategory && progress.lastFolder) {
           try {
@@ -420,16 +478,20 @@ Enjoy learning Bulgarian! 🇧🇬`;
           } catch (e) {
             console.log(`⚠️ Could not delete progress message:`, e);
           }
-          console.log(`📤 Sending fresh language selection...`);
+
+          // Get user's saved language and show folder selection
+          const progress = await getUserProgressAsync(userId);
+          const language = progress?.languageTo || 'eng';
+
+          console.log(`📤 Sending folder selection with language: ${language}`);
+          const selectLevelText = getUIText('select_level', language);
+          const keyboards = await getTranslatedKeyboardsWithCompletion(language, userId);
           await bot.sendMessage(
             chatId,
-            '🇧🇬 **Let\'s start fresh!** 🎓\n\nSelect your target language:',
-            {
-              parse_mode: 'Markdown',
-              reply_markup: staticKeyboards.targetLanguageSelect,
-            }
+            `📚 ${selectLevelText}`,
+            { reply_markup: keyboards.levelSelect }
           );
-          console.log(`✅ Fresh language selection sent`);
+          console.log(`✅ Folder selection sent`);
         }
       } else if (data === 'show_translation') {
         console.log(`📖 Handling show translation...`);
@@ -496,17 +558,36 @@ Enjoy learning Bulgarian! 🇧🇬`;
           } catch (e) {
             console.log(`⚠️ Could not delete lesson message:`, e);
           }
-          console.log(`📤 Sending language selection...`);
-          const selectLanguageText = getUIText('select_language', 'eng');
-          await bot.sendMessage(
-            chatId,
-            `🇧🇬 **Main Menu** 🎓\n\n_${selectLanguageText}_`,
-            {
-              parse_mode: 'Markdown',
-              reply_markup: staticKeyboards.targetLanguageSelect,
-            }
-          );
-          console.log(`✅ Main menu sent`);
+
+          // Check if user has selected language (setup complete)
+          const progress = await getUserProgressAsync(userId);
+          const hasSelectedLanguage = progress && progress.languageTo && progress.languageTo !== 'eng' && progress.category && progress.category !== 'greetings';
+
+          if (hasSelectedLanguage) {
+            // User already has language set - show folder selection
+            console.log(`📤 Sending folder selection...`);
+            const selectLevelText = getUIText('select_level', progress!.languageTo);
+            const keyboards = await getTranslatedKeyboardsWithCompletion(progress!.languageTo, userId);
+            await bot.sendMessage(
+              chatId,
+              `📚 ${selectLevelText}`,
+              { reply_markup: keyboards.levelSelect }
+            );
+            console.log(`✅ Folder selection sent`);
+          } else {
+            // First time - show language selection
+            console.log(`📤 Sending language selection...`);
+            const selectLanguageText = getUIText('select_language', 'eng');
+            await bot.sendMessage(
+              chatId,
+              `🇧🇬 **Main Menu** 🎓\n\n_${selectLanguageText}_`,
+              {
+                parse_mode: 'Markdown',
+                reply_markup: staticKeyboards.targetLanguageSelect,
+              }
+            );
+            console.log(`✅ Language selection sent`);
+          }
         }
       } else if (data === 'exit') {
         console.log(`❌ Handling exit...`);
@@ -531,6 +612,21 @@ Enjoy learning Bulgarian! 🇧🇬`;
         console.log(`   Message ID: ${query.message?.message_id}`);
         console.log(`   This is from an OLD cached message. User needs to start fresh.`);
         await bot.answerCallbackQuery(query.id, { text: '⚠️ This button is outdated. Click "Next" to continue.' });
+      } else if (data === 'refresh_results') {
+        console.log(`🔄 Handling refresh results...`);
+        const { handleRefreshResults } = await import('./handlers/refresh');
+        await handleRefreshResults(query, bot);
+        console.log(`✅ Results refreshed`);
+      } else if (data === 'refresh_messages') {
+        console.log(`💬 Handling refresh messages...`);
+        const { handleRefreshMessages } = await import('./handlers/refresh');
+        await handleRefreshMessages(query, bot);
+        console.log(`✅ Messages refresh option shown`);
+      } else if (data === 'cancel_refresh') {
+        console.log(`❌ Handling cancel refresh...`);
+        const { handleCancelRefresh } = await import('./handlers/refresh');
+        await handleCancelRefresh(query, bot);
+        console.log(`✅ Refresh cancelled`);
       } else {
         console.log(`❓ Unknown callback data: ${data}`);
         await bot.answerCallbackQuery(query.id, { text: 'Unknown action' });

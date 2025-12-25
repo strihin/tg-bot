@@ -2,6 +2,37 @@ import { LEVELS } from '../constants';
 import { TargetLanguage } from '../types';
 import { getUIText } from '../utils/uiTranslation';
 import { isFolderCompleted } from '../data/completion';
+import { getAvailableCategories, getTotalSentences } from '../data/loader';
+import { SentenceMasteryModel } from '../db/models';
+
+/**
+ * Get folder completion stats (total mastered / total sentences)
+ */
+async function getFolderStats(userId: number, folderKey: string) {
+  try {
+    const categories = await getAvailableCategories(folderKey as any);
+    let totalMastered = 0;
+    let totalSentences = 0;
+
+    for (const category of categories) {
+      const categoryTotal = await getTotalSentences(category, folderKey as any);
+      const categoryMastered = await SentenceMasteryModel.countDocuments({
+        userId,
+        folder: folderKey,
+        category,
+        status: { $in: ['learned', 'known'] }
+      });
+      totalSentences += categoryTotal;
+      totalMastered += categoryMastered;
+    }
+
+    const percentage = totalSentences > 0 ? Math.round((totalMastered / totalSentences) * 100) : 0;
+    return { mastered: totalMastered, total: totalSentences, percentage };
+  } catch (e) {
+    console.log(`⚠️ Could not fetch folder stats for ${folderKey}:`, e);
+    return { mastered: 0, total: 0, percentage: 0 };
+  }
+}
 
 /**
  * Generate level/folder selection keyboard dynamically from LEVELS constant
@@ -11,9 +42,18 @@ export async function generateLevelSelectKeyboardWithCompletion(language: Target
   const buttons = await Promise.all(Object.entries(LEVELS).map(async ([key, level]) => {
     const keyWithUnderscores = key.replace(/-/g, '_');
     const completionIcon = userId ? (await isFolderCompleted(userId, key as any) ? ' ✅' : '') : '';
+    const levelName = getUIText(`level_${keyWithUnderscores}`, language);
+
+    // Get folder stats instead of description
+    let statsText = '';
+    if (userId) {
+      const stats = await getFolderStats(userId, key);
+      statsText = `${stats.mastered}/${stats.total} (${stats.percentage}%)`;
+    }
+
     return [
       {
-        text: `${level.emoji} ${getUIText(`level_${keyWithUnderscores}`, language)} - ${getUIText(`${keyWithUnderscores}_desc`, language)}${completionIcon}`,
+        text: `${levelName} - ${statsText}${completionIcon}`,
         callback_data: `folder_${key}`,
       },
     ];
@@ -31,9 +71,10 @@ const generateLevelSelectKeyboard = (language: TargetLanguage = 'eng') => {
   return {
     inline_keyboard: Object.entries(LEVELS).map(([key, level]) => {
       const keyWithUnderscores = key.replace(/-/g, '_');
+      const levelName = getUIText(`level_${keyWithUnderscores}`, language);
       return [
         {
-          text: `${level.emoji} ${getUIText(`level_${keyWithUnderscores}`, language)} - ${getUIText(`${keyWithUnderscores}_desc`, language)}`,
+          text: `${levelName}`,
           callback_data: `folder_${key}`,
         },
       ];

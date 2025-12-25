@@ -20,6 +20,7 @@ export async function getUserProgressAsync(userId: number): Promise<UserProgress
       lessonMessageId: doc.lessonMessageId,
       audioMessageId: doc.audioMessageId,
       lessonActive: doc.lessonActive,
+      sentMessageIds: doc.sentMessageIds || [],
     };
   } catch (error) {
     console.error(`❌ Error reading progress for user ${userId}:`, error);
@@ -53,6 +54,7 @@ export async function saveUserProgress(progress: UserProgress): Promise<void> {
         lessonMessageId: progress.lessonMessageId,
         audioMessageId: progress.audioMessageId,
         lessonActive: progress.lessonActive,
+        sentMessageIds: progress.sentMessageIds || [],
       },
       { upsert: true, new: true }
     );

@@ -150,6 +150,12 @@ export async function handleNext(
     } catch (error) {
       console.error('Error sending completion message:', error);
     }
+
+    // Reset lesson state after completion so /start doesn't show "Continue lesson"
+    progress.lessonActive = false;
+    progress.translationRevealed = false;
+    await saveUserProgress(progress);
+    console.log(`✅ Lesson completed - reset lessonActive for user ${userId}`);
   }
 
   const nextText = getUIText('next_clicked', progress.languageTo);

@@ -57,7 +57,7 @@ export async function handleSelectLevel(
     const completionIcon = folderCompleted ? ' ✅' : '';
     
     const selectCategoryText = getUIText('select_category', progress.languageTo);
-    const messageText = `${folderInfo.emoji} **${folderInfo.name}**${completionIcon} mode selected\n\n_${folderInfo.description}_\n\n${selectCategoryText}`;
+    const messageText = `<b>${folderInfo.name}${completionIcon} mode selected</b>\n\n<i>${folderInfo.description}</i>\n\n${selectCategoryText}`;
     
     // Always try to edit the current message first, fall back to send new
     const messageId = callbackQuery.message?.message_id;
@@ -66,7 +66,7 @@ export async function handleSelectLevel(
         await bot.editMessageText(messageText, {
           chat_id: chatId,
           message_id: messageId,
-          parse_mode: 'Markdown',
+          parse_mode: 'HTML',
           ...keyboard,
         });
         console.log(`✏️ Edited menu message ${messageId}`);
@@ -77,7 +77,7 @@ export async function handleSelectLevel(
           chatId,
           messageText,
           {
-            parse_mode: 'Markdown',
+            parse_mode: 'HTML',
             ...keyboard,
           }
         );
@@ -88,7 +88,7 @@ export async function handleSelectLevel(
         chatId,
         messageText,
         {
-          parse_mode: 'Markdown',
+          parse_mode: 'HTML',
           ...keyboard,
         }
       );

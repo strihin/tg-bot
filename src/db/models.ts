@@ -79,6 +79,7 @@ export interface IUserProgress extends Document {
   lessonMessageId?: number;
   audioMessageId?: number;
   lessonActive?: boolean;
+  sentMessageIds?: number[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -94,6 +95,7 @@ const UserProgressSchema = new Schema<IUserProgress>(
     lessonMessageId: { type: Number },
     audioMessageId: { type: Number },
     lessonActive: { type: Boolean, default: false },
+    sentMessageIds: { type: [Number], default: [] },
   },
   { timestamps: true }
 );

@@ -41,6 +41,7 @@ export interface UserProgress {
   translationRevealed?: boolean; // Track if current sentence translation is revealed
   lastFolder?: FolderType;  // Remember last used folder for quick resume
   lastCategory?: string;    // Remember last used category for quick resume
+  sentMessageIds?: number[]; // Track all message IDs sent to user for cleanup
 }
 
 export interface BotMessage {

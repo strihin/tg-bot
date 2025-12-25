@@ -4,6 +4,7 @@ import { getUserProgressAsync, saveUserProgress, initializeUserProgress } from '
 import { getUIText } from '../../../utils/uiTranslation';
 import { getTranslatedKeyboards } from '../../keyboards';
 import { buildLessonText } from './text';
+import { sendMessageAndTrack } from '../../helpers/messageTracker';
 
 /**
  * Handle lesson start via button click
@@ -157,10 +158,11 @@ export async function handleLessonStart(
   );
 
   const keyboards = getTranslatedKeyboards(progress.languageTo, progress.category, progress.folder, progress.currentIndex);
-  progress.lessonMessageId = (await bot.sendMessage(chatId, text, {
+  const sentMsg = await sendMessageAndTrack(userId, chatId, text, {
     parse_mode: 'HTML',
     reply_markup: keyboards.showTranslation,
-  })).message_id;
+  }, bot);
+  progress.lessonMessageId = sentMsg.message_id;
 
   progress.lessonActive = true;
   await saveUserProgress(progress);
