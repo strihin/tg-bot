@@ -153,11 +153,8 @@ Questions? Check the docs or run: `docker-compose logs -f`
 
 
 TOP commands on vps:
-1. Restart app:
-docker-compose -f config/docker-compose.yml down && docker-compose -f config/docker-compose.yml build --no-cache && docker-compose -f config/docker-compose.yml up -d
-2. lofg
-
-docker-compose logs bg-bot --tail=200 2>&1 | grep -A 20 "API endpoints"
+1. Restart app and get logs:
+docker-compose -f config/docker-compose.yml down && docker-compose -f config/docker-compose.yml build --no-cache && docker-compose -f config/docker-compose.yml up -d && sleep 3 && docker-compose -f config/docker-compose.yml logs bg-bot --tail 15
 
 0.0.0.0/0
 (includes your current IP address)

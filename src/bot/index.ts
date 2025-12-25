@@ -37,6 +37,18 @@ export function createBot(): TelegramBot {
   
   const bot = new TelegramBot(config.TELEGRAM_TOKEN, botOptions);
 
+  // Setup persistent menu button with all commands
+  // This adds a "Menu" button at the bottom left of the chat
+  bot.setMyCommands([
+    { command: 'start', description: '🚀 Start learning - Select language' },
+    { command: 'favourite', description: '⭐ View saved favourite sentences' },
+    { command: 'progress', description: '📊 Check your learning progress' },
+    { command: 'refresh', description: '🔄 Reset progress and start fresh' },
+    { command: 'help', description: '❓ Show available commands' },
+  ]).catch(error => {
+    console.warn('⚠️  Could not set bot commands menu (may not be critical):', error.message);
+  });
+
   // Log all incoming updates for debugging
   bot.on('update', (update) => {
     console.log(`🔄 UPDATE RECEIVED (update_id: ${update.update_id}):`);
@@ -514,6 +526,11 @@ Enjoy learning Bulgarian! 🇧🇬`;
           );
           console.log(`✅ Exit confirmation sent`);
         }
+      } else if (data === 'listen') {
+        console.log(`🎙️ Listen button clicked - this button should NOT exist in current code!`);
+        console.log(`   Message ID: ${query.message?.message_id}`);
+        console.log(`   This is from an OLD cached message. User needs to start fresh.`);
+        await bot.answerCallbackQuery(query.id, { text: '⚠️ This button is outdated. Click "Next" to continue.' });
       } else {
         console.log(`❓ Unknown callback data: ${data}`);
         await bot.answerCallbackQuery(query.id, { text: 'Unknown action' });
