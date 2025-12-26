@@ -96,6 +96,10 @@ const getLessonKeyboards = (language: TargetLanguage = 'eng', category?: string,
         ],
         [
           {
+            text: getUIText('back_to_categories', language),
+            callback_data: 'back_to_categories',
+          },
+          {
             text: getUIText('add_favourite', language),
             callback_data: 'add_favourite',
           },
@@ -121,7 +125,7 @@ const getLessonKeyboards = (language: TargetLanguage = 'eng', category?: string,
 
     lessonComplete: {
       inline_keyboard: [
-        [{ text: getUIText('choose_another', language), callback_data: 'exit' }],
+        [{ text: getUIText('choose_another', language), callback_data: 'change_folder' }],
       ],
     },
 

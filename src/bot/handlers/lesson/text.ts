@@ -19,7 +19,7 @@ export function buildLessonText(
     ? `🎯 <b>${translation}</b>`
     : `<tg-spoiler>${translation}</tg-spoiler>`;
 
-  let text = `<b>📚 ${category.toUpperCase()} | 🇧🇬 → ${langEmoji}</b>\n\n⏳ <b>${currentIndex + 1}/${totalSentences}</b>\n\n${sentence.bg}\n\n${translationText}`;
+  let text = `<b>📚 ${category.toUpperCase()} | ⏳ ${currentIndex + 1}/${totalSentences}</b>\n\n${sentence.bg}\n\n${translationText}`;
 
   // Add grammar explanation if available (middle level)
   if (folder === 'middle' && sentence.grammar && sentence.explanation) {

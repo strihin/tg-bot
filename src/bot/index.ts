@@ -97,24 +97,23 @@ export function createBot(): TelegramBot {
     try {
       const progress = await getUserProgressAsync(userId);
 
-      // Check if user has an active lesson with saved last category
-      if (progress && progress.lessonActive && progress.lastCategory && progress.lastFolder) {
+      // Check if user has a saved lesson position AND lesson is active
+      if (progress && progress.lastCategory && progress.lastFolder && progress.lessonActive) {
         // Smart Resume: Show "Continue [Category]?" option
         const langEmoji = getLanguageEmoji(progress.languageTo);
-        const continueQuestion = getUIText('continue_question', progress.languageTo);
-        const continueText = getUIText('continue_lesson', progress.languageTo);
+        const resumeText = getUIText('resume_lesson', progress.languageTo);
         const startNewText = getUIText('start_new', progress.languageTo);
 
         console.log(`📤 Sending quick resume message to chat ${chatId} for category: ${progress.lastCategory}`);
         const result = await bot.sendMessage(
           chatId,
-          `<b>🎯 ${continueQuestion}</b>\n\n📚 <b>${progress.lastCategory.toUpperCase()}</b> (🇧🇬 → ${langEmoji})\n\n<i>Pick up where you left off or start something new</i>`,
+          `<b>${resumeText}</b>\n\n📚 <b>${progress.lastCategory.toUpperCase()}</b> (🇧🇬 → ${langEmoji})\n\n<i>Pick up where you left off or start something new</i>`,
           {
             parse_mode: 'HTML',
             reply_markup: {
               inline_keyboard: [
-                [{ text: `✅ ${continueText}`, callback_data: 'resume_lesson' }],
-                [{ text: `❌ ${startNewText}`, callback_data: 'start_new' }],
+                [{ text: `${resumeText}`, callback_data: 'resume_lesson' }],
+                [{ text: `${startNewText}`, callback_data: 'start_new' }],
               ],
             },
           }
@@ -163,15 +162,6 @@ export function createBot(): TelegramBot {
             }
           );
           console.log(`✅ Category selection sent to chat ${chatId}, message ID: ${result.message_id}`);
-          
-          // Send persistent keyboard as separate message
-          await bot.sendMessage(
-            chatId,
-            '.',
-            {
-              reply_markup: getPersistentKeyboard(progress.languageTo)
-            }
-          );
 
         } else if (progress && progress.languageTo && progress.languageTo !== 'eng') {
           // User has explicitly changed from default language - show categories
@@ -279,12 +269,20 @@ export function createBot(): TelegramBot {
 
   bot.onText(/^👤/, async (msg: TelegramBot.Message) => {
     console.log(`👤 Profile button pressed`);
+    const chatId = msg.chat.id;
+    const messageId = msg.message_id;
+
+    // Delete message asynchronously (don't await - fire and forget for speed)
+    bot.deleteMessage(chatId, messageId).catch(e => {
+      console.log(`⚠️ Could not delete profile button message:`, e.message);
+    });
+
     const { handleProfileCommand } = await import('./handlers/profile');
     await handleProfileCommand(msg, bot);
   });
 
   bot.onText(/^🏠/, async (msg: TelegramBot.Message) => {
-    console.log(`🏠 Main Menu button pressed`);
+    console.log(`🏠 Home button pressed`);
     const userId = msg.from?.id;
     const chatId = msg.chat.id;
     if (!userId) return;
@@ -294,7 +292,7 @@ export function createBot(): TelegramBot {
       const language = progress?.languageTo || 'eng';
       const selectLevelText = getUIText('select_level', language);
       const keyboards = await getTranslatedKeyboardsWithCompletion(language, userId);
-      
+
       await bot.sendMessage(
         chatId,
         `📚 ${selectLevelText}`,
@@ -303,7 +301,7 @@ export function createBot(): TelegramBot {
         }
       );
     } catch (error) {
-      console.error('❌ Error in Main Menu button:', error);
+      console.error('❌ Error in Home button:', error);
       await bot.sendMessage(msg.chat.id, '❌ Error loading menu');
     }
   });
@@ -312,11 +310,17 @@ export function createBot(): TelegramBot {
     console.log(`⬅️ Back button pressed`);
     const userId = msg.from?.id;
     const chatId = msg.chat.id;
+    const messageId = msg.message_id;
     if (!userId) return;
-    
+
+    // Delete message asynchronously (fire and forget for speed)
+    bot.deleteMessage(chatId, messageId).catch(e => {
+      console.log(`⚠️ Could not delete back button message:`, e.message);
+    });
+
     const progress = await getUserProgressAsync(userId);
     const language = progress?.languageTo || 'eng';
-    
+
     console.log(`🔍 Back button debug - userId: ${userId}, progress:`, {
       lessonActive: progress?.lessonActive,
       lastFolder: progress?.lastFolder,
@@ -324,20 +328,20 @@ export function createBot(): TelegramBot {
       category: progress?.category,
       folder: progress?.folder
     });
-    
+
     if (progress && progress.lessonActive && progress.lastFolder && progress.lastCategory) {
       // User is in a lesson - go back to category selection
       try {
         console.log(`📚 Going back to category selection for folder: ${progress.lastFolder}`);
-        
+
         // Save current lesson progress before navigating away
         await saveUserProgress(progress);
         console.log(`💾 Progress saved: currentIndex=${progress.currentIndex}`);
-        
+
         const selectCategoryText = getUIText('select_category', language);
         const langEmoji = getLanguageEmoji(language);
         const categoryKeyboardObj = await getCategoryKeyboard(progress.lastFolder, language, userId);
-        
+
         await bot.sendMessage(
           chatId,
           `🇧🇬 → ${langEmoji}\n\n<i>${selectCategoryText}</i>`,
@@ -346,7 +350,7 @@ export function createBot(): TelegramBot {
             reply_markup: categoryKeyboardObj.reply_markup,
           }
         );
-        
+
       } catch (error) {
         console.error('❌ Error in Back button (lesson):', error);
       }
@@ -356,7 +360,7 @@ export function createBot(): TelegramBot {
         console.log(`📁 Going back to folder selection`);
         const selectLevelText = getUIText('select_level', language);
         const keyboards = await getTranslatedKeyboardsWithCompletion(language, userId);
-        
+
         await bot.sendMessage(
           chatId,
           `📚 ${selectLevelText}`,
@@ -364,7 +368,7 @@ export function createBot(): TelegramBot {
             reply_markup: keyboards.levelSelect
           }
         );
-        
+
       } catch (error) {
         console.error('❌ Error in Back button (categories):', error);
       }
@@ -375,21 +379,12 @@ export function createBot(): TelegramBot {
         console.log(`🎯 Going to folder selection (has language)`);
         const selectLevelText = getUIText('select_level', language);
         const keyboards = await getTranslatedKeyboardsWithCompletion(language, userId);
-        
+
         await bot.sendMessage(
           chatId,
           `📚 ${selectLevelText}`,
           {
             reply_markup: keyboards.levelSelect
-          }
-        );
-        
-        // Send persistent keyboard as separate message
-        await bot.sendMessage(
-          chatId,
-          '.',
-          {
-            reply_markup: getPersistentKeyboard(language)
           }
         );
       } else {
@@ -405,7 +400,7 @@ export function createBot(): TelegramBot {
             reply_markup: staticKeyboards.targetLanguageSelect
           }
         );
-        
+
 
       }
     }
@@ -545,6 +540,46 @@ export function createBot(): TelegramBot {
         const { handleAddFavourite } = await import('./handlers/favourite');
         await handleAddFavourite(query, bot);
         console.log(`✅ Added to favourites`);
+      } else if (data === 'back_to_categories') {
+        console.log(`⬅️ Handling back to categories...`);
+        const userId = query.from.id;
+        const chatId = query.message?.chat.id;
+        const messageId = query.message?.message_id;
+        
+        if (!chatId || !messageId) {
+          await bot.answerCallbackQuery(query.id);
+          return;
+        }
+        
+        const progress = await getUserProgressAsync(userId);
+        if (!progress) {
+          await bot.answerCallbackQuery(query.id, { text: '❌ No progress found' });
+          return;
+        }
+        
+        // Delete the lesson message
+        await bot.deleteMessage(chatId, messageId).catch(() => {});
+        
+        // Show category selection
+        const categoryKeyboardObj = await getCategoryKeyboard(progress.folder, progress.languageTo, userId);
+        const langEmoji = getLanguageEmoji(progress.languageTo);
+        const selectCategoryText = getUIText('select_category', progress.languageTo);
+        
+        await bot.sendMessage(
+          chatId,
+          `🇧🇬 → ${langEmoji}\n\n<i>${selectCategoryText}</i>`,
+          {
+            parse_mode: 'HTML',
+            reply_markup: categoryKeyboardObj.reply_markup,
+          }
+        );
+        
+        // Mark lesson as inactive
+        progress.lessonActive = false;
+        await saveUserProgress(progress);
+        
+        await bot.answerCallbackQuery(query.id);
+        console.log(`✅ Back to categories handled`);
       } else if (data === 'favourite_next') {
         console.log(`⏭️ Handling favourite next...`);
         const { handleFavouriteNext } = await import('./handlers/favourite');

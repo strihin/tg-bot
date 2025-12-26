@@ -12,8 +12,8 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'welcome_back': 'Welcome back! 👋',
     'active_lesson': 'You have an active lesson in',
     'what_to_do': 'What would you like to do?',
-    'resume_lesson': '📖 Resume lesson',
-    'start_new': '🚀 Start new lesson',
+    'resume_lesson': '✅ Resume lesson',
+    'start_new': '❌ Start new lesson',
 
     // Language selection
     'select_language': 'Select your learning language:',
@@ -73,6 +73,7 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'show_translation': '📖 Show translation',
     'listen': 'Listen',
     'add_favourite': '⭐ Add to favourites',
+    'back_to_categories': '🔙 Back',
     'skip_next': '⏭️ Skip to next',
     'change_folder': '📚 Change folder',
     'main_menu': '🏠 Main menu',
@@ -127,8 +128,8 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'welcome_back': 'Добро пожаловать назад! 👋',
     'active_lesson': 'У вас есть активный урок в',
     'what_to_do': 'Шо вы хотели бы делать?',
-    'resume_lesson': '📖 Продолжить урок',
-    'start_new': '🚀 Начать новый урок',
+    'resume_lesson': '✅ Продолжить урок',
+    'start_new': '❌ Начать новый урок',
 
     // Language selection
     'select_language': 'Выберите язык обучения:',
@@ -188,6 +189,7 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'show_translation': '📖 Показать перевод',
     'listen': 'Слушать',
     'add_favourite': '⭐ Добавить в избранное',
+    'back_to_categories': '🔙 Назад',
     'skip_next': '⏭️ Перейти к следующему',
     'change_folder': '📚 Сменить уровень',
     'change_level': '📈 Сменить уровень',
@@ -244,8 +246,8 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'welcome_back': 'Ласкаво просимо назад! 👋',
     'active_lesson': 'У вас є активний урок у',
     'what_to_do': 'Що б ви хотіли робити?',
-    'resume_lesson': '📖 Продовжити урок',
-    'start_new': '🚀 Почати новий урок',
+    'resume_lesson': '✅ Продовжити урок',
+    'start_new': '❌ Почати новий урок',
 
     // Language selection
     'select_language': 'Виберіть мову навчання:',
@@ -305,6 +307,7 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'show_translation': '📖 Показати переклад',
     'listen': 'Слухати',
     'add_favourite': '⭐ Додати до улюблених',
+    'back_to_categories': '🔙 Назад',
     'skip_next': '⏭️ Перейти до наступного',
     'change_folder': '📚 Змінити рівень',
     'change_level': '📈 Змінити рівень',

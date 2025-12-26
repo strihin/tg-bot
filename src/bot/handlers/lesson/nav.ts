@@ -49,6 +49,7 @@ export async function handleNext(
         progress.folder,
         false
       );
+      console.log(`📝 [NEXT] Caption: ${text.substring(0, 100)}...`);
 
       const keyboards = getTranslatedKeyboards(progress.languageTo, progress.category, progress.folder, progress.currentIndex);
 
@@ -78,7 +79,7 @@ export async function handleNext(
 
       // Optimized smooth transition: send new immediately, delete old in background
       if (!updated) {
-        const skeleton = `<b>📚 ${progress.category.toUpperCase()} | 🇧🇬</b>\n\n⏳ <b>${progress.currentIndex + 1}/${totalSentences}</b>\n\n<i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i>\n\n⏳ <i>Loading...</i>\n\n<tg-spoiler><i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i></tg-spoiler>`;
+        const skeleton = `<b>📚 ${progress.category.toUpperCase()} | ⏳ ${progress.currentIndex + 1}/${totalSentences}</b>\n\n<i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i>\n\n⏳ <i>Loading...</i>\n\n<tg-spoiler><i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i></tg-spoiler>`;
 
         // AUDIO MESSAGE: Send new immediately (no skeleton visible)
         if (sentence.audioUrl) {
@@ -188,7 +189,7 @@ export async function handlePrevious(
 
   if (progress.currentIndex > 0) {
     // Show skeleton immediately to prevent jarring message shift
-    const skeleton = `<b>📚 ${progress.category.toUpperCase()} | 🇧🇬</b>\n\n⏳ <b>${progress.currentIndex}/${totalSentences}</b>\n\n<i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i>\n\n<tg-spoiler><i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i></tg-spoiler>`;
+    const skeleton = `<b>📚 ${progress.category.toUpperCase()} | ⏳ ${progress.currentIndex}/${totalSentences}</b>\n\n<i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i>\n\n<tg-spoiler><i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i></tg-spoiler>`;
 
     try {
       // Try editing text first (works for both text and audio captions)
@@ -259,7 +260,7 @@ export async function handlePrevious(
 
       // Fallback: if both edits failed, send new message
       if (!updated) {
-        const skeleton = `<b>📚 ${progress.category.toUpperCase()} | 🇧🇬</b>\n\n⏳ <b>${progress.currentIndex + 1}/${totalSentences}</b>\n\n<i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i>\n\n⏳ <i>Loading...</i>\n\n<tg-spoiler><i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i></tg-spoiler>`;
+        const skeleton = `<b>📚 ${progress.category.toUpperCase()} | ⏳ ${progress.currentIndex + 1}/${totalSentences}</b>\n\n<i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i>\n\n⏳ <i>Loading...</i>\n\n<tg-spoiler><i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i></tg-spoiler>`;
 
         // AUDIO MESSAGE: Send new immediately (no skeleton visible)
         if (sentence.audioUrl) {

@@ -77,6 +77,7 @@ export async function handleStartLessonButton(
 
     // Send audio with caption containing lesson text
     console.log(`📝 Sending lesson with audio as caption`);
+    console.log(`📝 Caption text: ${text.substring(0, 100)}...`);
     let msg;
 
     if (sentence.audioUrl) {
