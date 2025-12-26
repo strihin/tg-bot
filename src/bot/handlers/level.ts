@@ -5,6 +5,7 @@ import { FolderType } from '../../types';
 import { getUIText } from '../../utils/uiTranslation';
 import { getCategoryKeyboard } from './category';
 import { isFolderCompleted } from '../../data/completion';
+import { applyMaxWidth } from './lesson/text';
 
 /**
  * Handle folder selection (6 independent learning levels)
@@ -63,7 +64,7 @@ export async function handleSelectLevel(
     const messageId = callbackQuery.message?.message_id;
     if (messageId) {
       try {
-        await bot.editMessageText(messageText, {
+        await bot.editMessageText(applyMaxWidth(messageText), {
           chat_id: chatId,
           message_id: messageId,
           parse_mode: 'HTML',
@@ -75,7 +76,7 @@ export async function handleSelectLevel(
         console.log(`⚠️ Failed to edit menu, sending new:`, error);
         const msg = await bot.sendMessage(
           chatId,
-          messageText,
+          applyMaxWidth(messageText),
           {
             parse_mode: 'HTML',
             ...keyboard,
@@ -86,7 +87,7 @@ export async function handleSelectLevel(
     } else {
       const msg = await bot.sendMessage(
         chatId,
-        messageText,
+        applyMaxWidth(messageText),
         {
           parse_mode: 'HTML',
           ...keyboard,

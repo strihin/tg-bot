@@ -10,6 +10,7 @@ import {
   handleNext,
   handlePrevious,
 } from './handlers/lesson';
+import { applyMaxWidth } from './handlers/lesson/text';
 import { getCategoryKeyboard, handleSelectCategory } from './handlers/category';
 import { handleSelectTargetLanguage } from './handlers/language';
 import { handleSelectLevel } from './handlers/level';
@@ -91,7 +92,7 @@ export function createBot(): TelegramBot {
         console.log(`📤 Sending quick resume message to chat ${chatId} for category: ${progress.lastCategory}`);
         const result = await bot.sendMessage(
           chatId,
-          `<b>${resumeText}</b>\n\n📚 <b>${progress.lastCategory.toUpperCase()}</b> (🇧🇬 → ${langEmoji})\n\n<i>Pick up where you left off or start something new</i>`,
+          applyMaxWidth(`<b>${resumeText}</b>\n\n📚 <b>${progress.lastCategory.toUpperCase()}</b> (🇧🇬 → ${langEmoji})\n\n<i>Pick up where you left off or start something new</i>`),
           {
             parse_mode: 'HTML',
             reply_markup: {
@@ -122,7 +123,7 @@ export function createBot(): TelegramBot {
         console.log(`📤 Sending welcome back message to chat ${chatId}`);
         const result = await bot.sendMessage(
           chatId,
-          `${welcomeBack}\n\n${activeLesson} <b>${progress.category.toUpperCase()}</b> (🇧🇬 → ${langEmoji})\n\n<i>${whatToDo}</i>\n\n<b>💡 Tip:</b> Send <code>/help</code> for all commands!`,
+          applyMaxWidth(`${welcomeBack}\n\n${activeLesson} <b>${progress.category.toUpperCase()}</b> (🇧🇬 → ${langEmoji})\n\n<i>${whatToDo}</i>\n\n<b>💡 Tip:</b> Send <code>/help</code> for all commands!`),
           {
             parse_mode: 'HTML',
             reply_markup: {
@@ -153,7 +154,7 @@ export function createBot(): TelegramBot {
 
           const result = await bot.sendMessage(
             chatId,
-            `🇧🇬 → ${langEmoji}\n\n<i>${selectCategoryText}</i>`,
+            applyMaxWidth(`🇧🇬 → ${langEmoji}\n\n<i>${selectCategoryText}</i>`),
             {
               parse_mode: 'HTML',
               reply_markup: categoryKeyboardObj.reply_markup,
@@ -177,7 +178,7 @@ export function createBot(): TelegramBot {
 
           const result = await bot.sendMessage(
             chatId,
-            `🇧🇬 → ${langEmoji}\n\n<i>${selectCategoryText}</i>`,
+            applyMaxWidth(`🇧🇬 → ${langEmoji}\n\n<i>${selectCategoryText}</i>`),
             {
               parse_mode: 'HTML',
               reply_markup: categoryKeyboardObj.reply_markup,
@@ -197,7 +198,7 @@ export function createBot(): TelegramBot {
           const selectLanguageText = getUIText('select_language', 'eng');
           const result = await bot.sendMessage(
             chatId,
-            `<b>🇧🇬 Welcome to Bulgarian Learning Bot! 🎓</b>\n\nBulgarian is your source language.\n\n<i>${selectLanguageText}</i>\n\n<b>💡 Tip:</b> Send <code>/help</code> to see all available commands and how to use them!`,
+            applyMaxWidth(`<b>🇧🇬 Welcome to Bulgarian Learning Bot! 🎓</b>\n\nBulgarian is your source language.\n\n<i>${selectLanguageText}</i>\n\n<b>💡 Tip:</b> Send <code>/help</code> to see all available commands and how to use them!`),
             {
               parse_mode: 'HTML',
               reply_markup: staticKeyboards.targetLanguageSelect,
@@ -387,8 +388,8 @@ export function createBot(): TelegramBot {
           const keyboards = await getTranslatedKeyboardsWithCompletion(language, userId);
           await bot.sendMessage(
             chatId,
-            `📚 ${selectLevelText}`,
-            { reply_markup: keyboards.levelSelect }
+            applyMaxWidth(`📚 ${selectLevelText}`),
+            { reply_markup: keyboards.levelSelect, parse_mode: 'HTML' }
           );
           console.log(`✅ Folder selection sent`);
         }
@@ -428,7 +429,7 @@ export function createBot(): TelegramBot {
         
         await bot.sendMessage(
           chatId,
-          `🇧🇬 → ${langEmoji}\n\n<i>${selectCategoryText}</i>`,
+          applyMaxWidth(`🇧🇬 → ${langEmoji}\n\n<i>${selectCategoryText}</i>`),
           {
             parse_mode: 'HTML',
             reply_markup: categoryKeyboardObj.reply_markup,
@@ -481,11 +482,34 @@ export function createBot(): TelegramBot {
           const keyboards = await getTranslatedKeyboardsWithCompletion(progress?.languageTo || 'eng', userId);
           await bot.sendMessage(
             chatId,
-            `📚 ${selectLevelText}`,
-            { reply_markup: keyboards.levelSelect }
+            applyMaxWidth(`📚 ${selectLevelText}`),
+            { reply_markup: keyboards.levelSelect, parse_mode: 'HTML' }
           );
           console.log(`✅ Folder selection sent`);
         }
+      } else if (data === 'show_levels') {
+        console.log(`📁 Handling show levels (back from categories)...`);
+        const userId = query.from.id;
+        const chatId = query.message?.chat.id;
+        if (chatId) {
+          try {
+            await bot.deleteMessage(chatId, query.message!.message_id);
+            console.log(`🗑️ Category message deleted`);
+          } catch (e) {
+            console.log(`⚠️ Could not delete category message:`, e);
+          }
+          console.log(`📤 Sending folder selection...`);
+          const progress = await getUserProgressAsync(userId);
+          const selectLevelText = getUIText('select_level', progress?.languageTo || 'eng');
+          const keyboards = await getTranslatedKeyboardsWithCompletion(progress?.languageTo || 'eng', userId);
+          await bot.sendMessage(
+            chatId,
+            applyMaxWidth(`📚 ${selectLevelText}`),
+            { reply_markup: keyboards.levelSelect, parse_mode: 'HTML' }
+          );
+          console.log(`✅ Folder selection sent`);
+        }
+        await bot.answerCallbackQuery(query.id);
       } else if (data === 'back_to_menu') {
         console.log(`🏠 Handling back to menu...`);
         const userId = query.from.id;
@@ -509,8 +533,8 @@ export function createBot(): TelegramBot {
             const keyboards = await getTranslatedKeyboardsWithCompletion(progress!.languageTo, userId);
             await bot.sendMessage(
               chatId,
-              `📚 ${selectLevelText}`,
-              { reply_markup: keyboards.levelSelect }
+              applyMaxWidth(`📚 ${selectLevelText}`),
+              { reply_markup: keyboards.levelSelect, parse_mode: 'HTML' }
             );
             console.log(`✅ Folder selection sent`);
           } else {
@@ -519,9 +543,9 @@ export function createBot(): TelegramBot {
             const selectLanguageText = getUIText('select_language', 'eng');
             await bot.sendMessage(
               chatId,
-              `🇧🇬 **Main Menu** 🎓\n\n_${selectLanguageText}_`,
+              applyMaxWidth(`<b>🇧🇬 Main Menu 🎓</b>\n\n<i>${selectLanguageText}</i>`),
               {
-                parse_mode: 'Markdown',
+                parse_mode: 'HTML',
                 reply_markup: staticKeyboards.targetLanguageSelect,
               }
             );

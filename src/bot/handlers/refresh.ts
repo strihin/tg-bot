@@ -3,6 +3,7 @@ import { getUserProgressAsync, saveUserProgress } from '../../data/progress';
 import { getUIText } from '../../utils/uiTranslation';
 import { SentenceMasteryModel } from '../../db/models';
 import { deleteAllTrackedMessages } from '../helpers/messageTracker';
+import { applyMaxWidth } from './lesson/text';
 
 /**
  * Handle /refresh command
@@ -32,7 +33,7 @@ export async function handleRefreshCommand(
 
     await bot.sendMessage(
       chatId,
-      `🔄 ${refreshOptionsText}`,
+      applyMaxWidth(`🔄 ${refreshOptionsText}`),
       {
         parse_mode: 'HTML',
         reply_markup: {
@@ -78,7 +79,7 @@ export async function handleRefreshResults(
     const successMessage = getUIText('results_cleared', language);
 
     await bot.editMessageText(
-      `✅ ${successMessage}\n\n🗑️ Cleared ${deletedCount} completed sentences.\n\nYou can now restart your learning journey from the beginning!\n\nUse /start to begin.`,
+      applyMaxWidth(`✅ ${successMessage}\n\n🗑️ Cleared ${deletedCount} completed sentences.\n\nYou can now restart your learning journey from the beginning!\n\nUse /start to begin.`),
       {
         chat_id: chatId,
         message_id: messageId,
@@ -129,7 +130,7 @@ export async function handleRefreshMessages(
     // Send confirmation message
     const confirmMsg = await bot.sendMessage(
       chatId,
-      `✅ ${successMessage}\n\n${infoMessage}\n\n<i>[Cleared ${result.successful} message(s)]</i>`,
+      applyMaxWidth(`✅ ${successMessage}\n\n${infoMessage}\n\n<i>[Cleared ${result.successful} message(s)]</i>`),
       { parse_mode: 'HTML' }
     );
 

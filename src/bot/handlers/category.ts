@@ -6,6 +6,7 @@ import { getUIText } from '../../utils/uiTranslation';
 import { getUserProgressAsync, saveUserProgress } from '../../data/progress';
 import { isCategoryCompleted } from '../../data/completion';
 import { SentenceMasteryModel } from '../../db/models';
+import { applyMaxWidth } from './lesson/text';
 
 /**
  * Create inline keyboard with available categories for a specific folder
@@ -99,7 +100,7 @@ export async function handleSelectCategory(
     const categoryName = getUIText(`cat_${category}`, language as any);
 
     // Build message text with last sentence if user has progress
-    let messageText = `${emoji} Starting lesson in **${categoryName}** category...`;
+    let messageText = `${emoji} Starting lesson in <b>${categoryName}</b> category...`;
     
     // Get total sentence count for progress display
     let totalSentences = 0;
@@ -109,29 +110,47 @@ export async function handleSelectCategory(
       console.log(`⚠️ Could not fetch total sentences:`, e);
     }
     
-    // If user has progress in this category, show progress stats and last sentence
-    if (progress && progress.category === category && progress.currentIndex > 0) {
+    // Check progress in the SELECTED category from database (not just if it's the currently saved category)
+    let categoryMasteredCount = 0;
+    try {
+      categoryMasteredCount = await SentenceMasteryModel.countDocuments({
+        userId,
+        folder: progress?.folder || 'basic',
+        category,
+        status: { $in: ['learned', 'known'] }
+      });
+    } catch (e) {
+      console.log(`⚠️ Could not fetch mastery count:`, e);
+    }
+    
+    // Show progress if user has started this category
+    if (categoryMasteredCount > 0 && totalSentences > 0) {
       try {
-        const lastSentenceIndex = progress.currentIndex - 1;
-        const lastSentence = await getSentenceByIndex(category, lastSentenceIndex, progress.folder);
+        // Get the last sentence index for this category (use the mastered count as guidance)
+        const lastSentenceIndex = Math.min(categoryMasteredCount, totalSentences) - 1;
+        const lastSentence = await getSentenceByIndex(category, lastSentenceIndex, progress?.folder || 'basic');
         if (lastSentence) {
           const lastBG = lastSentence.bg;
-          const lastTranslation = progress.languageTo === 'ua' ? lastSentence.ua : (progress.languageTo === 'kharkiv' ? lastSentence.ru : lastSentence.eng);
-          messageText += `\n\n📝 **Last:** ${lastBG}\n_${lastTranslation}_`;
+          const lang = progress?.languageTo || 'eng';
+          const lastTranslation = lang === 'ua' ? lastSentence.ua : (lang === 'kharkiv' ? lastSentence.ru : lastSentence.eng);
+          messageText += `\n\n📝 <b>Last:</b> ${lastBG}\n<i>${lastTranslation}</i>`;
         }
         
         // Add progress stats
-        if (totalSentences > 0) {
-          const percentage = Math.round((progress.currentIndex / totalSentences) * 100);
-          const progressBar = '█'.repeat(Math.round(percentage / 10)) + '░'.repeat(10 - Math.round(percentage / 10));
-          messageText += `\n\n📊 **Progress:** ${progress.currentIndex}/${totalSentences} (${percentage}%)\n_${progressBar}_`;
-        }
+        const percentage = Math.round((categoryMasteredCount / totalSentences) * 100);
+        const progressBar = '█'.repeat(Math.round(percentage / 10)) + '░'.repeat(10 - Math.round(percentage / 10));
+        messageText += `\n\n📊 <b>Progress:</b> ${categoryMasteredCount}/${totalSentences} (${percentage}%)\n<i>${progressBar}</i>`;
       } catch (e) {
-        console.log(`⚠️ Could not fetch last sentence:`, e);
+        console.log(`⚠️ Could not fetch category progress details:`, e);
+        // Fallback: just show mastery count
+        if (totalSentences > 0) {
+          const percentage = Math.round((categoryMasteredCount / totalSentences) * 100);
+          messageText += `\n\n📊 <b>Progress:</b> ${categoryMasteredCount}/${totalSentences} (${percentage}%)`;
+        }
       }
     } else if (totalSentences > 0) {
       // Show total count even if no progress yet
-      messageText += `\n\n📊 **Total cards:** ${totalSentences}`;
+      messageText += `\n\n📊 <b>Total cards:</b> ${totalSentences}`;
     }
     
     messageText += `\n\n⏱️ Click below to begin:`;
@@ -153,16 +172,16 @@ export async function handleSelectCategory(
     }
     
     const replyMarkup = {
-      inline_keyboard: [keyboardButtons],
+      inline_keyboard: [keyboardButtons, [{ text: '🔙 Back to folders', callback_data: 'show_levels' }]],
     };
 
     // Always try to edit the current message first, fall back to send new
     if (messageId) {
       try {
-        await bot.editMessageText(messageText, {
+        await bot.editMessageText(applyMaxWidth(messageText), {
           chat_id: chatId,
           message_id: messageId,
-          parse_mode: 'Markdown',
+          parse_mode: 'HTML',
           reply_markup: replyMarkup,
         });
         console.log(`✏️ Edited category message ${messageId}`);
@@ -171,8 +190,8 @@ export async function handleSelectCategory(
         }
       } catch (error) {
         console.log(`⚠️ Failed to edit category, sending new:`, error);
-        const msg = await bot.sendMessage(chatId, messageText, {
-          parse_mode: 'Markdown',
+        const msg = await bot.sendMessage(chatId, applyMaxWidth(messageText), {
+          parse_mode: 'HTML',
           reply_markup: replyMarkup,
         });
         if (progress) {
@@ -181,8 +200,8 @@ export async function handleSelectCategory(
         }
       }
     } else {
-      const msg = await bot.sendMessage(chatId, messageText, {
-        parse_mode: 'Markdown',
+      const msg = await bot.sendMessage(chatId, applyMaxWidth(messageText), {
+        parse_mode: 'HTML',
         reply_markup: replyMarkup,
       });
       if (progress) {

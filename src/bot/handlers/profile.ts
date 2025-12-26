@@ -6,6 +6,7 @@ import { staticKeyboards } from '../keyboards';
 import { deleteAllTrackedMessages } from '../helpers/messageTracker';
 import { SentenceMasteryModel } from '../../db/models';
 import { LANGUAGES } from '../../constants';
+import { applyMaxWidth } from '../handlers/lesson/text';
 
 /**
  * Handle /profile command - Show user profile and allow language change
@@ -52,19 +53,19 @@ export async function handleProfileCommand(
     const clearProgressText = getUIText('clear_results', progress.languageTo);
 
     const profileMessage = `
-👤 **Your Profile**
+👤 <b>Your Profile</b>
 
-🌐 **Target Language:** ${langName} ${langEmoji}
-📚 **Current Category:** ${progress.category?.toUpperCase() || 'None'}
-📖 **Level:** ${progress.folder?.toUpperCase() || 'Basic'}
-✅ **Current Progress:** Sentence ${progress.currentIndex + 1}
+🌐 <b>Target Language:</b> ${langName} ${langEmoji}
+📚 <b>Current Category:</b> ${progress.category?.toUpperCase() || 'None'}
+📖 <b>Level:</b> ${progress.folder?.toUpperCase() || 'Basic'}
+✅ <b>Current Progress:</b> Sentence ${progress.currentIndex + 1}
 `;
 
     const result = await bot.sendMessage(
       chatId,
-      profileMessage.trim(),
+      applyMaxWidth(profileMessage.trim()),
       {
-        parse_mode: 'Markdown',
+        parse_mode: 'HTML',
         reply_markup: {
           inline_keyboard: [
             [{ text: `🌐 ${changeLanguageText}`, callback_data: 'show_language_options' }],
@@ -112,7 +113,7 @@ export async function handleShowLanguageOptions(
     const selectLanguageText = getUIText('select_language', language);
 
     await bot.editMessageText(
-      `🌐 ${selectLanguageText}`,
+      applyMaxWidth(`🌐 ${selectLanguageText}`),
       {
         chat_id: chatId,
         message_id: messageId,
@@ -162,7 +163,7 @@ export async function handleClearProgress(
     const confirmText = getUIText('confirm', language) || '✅ Confirm';
 
     await bot.editMessageText(
-      `⚠️ Are you sure you want to clear all your learning progress?\n\nThis action cannot be undone.`,
+      applyMaxWidth(`⚠️ Are you sure you want to clear all your learning progress?\n\nThis action cannot be undone.`),
       {
         chat_id: chatId,
         message_id: messageId,
@@ -213,7 +214,7 @@ export async function handleConfirmClearProgress(
     const successMessage = getUIText('results_cleared', language);
 
     await bot.editMessageText(
-      `✅ ${successMessage}\n\n🗑️ Cleared ${deletedCount} completed sentences.\n\nYou can now restart your learning journey from the beginning!\n\nUse /start to begin.`,
+      applyMaxWidth(`✅ ${successMessage}\n\n🗑️ Cleared ${deletedCount} completed sentences.\n\nYou can now restart your learning journey from the beginning!\n\nUse /start to begin.`),
       {
         chat_id: chatId,
         message_id: messageId,

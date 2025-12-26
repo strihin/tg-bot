@@ -1,5 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { getUserProgressAsync } from '../../../data/progress';
+import { applyMaxWidth } from '../lesson/text';
 import { helpTextEn } from './en';
 import { helpTextKharkiv } from './kharkiv';
 import { helpTextUa } from './ua';
@@ -34,5 +35,5 @@ export async function handleHelpCommand(msg: TelegramBot.Message, bot: TelegramB
 
   const helpText = getHelpText(userLang);
 
-  await bot.sendMessage(chatId, helpText, { parse_mode: 'HTML' });
+  await bot.sendMessage(chatId, applyMaxWidth(helpText), { parse_mode: 'HTML' });
 }

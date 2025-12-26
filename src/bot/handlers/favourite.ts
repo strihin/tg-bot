@@ -4,6 +4,7 @@ import { ensureMongoDBConnection } from '../../db/mongodb';
 import { getSentenceByIndex } from '../../data/loader';
 import { getUserProgressAsync, saveUserProgress } from '../../data/progress';
 import { deleteAllTrackedMessages } from '../helpers/messageTracker';
+import { applyMaxWidth } from './lesson/text';
 
 // Store favourite index, message ID, and list for each user (session map)
 export const favouriteIndexMap: Record<number, number> = {};
@@ -185,7 +186,7 @@ async function displayFavouriteCard(
 
     console.log(`⭐ Display Card - User: ${userId}, Index: ${index}, Language: ${languageTo}, Translation: "${translation.substring(0, 30)}..."`);
 
-    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${translation}</tg-spoiler>`;
+    const text = applyMaxWidth(`<b>⭐ FAVOURITE WORDS | ⏳ ${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${translation}</tg-spoiler>`);
 
     const keyboards = {
       inline_keyboard: [
@@ -291,7 +292,7 @@ export async function handleFavouriteNext(
 
     console.log(`⭐ Showing translation: ${languageTo} = "${translation.substring(0, 50)}..."`);
 
-    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${translation}</tg-spoiler>`;
+    const text = applyMaxWidth(`<b>⭐ FAVOURITE WORDS | ⏳ ${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${translation}</tg-spoiler>`);
 
     const keyboards = {
       inline_keyboard: [
@@ -407,7 +408,7 @@ export async function handleFavouritePrevious(
 
     console.log(`⭐ Showing translation: ${languageTo} = "${translation.substring(0, 50)}..."`);
 
-    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${translation}</tg-spoiler>`;
+    const text = applyMaxWidth(`<b>⭐ FAVOURITE WORDS | ⏳ ${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${translation}</tg-spoiler>`);
 
     const keyboards = {
       inline_keyboard: [
@@ -544,7 +545,7 @@ export async function handleRemoveFavourite(
     // Get translation based on language
     const translation = languageTo === 'kharkiv' ? nextFavourite.ru : languageTo === 'ua' ? nextFavourite.ua : nextFavourite.eng;
 
-    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${nextIndex + 1}/${count}</b>\n\n${nextFavourite.bg}\n\n<tg-spoiler>${translation}</tg-spoiler>`;
+    const text = applyMaxWidth(`<b>⭐ FAVOURITE WORDS | ⏳ ${nextIndex + 1}/${count}</b>\n\n${nextFavourite.bg}\n\n<tg-spoiler>${translation}</tg-spoiler>`);
 
     const keyboards = {
       inline_keyboard: [

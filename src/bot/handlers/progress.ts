@@ -5,6 +5,7 @@ import { LEVELS, CATEGORIES } from '../../constants';
 import { getUIText } from '../../utils/uiTranslation';
 import { TargetLanguage, FolderType } from '../../types';
 import { SentenceMasteryModel } from '../../db/models';
+import { applyMaxWidth } from '../handlers/lesson/text';
 
 /**
  * Handle /progress command
@@ -104,7 +105,7 @@ export async function handleProgressCommand(
     // Add legend
     progressReport += '\n📍 = Currently learning | ▓ = Completed | ░ = Not started';
 
-    await bot.sendMessage(chatId, progressReport, { parse_mode: 'Markdown' });
+    await bot.sendMessage(chatId, applyMaxWidth(progressReport), { parse_mode: 'Markdown' });
     console.log(`✅ Progress report sent to user ${userId}`);
   } catch (error) {
     console.error(`❌ Error in handleProgressCommand:`, error);

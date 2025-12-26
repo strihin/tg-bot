@@ -3,6 +3,7 @@ import { changeTargetLanguage, getUserProgressAsync, saveUserProgress } from '..
 import { getLanguageEmoji } from '../../utils/translation';
 import { getUIText } from '../../utils/uiTranslation';
 import { getTranslatedKeyboardsWithCompletion } from '../keyboards';
+import { applyMaxWidth } from './lesson/text';
 import { TargetLanguage } from '../../types';
 
 /**
@@ -46,7 +47,7 @@ export async function handleSelectTargetLanguage(
     console.log(`📤 Sending level selection message to chat ${chatId}`);
     const selectLevelText = getUIText('select_level', languageTo);
     const keyboards = await getTranslatedKeyboardsWithCompletion(languageTo, userId);
-    const messageText = `🇧🇬 → ${langEmoji}\n\n_${selectLevelText}_`;
+    const messageText = `🇧🇬 → ${langEmoji}\n\n<i>${selectLevelText}</i>`;
     
     // Always try to edit the current message first, fall back to send new
     const messageId = callbackQuery.message?.message_id;
@@ -54,10 +55,10 @@ export async function handleSelectTargetLanguage(
     
     if (messageId) {
       try {
-        await bot.editMessageText(messageText, {
+        await bot.editMessageText(applyMaxWidth(messageText), {
           chat_id: chatId,
           message_id: messageId,
-          parse_mode: 'Markdown',
+          parse_mode: 'HTML',
           reply_markup: keyboards.levelSelect,
         });
         console.log(`✏️ Edited level selection message ${messageId}`);
@@ -69,9 +70,9 @@ export async function handleSelectTargetLanguage(
         console.log(`⚠️ Failed to edit, sending new:`, error);
         const result = await bot.sendMessage(
           chatId,
-          messageText,
+          applyMaxWidth(messageText),
           {
-            parse_mode: 'Markdown',
+            parse_mode: 'HTML',
             reply_markup: keyboards.levelSelect,
           }
         );
@@ -83,9 +84,9 @@ export async function handleSelectTargetLanguage(
     } else {
       const result = await bot.sendMessage(
         chatId,
-        messageText,
+        applyMaxWidth(messageText),
         {
-          parse_mode: 'Markdown',
+          parse_mode: 'HTML',
           reply_markup: keyboards.levelSelect,
         }
       );

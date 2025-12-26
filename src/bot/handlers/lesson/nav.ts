@@ -8,6 +8,16 @@ import { markSentenceAsLearned } from './mastery';
 import { updateAudioMessageSmooth, updateTextMessageSmooth, sendFallbackMessage } from './audio';
 
 /**
+ * Build a skeleton placeholder with max-width forcing (spaces + zero-width joiner)
+ * Forces buttons to stretch to full chat width
+ */
+function buildSkeleton(category: string, currentIndex: number, totalSentences: number): string {
+  const text = `<b>📚 ${category.toUpperCase()} | ⏳ ${currentIndex}/${totalSentences}</b>\n\n<i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i>\n\n<tg-spoiler><i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i></tg-spoiler>`;
+  const padding = ' '.repeat(50);
+  return `${text}${padding}&#x200D;`;
+}
+
+/**
  * Handle Next button click
  */
 export async function handleNext(
@@ -23,10 +33,11 @@ export async function handleNext(
   const progress = await getUserProgressAsync(userId);
   if (!progress) return;
 
-  const totalSentences = await getTotalSentences(progress.category, progress.folder);
+  try {
+    const totalSentences = await getTotalSentences(progress.category, progress.folder);
 
-  // Mark current sentence as learned before moving to next
-  const currentSentence = await getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
+    // Mark current sentence as learned before moving to next
+    const currentSentence = await getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
   if (currentSentence) {
     await markSentenceAsLearned(userId, currentSentence._id, progress.folder, progress.category);
   }
@@ -79,7 +90,7 @@ export async function handleNext(
 
       // Optimized smooth transition: send new immediately, delete old in background
       if (!updated) {
-        const skeleton = `<b>📚 ${progress.category.toUpperCase()} | ⏳ ${progress.currentIndex + 1}/${totalSentences}</b>\n\n<i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i>\n\n⏳ <i>Loading...</i>\n\n<tg-spoiler><i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i></tg-spoiler>`;
+        const skeleton = buildSkeleton(progress.category, progress.currentIndex + 1, totalSentences);
 
         // AUDIO MESSAGE: Send new immediately (no skeleton visible)
         if (sentence.audioUrl) {
@@ -159,8 +170,12 @@ export async function handleNext(
     console.log(`✅ Lesson completed - reset lessonActive for user ${userId}`);
   }
 
-  const nextText = getUIText('next_clicked', progress.languageTo);
-  await bot.answerCallbackQuery(callbackQuery.id, { text: nextText });
+    const nextText = getUIText('next_clicked', progress.languageTo);
+    await bot.answerCallbackQuery(callbackQuery.id, { text: nextText });
+  } catch (error) {
+    console.error('Error in handleNext:', error);
+    await bot.answerCallbackQuery(callbackQuery.id, { text: 'Error occurred' });
+  }
 }
 
 /**
@@ -179,38 +194,16 @@ export async function handlePrevious(
   const progress = await getUserProgressAsync(userId);
   if (!progress) return;
 
-  const totalSentences = await getTotalSentences(progress.category, progress.folder);
+  try {
+    const totalSentences = await getTotalSentences(progress.category, progress.folder);
 
-  // Mark current sentence as learned before moving to previous
-  const currentSentence = await getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
+    // Mark current sentence as learned before moving to previous
+    const currentSentence = await getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
   if (currentSentence) {
     await markSentenceAsLearned(userId, currentSentence._id, progress.folder, progress.category);
   }
 
   if (progress.currentIndex > 0) {
-    // Show skeleton immediately to prevent jarring message shift
-    const skeleton = `<b>📚 ${progress.category.toUpperCase()} | ⏳ ${progress.currentIndex}/${totalSentences}</b>\n\n<i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i>\n\n<tg-spoiler><i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i></tg-spoiler>`;
-
-    try {
-      // Try editing text first (works for both text and audio captions)
-      await bot.editMessageText(skeleton, {
-        chat_id: chatId,
-        message_id: messageId,
-        parse_mode: 'HTML',
-      });
-    } catch (error) {
-      // If text edit failed, try caption (for audio/voice)
-      try {
-        await bot.editMessageCaption(skeleton, {
-          chat_id: chatId,
-          message_id: messageId,
-          parse_mode: 'HTML',
-        });
-      } catch (captionError) {
-        console.log(`⚠️ Failed to show skeleton:`, captionError);
-      }
-    }
-
     progress.currentIndex -= 1;
     progress.translationRevealed = false;
     const sentence = await getSentenceByIndex(progress.category, progress.currentIndex, progress.folder);
@@ -229,38 +222,33 @@ export async function handlePrevious(
 
       const keyboards = getTranslatedKeyboards(progress.languageTo, progress.category, progress.folder, progress.currentIndex);
 
-      // Update skeleton with real content
+      // For audio messages: always send new + delete old (can't edit audio file via API)
+      // For text messages: try to edit first, fallback to send+delete
       let updated = false;
-      try {
-        console.log(`🔄 [PREV] Updating with real content (trying text)...`);
-        await bot.editMessageText(text, {
-          chat_id: chatId,
-          message_id: messageId,
-          parse_mode: 'HTML',
-          reply_markup: keyboards.showTranslation,
-        });
-        console.log(`✅ [PREV] Message updated successfully via text edit`);
-        updated = true;
-      } catch (error) {
-        // Try caption if text edit failed
+
+      if (!sentence.audioUrl) {
+        // Text message only - try edit first
         try {
-          console.log(`🔄 [PREV] Text update failed, trying caption...`);
-          await bot.editMessageCaption(text, {
+          console.log(`🔄 [PREV] Updating text message...`);
+          await bot.editMessageText(text, {
             chat_id: chatId,
             message_id: messageId,
             parse_mode: 'HTML',
             reply_markup: keyboards.showTranslation,
           });
-          console.log(`✅ [PREV] Message updated successfully via caption edit`);
+          console.log(`✅ [PREV] Text message updated successfully`);
           updated = true;
-        } catch (captionError) {
-          console.log(`⚠️ [PREV] Both edits failed, will send new message. Error: ${captionError}`);
+        } catch (error) {
+          console.log(`⚠️ [PREV] Text edit failed, will send new message. Error: ${error}`);
         }
+      } else {
+        // Audio message - must send new audio (can't change audio file via edit)
+        console.log(`🎵 [PREV] Audio message detected - will send new audio + delete old`);
       }
 
-      // Fallback: if both edits failed, send new message
+      // Fallback: if not updated or is audio, send new message
       if (!updated) {
-        const skeleton = `<b>📚 ${progress.category.toUpperCase()} | ⏳ ${progress.currentIndex + 1}/${totalSentences}</b>\n\n<i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i>\n\n⏳ <i>Loading...</i>\n\n<tg-spoiler><i>▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</i></tg-spoiler>`;
+        const skeleton = buildSkeleton(progress.category, progress.currentIndex + 1, totalSentences);
 
         // AUDIO MESSAGE: Send new immediately (no skeleton visible)
         if (sentence.audioUrl) {
@@ -345,6 +333,10 @@ export async function handlePrevious(
     }
   }
 
-  const prevText = getUIText('previous_clicked', progress.languageTo);
-  await bot.answerCallbackQuery(callbackQuery.id, { text: prevText });
+    const prevText = getUIText('previous_clicked', progress.languageTo);
+    await bot.answerCallbackQuery(callbackQuery.id, { text: prevText });
+  } catch (error) {
+    console.error('Error in handlePrevious:', error);
+    await bot.answerCallbackQuery(callbackQuery.id, { text: 'Error occurred' });
+  }
 }

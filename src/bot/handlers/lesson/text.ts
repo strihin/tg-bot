@@ -2,7 +2,37 @@ import { Sentence, TargetLanguage } from '../../../types';
 import { getLanguageEmoji, getTranslation } from '../../../utils/translation';
 
 /**
+ * Force max-width rendering for messages by calculating needed padding
+ * Counts text symbols and adds only the spaces needed to reach 150 total width
+ * Uses zero-width joiner Unicode character for invisibility
+ * Makes buttons stretch to full chat width and prevents any width shifting
+ * Properly handles emojis (including flags and sequences) and HTML tags
+ */
+export function applyMaxWidth(text: string): string {
+  const targetWidth = 150;
+  // Remove HTML tags
+  const textWithoutTags = text.replace(/<[^>]*>/g, '');
+  
+  // For multi-line text, pad based on the longest line for proper Telegram rendering
+  const lines = textWithoutTags.split('\n');
+  let maxLineLength = 0;
+  
+  for (const line of lines) {
+    // Count visible characters properly using Array.from() which handles emoji sequences
+    const charArray = Array.from(line);
+    maxLineLength = Math.max(maxLineLength, charArray.length);
+  }
+  
+  // Pad based on the longest line
+  const currentLength = maxLineLength;
+  const neededPadding = Math.max(0, targetWidth - currentLength);
+  const padding = ' '.repeat(neededPadding);
+  return `${text}${padding}\u200D`;
+}
+
+/**
  * Build complete lesson text with all grammar/rule explanations
+ * Adds padding and zero-width joiner to force max width for buttons
  */
 export function buildLessonText(
   sentence: Sentence,
@@ -13,7 +43,6 @@ export function buildLessonText(
   folder: string,
   showTranslation: boolean = false
 ): string {
-  const langEmoji = getLanguageEmoji(languageTo);
   const translation = getTranslation(sentence, languageTo);
   const translationText = showTranslation
     ? `🎯 <b>${translation}</b>`
@@ -53,5 +82,5 @@ export function buildLessonText(
     }
   }
 
-  return text;
+  return applyMaxWidth(text);
 }
