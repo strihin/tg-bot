@@ -71,7 +71,6 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
 
     // Lesson controls
     'show_translation': '📖 Show translation',
-    'listen': 'Listen',
     'add_favourite': '⭐ Add to favourites',
     'back_to_categories': '🔙 Back',
     'skip_next': '⏭️ Skip to next',
@@ -110,7 +109,9 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'click_reveal': '✨ Click button to reveal translation',
 
     // Profile commands
-    'change_language': 'Change your learning language anytime with /profile',
+    'change_language': 'Change language',
+    'back': '🔙 Back',
+    'confirm': '✅ Confirm',
     'cancel': '❌ Cancel',
 
     // Refresh command
@@ -187,7 +188,6 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
 
     // Lesson controls
     'show_translation': '📖 Показать перевод',
-    'listen': 'Слушать',
     'add_favourite': '⭐ Добавить в избранное',
     'back_to_categories': '🔙 Назад',
     'skip_next': '⏭️ Перейти к следующему',
@@ -228,7 +228,9 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'click_reveal': '✨ Нажмите кнопку, чтобы раскрыть перевод',
 
     // Profile commands
-    'change_language': 'Измените язык обучения в любое время с помощью /profile',
+    'change_language': 'Измените язык',
+    'back': '🔙 Назад',
+    'confirm': '✅ Подтвердить',
     'cancel': '❌ Отмена',
 
     // Refresh command
@@ -305,7 +307,6 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
 
     // Lesson controls
     'show_translation': '📖 Показати переклад',
-    'listen': 'Слухати',
     'add_favourite': '⭐ Додати до улюблених',
     'back_to_categories': '🔙 Назад',
     'skip_next': '⏭️ Перейти до наступного',
@@ -346,7 +347,9 @@ const uiTranslations: Record<UILanguage, Record<string, string>> = {
     'click_reveal': '✨ Натисніть кнопку, щоб розкрити переклад',
 
     // Profile commands
-    'change_language': 'Змініть мову навчання в будь-який час за допомогою /profile',
+    'change_language': 'Змініть мову',
+    'back': '🔙 Назад',
+    'confirm': '✅ Підтвердити',
     'cancel': '❌ Скасувати',
 
     // Refresh command

@@ -2,7 +2,8 @@ import TelegramBot from 'node-telegram-bot-api';
 import { FavouriteModel } from '../../db/models';
 import { ensureMongoDBConnection } from '../../db/mongodb';
 import { getSentenceByIndex } from '../../data/loader';
-import { getUserProgressAsync } from '../../data/progress';
+import { getUserProgressAsync, saveUserProgress } from '../../data/progress';
+import { deleteAllTrackedMessages } from '../helpers/messageTracker';
 
 // Store favourite index, message ID, and list for each user (session map)
 export const favouriteIndexMap: Record<number, number> = {};
@@ -120,6 +121,17 @@ export async function handleStartFavouriteLesson(
     // Get user's current language
     const progress = await getUserProgressAsync(userId);
     const languageTo = progress?.languageTo || 'eng';
+    
+    // Clean up old tracked messages (removes cached persistent keyboard buttons)
+    if (progress?.sentMessageIds && progress.sentMessageIds.length > 0) {
+      console.log(`🧹 Cleaning up ${progress.sentMessageIds.length} old messages from user's chat...`);
+      const cleanup = await deleteAllTrackedMessages(bot, chatId, progress.sentMessageIds);
+      console.log(`🧹 Cleanup complete: ${cleanup.successful} deleted, ${cleanup.failed} failed`);
+      
+      // Clear the tracked message IDs
+      progress.sentMessageIds = [];
+      await saveUserProgress(progress);
+    }
 
     // Check if user has any favourites
     const count = await getFavouritesCount(userId);

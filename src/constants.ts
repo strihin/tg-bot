@@ -14,8 +14,8 @@ export const LANGUAGES = {
   },
   kharkiv: {
     code: 'kharkiv',
-    name: 'Kharkiv (Ukrainian Dialect)',
-    emoji: '1654',
+    name: 'ШО',
+    emoji: 'ШО 🌻',
   },
   ua: {
     code: 'ua',
