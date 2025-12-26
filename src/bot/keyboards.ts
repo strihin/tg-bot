@@ -1,3 +1,4 @@
+import TelegramBot from 'node-telegram-bot-api';
 import { LEVELS } from '../constants';
 import { TargetLanguage } from '../types';
 import { getUIText } from '../utils/uiTranslation';
@@ -99,16 +100,6 @@ const getLessonKeyboards = (language: TargetLanguage = 'eng', category?: string,
             callback_data: 'add_favourite',
           },
         ],
-        [
-          {
-            text: getUIText('change_folder', language),
-            callback_data: 'change_folder',
-          },
-          {
-            text: getUIText('main_menu', language),
-            callback_data: 'back_to_menu',
-          },
-        ],
       ],
     },
 
@@ -123,10 +114,6 @@ const getLessonKeyboards = (language: TargetLanguage = 'eng', category?: string,
             text: getUIText('add_favourite', language),
             callback_data: 'add_favourite',
           },
-        ],
-        [
-          { text: getUIText('change_folder', language), callback_data: 'change_folder' },
-          { text: getUIText('main_menu', language), callback_data: 'back_to_menu' },
         ],
         [{ text: getUIText('exit_lesson', language), callback_data: 'exit' }],
       ],
@@ -229,3 +216,49 @@ export const lessonKeyboards = (() => {
   keyboards.levelSelect = generateLevelSelectKeyboard('eng');
   return keyboards;
 })();
+
+/**
+ * Get persistent keyboard based on language
+ * Provides language-translated menu buttons in a single row
+ * Order: Back -> Home -> Profile
+ */
+export function getPersistentKeyboard(language: string) {
+  const keyboards: { [key: string]: any } = {
+    eng: {
+      keyboard: [
+        [{ text: '⬅️ Back' }, { text: '🏠 Home' }, { text: '👤 Profile' }]
+      ],
+      resize_keyboard: true,
+      persistent: true,
+      one_time_keyboard: false,
+      input_field_placeholder: 'Write a message...'
+    },
+    kharkiv: {
+      keyboard: [
+        [{ text: '⬅️ Назад' }, { text: '🏠 Меню' }, { text: '👤 Профиль' }]
+      ],
+      resize_keyboard: true,
+      persistent: true,
+      one_time_keyboard: false,
+      input_field_placeholder: 'Напишите сообщение...'
+    },
+    ua: {
+      keyboard: [
+        [{ text: '⬅️ Назад' }, { text: '🏠 Меню' }, { text: '👤 Профіль' }]
+      ],
+      resize_keyboard: true,
+      persistent: true,
+      one_time_keyboard: false,
+      input_field_placeholder: 'Напишіть повідомлення...'
+    }
+  };
+  
+  return keyboards[language] || keyboards['eng'];
+}
+
+/**
+ * Legacy exports for backward compatibility
+ */
+export const persistentMenuKeyboardKharkiv = getPersistentKeyboard('kharkiv');
+export const persistentMenuKeyboardEn = getPersistentKeyboard('eng');
+export const persistentMenuKeyboardUa = getPersistentKeyboard('ua');

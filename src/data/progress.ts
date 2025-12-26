@@ -19,7 +19,11 @@ export async function getUserProgressAsync(userId: number): Promise<UserProgress
       languageTo: doc.languageTo,
       lessonMessageId: doc.lessonMessageId,
       audioMessageId: doc.audioMessageId,
+      menuMessageId: doc.menuMessageId,
       lessonActive: doc.lessonActive,
+      translationRevealed: doc.translationRevealed,
+      lastFolder: doc.lastFolder,
+      lastCategory: doc.lastCategory,
       sentMessageIds: doc.sentMessageIds || [],
     };
   } catch (error) {
@@ -53,7 +57,11 @@ export async function saveUserProgress(progress: UserProgress): Promise<void> {
         languageTo: progress.languageTo,
         lessonMessageId: progress.lessonMessageId,
         audioMessageId: progress.audioMessageId,
+        menuMessageId: progress.menuMessageId,
         lessonActive: progress.lessonActive,
+        translationRevealed: progress.translationRevealed,
+        lastFolder: progress.lastFolder,
+        lastCategory: progress.lastCategory,
         sentMessageIds: progress.sentMessageIds || [],
       },
       { upsert: true, new: true }

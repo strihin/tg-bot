@@ -1,6 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { config } from '../config';
-import { getUserProgressAsync, clearAllProgressExceptLast } from '../data/progress';
+import { getUserProgressAsync, saveUserProgress, clearAllProgressExceptLast } from '../data/progress';
 import { getLanguageEmoji } from '../utils/translation';
 import { getUIText } from '../utils/uiTranslation';
 import { logActivity } from '../utils/logger';
@@ -14,7 +14,7 @@ import { getCategoryKeyboard, handleSelectCategory } from './handlers/category';
 import { handleSelectTargetLanguage } from './handlers/language';
 import { handleSelectLevel } from './handlers/level';
 import { handleProfileCommand } from './handlers/profile';
-import { getTranslatedKeyboardsWithCompletion, staticKeyboards } from './keyboards';
+import { getTranslatedKeyboardsWithCompletion, staticKeyboards, getPersistentKeyboard } from './keyboards';
 
 export function createBot(): TelegramBot {
   // Use webhook mode if WEBHOOK_MODE env var is set, otherwise use polling
@@ -54,17 +54,31 @@ export function createBot(): TelegramBot {
       console.warn('⚠️  Could not set bot commands menu (may not be critical):', error.message);
     });
 
-  // Log all incoming updates for debugging
-  bot.on('update', (update) => {
-    console.log(`🔄 UPDATE RECEIVED (update_id: ${update.update_id}):`);
-    if (update.message) {
-      console.log(`   ✅ message: "${update.message.text}" from ${update.message.from?.username || update.message.from?.id}`);
+  // Set default menu button to show list of commands
+  // Using raw API call for setting default menu button
+  const setDefaultMenuUrl = `https://api.telegram.org/bot${config.TELEGRAM_TOKEN}/setDefaultChatMenuButton`;
+  const defaultMenuPayload = {
+    menu_button: {
+      type: 'commands'
     }
-    if (update.callback_query) console.log(`   - callback_query: ${update.callback_query.data}`);
-    if (update.edited_message) console.log(`   - edited_message`);
-    if (update.channel_post) console.log(`   - channel_post`);
-    if (update.edited_channel_post) console.log(`   - edited_channel_post`);
-  });
+  };
+
+  fetch(setDefaultMenuUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(defaultMenuPayload)
+  })
+    .then(res => res.json())
+    .then((data: any) => {
+      if (data.ok) {
+        console.log('✅ Default menu button configured');
+      } else {
+        console.warn('⚠️  Could not set default menu:', data.description);
+      }
+    })
+    .catch((error: any) => {
+      console.warn('⚠️  Error setting default menu:', error.message);
+    });
 
   // Command: /start - Show language selection or resume lesson
   bot.onText(/\/start/, async (msg: TelegramBot.Message) => {
@@ -149,6 +163,16 @@ export function createBot(): TelegramBot {
             }
           );
           console.log(`✅ Category selection sent to chat ${chatId}, message ID: ${result.message_id}`);
+          
+          // Send persistent keyboard as separate message
+          await bot.sendMessage(
+            chatId,
+            '.',
+            {
+              reply_markup: getPersistentKeyboard(progress.languageTo)
+            }
+          );
+
         } else if (progress && progress.languageTo && progress.languageTo !== 'eng') {
           // User has explicitly changed from default language - show categories
           console.log(`📤 User has custom language: ${progress.languageTo}`);
@@ -248,6 +272,143 @@ export function createBot(): TelegramBot {
     if (!userId) return;
     const { handleStartFavouriteLesson } = await import('./handlers/favourite');
     await handleStartFavouriteLesson(msg, bot, userId);
+  });
+
+  // Handle persistent keyboard button presses (text messages from keyboard buttons)
+  // Match by emoji prefix to be language-independent
+
+  bot.onText(/^👤/, async (msg: TelegramBot.Message) => {
+    console.log(`👤 Profile button pressed`);
+    const { handleProfileCommand } = await import('./handlers/profile');
+    await handleProfileCommand(msg, bot);
+  });
+
+  bot.onText(/^🏠/, async (msg: TelegramBot.Message) => {
+    console.log(`🏠 Main Menu button pressed`);
+    const userId = msg.from?.id;
+    const chatId = msg.chat.id;
+    if (!userId) return;
+
+    try {
+      const progress = await getUserProgressAsync(userId);
+      const language = progress?.languageTo || 'eng';
+      const selectLevelText = getUIText('select_level', language);
+      const keyboards = await getTranslatedKeyboardsWithCompletion(language, userId);
+      
+      await bot.sendMessage(
+        chatId,
+        `📚 ${selectLevelText}`,
+        {
+          reply_markup: keyboards.levelSelect
+        }
+      );
+    } catch (error) {
+      console.error('❌ Error in Main Menu button:', error);
+      await bot.sendMessage(msg.chat.id, '❌ Error loading menu');
+    }
+  });
+
+  bot.onText(/^⬅️/, async (msg: TelegramBot.Message) => {
+    console.log(`⬅️ Back button pressed`);
+    const userId = msg.from?.id;
+    const chatId = msg.chat.id;
+    if (!userId) return;
+    
+    const progress = await getUserProgressAsync(userId);
+    const language = progress?.languageTo || 'eng';
+    
+    console.log(`🔍 Back button debug - userId: ${userId}, progress:`, {
+      lessonActive: progress?.lessonActive,
+      lastFolder: progress?.lastFolder,
+      lastCategory: progress?.lastCategory,
+      category: progress?.category,
+      folder: progress?.folder
+    });
+    
+    if (progress && progress.lessonActive && progress.lastFolder && progress.lastCategory) {
+      // User is in a lesson - go back to category selection
+      try {
+        console.log(`📚 Going back to category selection for folder: ${progress.lastFolder}`);
+        
+        // Save current lesson progress before navigating away
+        await saveUserProgress(progress);
+        console.log(`💾 Progress saved: currentIndex=${progress.currentIndex}`);
+        
+        const selectCategoryText = getUIText('select_category', language);
+        const langEmoji = getLanguageEmoji(language);
+        const categoryKeyboardObj = await getCategoryKeyboard(progress.lastFolder, language, userId);
+        
+        await bot.sendMessage(
+          chatId,
+          `🇧🇬 → ${langEmoji}\n\n<i>${selectCategoryText}</i>`,
+          {
+            parse_mode: 'HTML',
+            reply_markup: categoryKeyboardObj.reply_markup,
+          }
+        );
+        
+      } catch (error) {
+        console.error('❌ Error in Back button (lesson):', error);
+      }
+    } else if (progress && progress.lastFolder) {
+      // User was browsing categories - go back to folder selection
+      try {
+        console.log(`📁 Going back to folder selection`);
+        const selectLevelText = getUIText('select_level', language);
+        const keyboards = await getTranslatedKeyboardsWithCompletion(language, userId);
+        
+        await bot.sendMessage(
+          chatId,
+          `📚 ${selectLevelText}`,
+          {
+            reply_markup: keyboards.levelSelect
+          }
+        );
+        
+      } catch (error) {
+        console.error('❌ Error in Back button (categories):', error);
+      }
+    } else {
+      // No lesson/folder context, go to language selection or folder selection
+      if (progress && language && language !== 'eng') {
+        // User has language set - show folder selection
+        console.log(`🎯 Going to folder selection (has language)`);
+        const selectLevelText = getUIText('select_level', language);
+        const keyboards = await getTranslatedKeyboardsWithCompletion(language, userId);
+        
+        await bot.sendMessage(
+          chatId,
+          `📚 ${selectLevelText}`,
+          {
+            reply_markup: keyboards.levelSelect
+          }
+        );
+        
+        // Send persistent keyboard as separate message
+        await bot.sendMessage(
+          chatId,
+          '.',
+          {
+            reply_markup: getPersistentKeyboard(language)
+          }
+        );
+      } else {
+        // First time - show language selection
+        console.log(`🌍 Going to language selection (no language set)`);
+        const selectLanguageText = getUIText('select_language', 'eng');
+        const { staticKeyboards } = await import('./keyboards');
+        await bot.sendMessage(
+          chatId,
+          `<b>🇧🇬 ${selectLanguageText}</b>`,
+          {
+            parse_mode: 'HTML',
+            reply_markup: staticKeyboards.targetLanguageSelect
+          }
+        );
+        
+
+      }
+    }
   });
 
   // Test: Log all message types

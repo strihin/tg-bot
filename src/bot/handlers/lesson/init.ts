@@ -46,7 +46,9 @@ export async function handleStartLessonButton(
       // Same category, save as last for resume
       progress.lastFolder = progress.folder;
       progress.lastCategory = progress.category;
+      await saveUserProgress(progress);
       console.log(`✅ Loaded progress for user ${userId}: index ${progress.currentIndex}, language: ${progress.languageTo}`);
+      console.log(`📌 [INIT] Saved lastFolder: ${progress.lastFolder}, lastCategory: ${progress.lastCategory}`);
     }
 
     // Fetch and display sentence
@@ -112,6 +114,7 @@ export async function handleStartLessonButton(
     progress.lastCategory = progress.category;
     await saveUserProgress(progress);
     console.log('✅ Sent/edited lesson message');
+    console.log(`📌 [FINAL] Saved lastFolder: ${progress.lastFolder}, lastCategory: ${progress.lastCategory}, lessonActive: true`);
 
     const lessonStarted = getUIText('lesson_started', progress.languageTo);
     await bot.answerCallbackQuery(callbackQuery.id, { text: lessonStarted });

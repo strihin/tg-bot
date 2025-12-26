@@ -78,7 +78,11 @@ export interface IUserProgress extends Document {
   languageTo: TargetLanguage;
   lessonMessageId?: number;
   audioMessageId?: number;
+  menuMessageId?: number;
   lessonActive?: boolean;
+  translationRevealed?: boolean;
+  lastFolder?: FolderType;
+  lastCategory?: string;
   sentMessageIds?: number[];
   createdAt: Date;
   updatedAt: Date;
@@ -94,7 +98,11 @@ const UserProgressSchema = new Schema<IUserProgress>(
     languageTo: { type: String, default: 'eng', enum: ['eng', 'kharkiv', 'ua'] },
     lessonMessageId: { type: Number },
     audioMessageId: { type: Number },
+    menuMessageId: { type: Number },
     lessonActive: { type: Boolean, default: false },
+    translationRevealed: { type: Boolean, default: false },
+    lastFolder: { type: String, enum: ['basic', 'middle', 'middle-slavic', 'misc', 'language-comparison', 'expressions'] },
+    lastCategory: { type: String },
     sentMessageIds: { type: [Number], default: [] },
   },
   { timestamps: true }

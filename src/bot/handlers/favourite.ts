@@ -103,6 +103,7 @@ export async function getUserFavourites(userId: number) {
 /**
  * Start favourite lesson with user's saved sentences
  * Displays one favourite card at a time with audio in caption (like lesson handler)
+ * Translation shown based on current language preference
  */
 export async function handleStartFavouriteLesson(
   msg: TelegramBot.Message,
@@ -115,6 +116,10 @@ export async function handleStartFavouriteLesson(
     console.log(`⭐ Starting favourite lesson for user ${userId}`);
 
     await ensureMongoDBConnection();
+
+    // Get user's current language
+    const progress = await getUserProgressAsync(userId);
+    const languageTo = progress?.languageTo || 'eng';
 
     // Check if user has any favourites
     const count = await getFavouritesCount(userId);
@@ -136,7 +141,7 @@ export async function handleStartFavouriteLesson(
     favouriteIndexMap[userId] = 0;
 
     // Show first favourite with audio in caption
-    await displayFavouriteCard(chatId, bot, userId, 0);
+    await displayFavouriteCard(chatId, bot, userId, 0, languageTo);
 
     console.log(`⭐ Started favourite lesson with ${count} sentences`);
   } catch (error) {
@@ -147,13 +152,14 @@ export async function handleStartFavouriteLesson(
 
 /**
  * Display favourite card with audio in caption (same pattern as lesson.ts)
- * Shows Bulgarian → translation in spoiler
+ * Shows Bulgarian → translation in spoiler (in user's current language)
  */
 async function displayFavouriteCard(
   chatId: number,
   bot: TelegramBot,
   userId: number,
-  index: number
+  index: number,
+  languageTo: string
 ): Promise<void> {
   try {
     const favourites = favouritesListMap[userId] || [];
@@ -162,7 +168,12 @@ async function displayFavouriteCard(
     const favourite = favourites[index];
     const count = favourites.length;
 
-    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${favourite.eng}</tg-spoiler>`;
+    // Get translation based on language
+    const translation = languageTo === 'kharkiv' ? favourite.ru : languageTo === 'ua' ? favourite.ua : favourite.eng;
+
+    console.log(`⭐ Display Card - User: ${userId}, Index: ${index}, Language: ${languageTo}, Translation: "${translation.substring(0, 30)}..."`);
+
+    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${translation}</tg-spoiler>`;
 
     const keyboards = {
       inline_keyboard: [
@@ -242,6 +253,12 @@ export async function handleFavouriteNext(
 
     if (!chatId || !messageId) return;
 
+    // Get user's current language
+    const progress = await getUserProgressAsync(userId);
+    const languageTo = progress?.languageTo || 'eng';
+
+    console.log(`⭐ Favourite Next - User: ${userId}, Language: ${languageTo}`);
+
     const favourites = favouritesListMap[userId] || [];
     if (favourites.length === 0) {
       await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ No favourites' });
@@ -257,7 +274,12 @@ export async function handleFavouriteNext(
     const favourite = favourites[index];
     const count = favourites.length;
 
-    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${favourite.eng}</tg-spoiler>`;
+    // Get translation based on language
+    const translation = languageTo === 'kharkiv' ? favourite.ru : languageTo === 'ua' ? favourite.ua : favourite.eng;
+
+    console.log(`⭐ Showing translation: ${languageTo} = "${translation.substring(0, 50)}..."`);
+
+    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${translation}</tg-spoiler>`;
 
     const keyboards = {
       inline_keyboard: [
@@ -347,6 +369,12 @@ export async function handleFavouritePrevious(
 
     if (!chatId || !messageId) return;
 
+    // Get user's current language
+    const progress = await getUserProgressAsync(userId);
+    const languageTo = progress?.languageTo || 'eng';
+
+    console.log(`⭐ Favourite Previous - User: ${userId}, Language: ${languageTo}`);
+
     const favourites = favouritesListMap[userId] || [];
     if (favourites.length === 0) {
       await bot.answerCallbackQuery(callbackQuery.id, { text: '❌ No favourites' });
@@ -362,7 +390,12 @@ export async function handleFavouritePrevious(
     const favourite = favourites[index];
     const count = favourites.length;
 
-    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${favourite.eng}</tg-spoiler>`;
+    // Get translation based on language
+    const translation = languageTo === 'kharkiv' ? favourite.ru : languageTo === 'ua' ? favourite.ua : favourite.eng;
+
+    console.log(`⭐ Showing translation: ${languageTo} = "${translation.substring(0, 50)}..."`);
+
+    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${index + 1}/${count}</b>\n\n${favourite.bg}\n\n<tg-spoiler>${translation}</tg-spoiler>`;
 
     const keyboards = {
       inline_keyboard: [
@@ -452,6 +485,10 @@ export async function handleRemoveFavourite(
 
     if (!chatId || !messageId) return;
 
+    // Get user's current language
+    const progress = await getUserProgressAsync(userId);
+    const languageTo = progress?.languageTo || 'eng';
+
     const favourites = favouritesListMap[userId] || [];
     const index = favouriteIndexMap[userId] || 0;
 
@@ -492,7 +529,10 @@ export async function handleRemoveFavourite(
     const nextFavourite = favourites[nextIndex];
     const count = favourites.length;
 
-    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${nextIndex + 1}/${count}</b>\n\n${nextFavourite.bg}\n\n<tg-spoiler>${nextFavourite.eng}</tg-spoiler>`;
+    // Get translation based on language
+    const translation = languageTo === 'kharkiv' ? nextFavourite.ru : languageTo === 'ua' ? nextFavourite.ua : nextFavourite.eng;
+
+    const text = `<b>⭐ FAVOURITE WORDS</b>\n\n⏳ <b>${nextIndex + 1}/${count}</b>\n\n${nextFavourite.bg}\n\n<tg-spoiler>${translation}</tg-spoiler>`;
 
     const keyboards = {
       inline_keyboard: [

@@ -2,7 +2,7 @@ import TelegramBot from 'node-telegram-bot-api';
 import { changeTargetLanguage, getUserProgressAsync, saveUserProgress } from '../../data/progress';
 import { getLanguageEmoji } from '../../utils/translation';
 import { getUIText } from '../../utils/uiTranslation';
-import { getTranslatedKeyboardsWithCompletion } from '../keyboards';
+import { getTranslatedKeyboardsWithCompletion, getPersistentKeyboard } from '../keyboards';
 import { TargetLanguage } from '../../types';
 
 /**
@@ -95,6 +95,16 @@ export async function handleSelectTargetLanguage(
       }
     }
     console.log(`✅ Level selection sent/edited to chat ${chatId}`);
+    
+    // Send persistent keyboard with correct language
+    await bot.sendMessage(
+      chatId,
+      '.',
+      {
+        reply_markup: getPersistentKeyboard(languageTo)
+      }
+    );
+    console.log(`✅ Persistent keyboard sent with language: ${languageTo}`);
   } catch (error) {
     console.error('❌ Error in handleSelectTargetLanguage:', error);
     // Try to answer callback even on error to remove spinner
